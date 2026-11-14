@@ -1,15 +1,19 @@
 import 'dart:async';
 
-import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart' show DateFormat;
+import 'package:material_ui/material_ui.dart';
 
+import '../../core/content/hadith.dart';
+import '../../core/hijri.dart';
 import '../../core/prayer/prayer_calculator.dart';
 import '../../l10n/app_localizations.dart';
 import '../../state/app_settings.dart';
+import '../../state/content_providers.dart';
+import '../hadith/hadith_screen.dart';
 import '../labels.dart';
 import '../location/city_picker_screen.dart';
-import '../settings/settings_screen.dart';
+import '../theme.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -38,6 +42,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     super.dispose();
   }
 
+  void _openCityPicker() {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(builder: (_) => const CityPickerScreen()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
@@ -49,42 +59,41 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         title: place == null
             ? Text(l.appTitle)
             : InkWell(
-                onTap: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => const CityPickerScreen())),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      place.fromGps ? Icons.my_location : Icons.place_outlined,
-                      size: 20,
-                    ),
-                    const SizedBox(width: 8),
-                    Flexible(
-                      child: Text(place.name, overflow: TextOverflow.ellipsis),
-                    ),
-                  ],
+                borderRadius: BorderRadius.circular(8),
+                onTap: _openCityPicker,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        place.fromGps
+                            ? Icons.my_location
+                            : Icons.place_outlined,
+                        size: 20,
+                      ),
+                      const SizedBox(width: 8),
+                      Flexible(
+                        child:
+                            Text(place.name, overflow: TextOverflow.ellipsis),
+                      ),
+                      const Icon(Icons.arrow_drop_down),
+                    ],
+                  ),
                 ),
               ),
-        actions: [
-          IconButton(
-            tooltip: l.settings,
-            icon: const Icon(Icons.settings_outlined),
-            onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => const SettingsScreen())),
-          ),
-        ],
       ),
-      body: SafeArea(
-        child: place == null
-            ? _EmptyState(onChoose: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => const CityPickerScreen())))
-            : _Timetable(
-                day: _calculator.computeForInstant(
-                  place: place.prayerPlace,
-                  settings: settings.prayerSettings,
-                  now: _now,
-                ),
+      body: place == null
+          ? _EmptyState(onChoose: _openCityPicker)
+          : _Timetable(
+              day: _calculator.computeForInstant(
+                place: place.prayerPlace,
+                settings: settings.prayerSettings,
                 now: _now,
-                calculator: _calculator,
               ),
-      ),
+              now: _now,
+              settings: settings,
+            ),
     );
   }
 }
@@ -97,18 +106,21 @@ class _EmptyState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
+    final scheme = Theme.of(context).colorScheme;
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(32),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            Icon(Icons.place_outlined, size: 56, color: scheme.primary),
+            const SizedBox(height: 16),
             Text(
               l.locationNotSet,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.titleMedium,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 20),
             FilledButton(onPressed: onChoose, child: Text(l.chooseCity)),
           ],
         ),
@@ -117,16 +129,21 @@ class _EmptyState extends StatelessWidget {
   }
 }
 
-class _Timetable extends StatelessWidget {
+class _Timetable extends ConsumerWidget {
   const _Timetable({
     required this.day,
     required this.now,
-    required this.calculator,
+    required this.settings,
   });
+
+  static const _calculator = PrayerCalculator();
+  static const _numbers = TextStyle(
+    fontFeatures: [FontFeature.tabularFigures()],
+  );
 
   final PrayerDay day;
   final DateTime now;
-  final PrayerCalculator calculator;
+  final AppSettings settings;
 
   String _countdown(Duration d) {
     final total = d.inSeconds < 0 ? 0 : d.inSeconds;
@@ -135,16 +152,19 @@ class _Timetable extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
     final scheme = theme.colorScheme;
-    final locale = Localizations.localeOf(context).toLanguageTag();
-    final timeFormat = DateFormat.Hm(locale);
-    final dateFormat = DateFormat.yMMMMEEEEd(locale);
-    final moment = calculator.momentAt(day, now);
-    final numbers = const TextStyle(
-      fontFeatures: [FontFeature.tabularFigures()],
+    final language = Localizations.localeOf(context).languageCode;
+    final timeFormat = DateFormat.Hm(language);
+    final dateFormat = DateFormat.MMMMEEEEd(language);
+    final moment = _calculator.momentAt(day, now);
+    final hijri = hijriFor(
+      day.year,
+      day.month,
+      day.day,
+      adjustment: settings.hijriAdjustment,
     );
 
     // The times are already in the place's zone; format their wall-clock
@@ -153,64 +173,87 @@ class _Timetable extends StatelessWidget {
         timeFormat.format(DateTime(t.year, t.month, t.day, t.hour, t.minute));
 
     return ListView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.fromLTRB(16, 4, 16, 24),
       children: [
-        Text(
-          dateFormat.format(DateTime(day.year, day.month, day.day)),
-          style: theme.textTheme.bodyMedium
-              ?.copyWith(color: scheme.onSurfaceVariant),
-        ),
-        const SizedBox(height: 12),
-        Card(
-          elevation: 0,
-          color: scheme.primaryContainer,
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  l.nextPrayerIn(prayerName(l, moment.next)),
-                  style: theme.textTheme.titleMedium
-                      ?.copyWith(color: scheme.onPrimaryContainer),
+        Container(
+          decoration: BoxDecoration(
+            gradient: heroGradient(scheme),
+            borderRadius: BorderRadius.circular(28),
+          ),
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                hijriText(language, hijri.year, hijri.month, hijri.day),
+                style: theme.textTheme.titleSmall?.copyWith(color: onHero),
+              ),
+              Text(
+                dateFormat.format(DateTime(day.year, day.month, day.day)),
+                style: theme.textTheme.bodySmall?.copyWith(color: onHeroMuted),
+              ),
+              const SizedBox(height: 24),
+              Text(
+                l.nextPrayerIn(prayerName(l, moment.next)),
+                style: theme.textTheme.titleMedium?.copyWith(color: onHero),
+              ),
+              // Digits always read left to right, in Arabic too.
+              Directionality(
+                textDirection: TextDirection.ltr,
+                child: Text(
+                  _countdown(moment.nextTime.difference(now)),
+                  style: theme.textTheme.displayMedium?.merge(_numbers).copyWith(
+                        color: onHero,
+                        fontWeight: FontWeight.w300,
+                      ),
                 ),
-                const SizedBox(height: 4),
-                // Digits always read left to right, in Arabic too.
-                Directionality(
-                  textDirection: TextDirection.ltr,
-                  child: Text(
-                    _countdown(moment.nextTime.difference(now)),
-                    style: theme.textTheme.displayMedium
-                        ?.merge(numbers)
-                        .copyWith(color: scheme.onPrimaryContainer),
+              ),
+              Text(
+                l.atTime(clock(moment.nextTime)),
+                style: theme.textTheme.bodyMedium?.copyWith(color: onHeroMuted),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 16),
+        Card(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            child: Column(
+              children: [
+                for (final slot in PrayerSlot.values)
+                  _PrayerRow(
+                    name: prayerName(l, slot),
+                    time: clock(day[slot]),
+                    isCurrent: moment.current == slot,
+                    // After Isha the next prayer is tomorrow's Fajr, not
+                    // this row.
+                    isNext: moment.next == slot && moment.nextTime == day[slot],
+                    muted: slot == PrayerSlot.sunrise,
+                    nowLabel: l.nowLabel,
+                    adhanOn: settings.adhanSlots.contains(slot),
+                    adhanTooltip: settings.adhanSlots.contains(slot)
+                        ? l.adhanOn
+                        : l.adhanOff,
+                    onToggleAdhan: () => ref
+                        .read(settingsProvider.notifier)
+                        .toggleAdhan(slot, !settings.adhanSlots.contains(slot)),
                   ),
+                Divider(height: 17, indent: 20, endIndent: 20),
+                _PrayerRow(
+                  name: l.lastThirdOfNight,
+                  time: clock(day.lastThirdOfNight),
+                  isCurrent: false,
+                  isNext: false,
+                  muted: true,
+                  nowLabel: l.nowLabel,
                 ),
               ],
             ),
           ),
         ),
-        const SizedBox(height: 12),
-        for (final slot in PrayerSlot.values)
-          _PrayerRow(
-            name: prayerName(l, slot),
-            time: clock(day[slot]),
-            isCurrent: moment.current == slot,
-            // After Isha the next prayer is tomorrow's Fajr, not this row.
-            isNext: moment.next == slot && moment.nextTime == day[slot],
-            muted: slot == PrayerSlot.sunrise,
-            nowLabel: l.nowLabel,
-            numbers: numbers,
-          ),
-        const Divider(height: 32),
-        _PrayerRow(
-          name: l.lastThirdOfNight,
-          time: clock(day.lastThirdOfNight),
-          isCurrent: false,
-          isNext: false,
-          muted: true,
-          nowLabel: l.nowLabel,
-          numbers: numbers,
-        ),
+        const SizedBox(height: 16),
+        _HadithCard(year: day.year, month: day.month, day: day.day),
       ],
     );
   }
@@ -224,7 +267,9 @@ class _PrayerRow extends StatelessWidget {
     required this.isNext,
     required this.muted,
     required this.nowLabel,
-    required this.numbers,
+    this.adhanOn,
+    this.adhanTooltip,
+    this.onToggleAdhan,
   });
 
   final String name;
@@ -233,7 +278,9 @@ class _PrayerRow extends StatelessWidget {
   final bool isNext;
   final bool muted;
   final String nowLabel;
-  final TextStyle numbers;
+  final bool? adhanOn;
+  final String? adhanTooltip;
+  final VoidCallback? onToggleAdhan;
 
   @override
   Widget build(BuildContext context) {
@@ -242,36 +289,129 @@ class _PrayerRow extends StatelessWidget {
     final color = muted ? scheme.onSurfaceVariant : scheme.onSurface;
     final weight = isNext ? FontWeight.w700 : FontWeight.w400;
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 2),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 1),
+      padding: const EdgeInsetsDirectional.only(start: 12),
       decoration: BoxDecoration(
         color: isCurrent ? scheme.secondaryContainer : null,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(14),
       ),
       child: Row(
         children: [
           Expanded(
-            child: Text(
-              name,
-              style: theme.textTheme.titleMedium
-                  ?.copyWith(color: color, fontWeight: weight),
+            child: Row(
+              children: [
+                Flexible(
+                  child: Text(
+                    name,
+                    style: theme.textTheme.titleMedium
+                        ?.copyWith(color: color, fontWeight: weight),
+                  ),
+                ),
+                if (isCurrent) ...[
+                  const SizedBox(width: 10),
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                    decoration: BoxDecoration(
+                      color: scheme.primary,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text(
+                      nowLabel,
+                      style: theme.textTheme.labelSmall
+                          ?.copyWith(color: scheme.onPrimary),
+                    ),
+                  ),
+                ],
+              ],
             ),
           ),
-          if (isCurrent) ...[
-            Text(
-              nowLabel,
-              style: theme.textTheme.labelMedium
-                  ?.copyWith(color: scheme.onSecondaryContainer),
-            ),
-            const SizedBox(width: 12),
-          ],
           Text(
             time,
-            style: theme.textTheme.titleMedium
-                ?.merge(numbers)
-                .copyWith(color: color, fontWeight: weight),
+            style: theme.textTheme.titleMedium?.copyWith(
+              color: color,
+              fontWeight: weight,
+              fontFeatures: const [FontFeature.tabularFigures()],
+            ),
           ),
+          if (onToggleAdhan != null)
+            IconButton(
+              tooltip: adhanTooltip,
+              onPressed: onToggleAdhan,
+              icon: Icon(
+                adhanOn == true
+                    ? Icons.notifications_active
+                    : Icons.notifications_off_outlined,
+                color: adhanOn == true ? scheme.primary : scheme.outline,
+                size: 22,
+              ),
+            )
+          else
+            const SizedBox(width: 48, height: 48),
         ],
+      ),
+    );
+  }
+}
+
+class _HadithCard extends ConsumerWidget {
+  const _HadithCard({required this.year, required this.month, required this.day});
+
+  final int year;
+  final int month;
+  final int day;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+    final language = Localizations.localeOf(context).languageCode;
+    final pool = ref.watch(hadithPoolProvider).value;
+    if (pool == null || pool.isEmpty) return const SizedBox.shrink();
+    final today = dayNumber(year, month, day);
+    final hadith = pool[dailyHadithIndex(today, pool.length)];
+
+    return Card(
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        onTap: () => Navigator.of(context).push(
+          MaterialPageRoute<void>(
+            builder: (_) => HadithScreen(initialDay: today),
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Icon(Icons.format_quote, color: scheme.primary, size: 20),
+                  const SizedBox(width: 8),
+                  Text(
+                    l.hadithOfDay,
+                    style: theme.textTheme.titleSmall
+                        ?.copyWith(color: scheme.primary),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+              Text(
+                hadith.translation(language),
+                maxLines: 6,
+                overflow: TextOverflow.ellipsis,
+                style: theme.textTheme.bodyLarge?.copyWith(height: 1.5),
+              ),
+              const SizedBox(height: 12),
+              Text(
+                l.bukhariRef(hadith.number),
+                style: theme.textTheme.bodySmall
+                    ?.copyWith(color: scheme.onSurfaceVariant),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

@@ -111,6 +111,23 @@ class SettingsScreen extends ConsumerWidget {
               onSelected: controller.setMadhab,
             ),
           ),
+          ListTile(
+            title: Text(l.hijriAdjustment),
+            subtitle: Text(
+              '${l.daysShift(_signed(settings.hijriAdjustment))}\n'
+              '${l.hijriAdjustmentHint}',
+            ),
+            isThreeLine: true,
+            onTap: () => _pick<int>(
+              context,
+              title: l.hijriAdjustment,
+              selected: settings.hijriAdjustment,
+              options: {
+                for (var d = -2; d <= 2; d++) d: l.daysShift(_signed(d)),
+              },
+              onSelected: (d) => controller.setValue('hijriAdj', d),
+            ),
+          ),
           _SectionHeader(l.adjustments),
           Padding(
             padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 16, 8),
@@ -131,6 +148,8 @@ class SettingsScreen extends ConsumerWidget {
       ),
     );
   }
+
+  static String _signed(int n) => n > 0 ? '+$n' : '$n';
 
   Future<void> _pick<T>(
     BuildContext context, {

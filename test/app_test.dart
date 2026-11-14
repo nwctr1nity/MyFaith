@@ -5,7 +5,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:muslim_app/app.dart';
 import 'package:muslim_app/core/prayer/prayer_calculator.dart';
+import 'package:muslim_app/features/qibla/qibla_screen.dart';
+import 'package:muslim_app/services/notification_service.dart';
 import 'package:muslim_app/state/app_settings.dart';
+import 'package:muslim_app/state/notification_sync.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timezone/data/latest_all.dart' as tzdata;
 
@@ -18,6 +21,37 @@ const _almaty = SavedPlace(
   fromGps: false,
 );
 
+class FakeNotifications implements NotificationService {
+  List<NotificationRequest> scheduled = const [];
+  final extra = <NotificationRequest>[];
+
+  @override
+  Future<void> init() async {}
+
+  @override
+  Future<NotificationPermissions> permissions() async =>
+      const NotificationPermissions(notifications: true, exactAlarms: false);
+
+  @override
+  Future<void> requestNotifications() async {}
+
+  @override
+  Future<void> requestExactAlarms() async {}
+
+  @override
+  Future<void> replaceAll(
+    List<NotificationRequest> requests,
+    ChannelNames names,
+  ) async {
+    scheduled = requests;
+  }
+
+  @override
+  Future<void> scheduleOne(NotificationRequest request, ChannelNames names) async {
+    extra.add(request);
+  }
+}
+
 Future<SharedPreferences> _prefs([AppSettings? settings]) async {
   SharedPreferences.setMockInitialValues({
     if (settings != null) 'settings.v1': jsonEncode(settings.toJson()),
@@ -27,7 +61,11 @@ Future<SharedPreferences> _prefs([AppSettings? settings]) async {
 
 Future<void> _pump(WidgetTester tester, SharedPreferences prefs) async {
   await tester.pumpWidget(ProviderScope(
-    overrides: [sharedPreferencesProvider.overrideWithValue(prefs)],
+    overrides: [
+      sharedPreferencesProvider.overrideWithValue(prefs),
+      notificationServiceProvider.overrideWithValue(FakeNotifications()),
+      compassProvider.overrideWithValue(() => Stream.value(40)),
+    ],
     child: const MuslimApp(),
   ));
   await tester.pump();
@@ -37,7 +75,7 @@ void main() {
   setUpAll(tzdata.initializeTimeZones);
 
   test('settings survive a save and load', () {
-    const original = AppSettings(
+    final original = AppSettings.of(
       languageCode: 'ar',
       themeMode: ThemeMode.dark,
       place: _almaty,
@@ -107,7 +145,7 @@ void main() {
   });
 
   testWidgets('without a place the app asks to choose a city', (tester) async {
-    await _pump(tester, await _prefs(const AppSettings(languageCode: 'ru')));
+    await _pump(tester, await _prefs(AppSettings.of(languageCode: 'ru')));
     expect(find.text('Выбрать город'), findsOneWidget);
     expect(find.text('Фаджр'), findsNothing);
   });
@@ -116,7 +154,7 @@ void main() {
       (tester) async {
     await _pump(
       tester,
-      await _prefs(const AppSettings(languageCode: 'ru', place: _almaty)),
+      await _prefs(AppSettings.of(languageCode: 'ru', place: _almaty)),
     );
     expect(find.text('Алматы'), findsOneWidget);
     for (final name in ['Фаджр', 'Восход', 'Зухр', 'Аср', 'Магриб', 'Иша']) {
@@ -128,7 +166,7 @@ void main() {
   testWidgets('Arabic lays the screen out right to left', (tester) async {
     await _pump(
       tester,
-      await _prefs(const AppSettings(languageCode: 'ar', place: _almaty)),
+      await _prefs(AppSettings.of(languageCode: 'ar', place: _almaty)),
     );
     final fajr = find.text('الفجر');
     expect(fajr, findsOneWidget);
@@ -139,19 +177,107 @@ void main() {
     expect(nameX, greaterThan(width / 2));
   });
 
-  testWidgets('settings open and switching language updates the screen',
+  testWidgets('settings open from More and switching language applies',
       (tester) async {
     await _pump(
       tester,
-      await _prefs(const AppSettings(languageCode: 'en', place: _almaty)),
+      await _prefs(AppSettings.of(languageCode: 'en', place: _almaty)),
     );
-    await tester.tap(find.byIcon(Icons.settings_outlined));
+    await tester.tap(find.text('More'));
     await tester.pumpAndSettle();
-    expect(find.text('Settings'), findsOneWidget);
+    await tester.tap(find.text('Settings'));
+    await tester.pumpAndSettle();
     await tester.tap(find.text('Language'));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Русский'));
     await tester.pumpAndSettle();
     expect(find.text('Настройки'), findsOneWidget);
+  });
+
+  testWidgets('the bell on a prayer row turns its adhan off', (tester) async {
+    final prefs =
+        await _prefs(AppSettings.of(languageCode: 'en', place: _almaty));
+    await _pump(tester, prefs);
+    expect(find.byIcon(Icons.notifications_active), findsNWidgets(5));
+    await tester.tap(find.byIcon(Icons.notifications_active).first);
+    await tester.pump();
+    expect(find.byIcon(Icons.notifications_active), findsNWidgets(4));
+    final saved = AppSettings.fromJson(
+      jsonDecode(prefs.getString('settings.v1')!) as Map<String, Object?>,
+    );
+    expect(saved.adhanSlots.contains(PrayerSlot.fajr), isFalse);
+    expect(saved.adhanSlots.contains(PrayerSlot.isha), isTrue);
+  });
+
+  testWidgets('qibla tab shows the bearing and a turn hint', (tester) async {
+    await _pump(
+      tester,
+      await _prefs(AppSettings.of(languageCode: 'en', place: _almaty)),
+    );
+    await tester.tap(find.text('Qibla'));
+    await tester.pumpAndSettle();
+    // Almaty is north-east of Mecca, so the qibla is to the south-west.
+    final direction = tester.widget<Text>(find.textContaining('° from north'));
+    final degrees = int.parse(RegExp(r'\d+').firstMatch(direction.data!)![0]!);
+    expect(degrees, inInclusiveRange(235, 255));
+    // The fake compass points at 40°, so the shorter way round is to the left.
+    expect(find.textContaining('Turn left by 15'), findsOneWidget);
+  });
+
+  testWidgets('tapping the salawat counter counts and saves', (tester) async {
+    final prefs =
+        await _prefs(AppSettings.of(languageCode: 'en', place: _almaty));
+    await _pump(tester, prefs);
+    await tester.tap(find.text('Salawat'));
+    await tester.pumpAndSettle();
+    expect(find.text('0'), findsOneWidget);
+    await tester.tap(find.text('0'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('1'));
+    await tester.pumpAndSettle();
+    expect(find.text('2'), findsOneWidget);
+    final saved = AppSettings.fromJson(
+      jsonDecode(prefs.getString('settings.v1')!) as Map<String, Object?>,
+    );
+    expect(saved.salawatTotal, 2);
+  });
+
+  testWidgets('alarms screen offers suhoor and tahajjud', (tester) async {
+    await _pump(
+      tester,
+      await _prefs(AppSettings.of(languageCode: 'en', place: _almaty)),
+    );
+    await tester.tap(find.text('More'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Suhoor and tahajjud alarms'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byType(Switch).last);
+    await tester.pumpAndSettle();
+    expect(find.textContaining('Next alarm'), findsOneWidget);
+    expect(find.byType(FilterChip), findsNWidgets(7));
+  });
+
+  test('sync schedules adhans for the place and a test notification',
+      () async {
+    final fake = FakeNotifications();
+    final container = ProviderContainer(overrides: [
+      sharedPreferencesProvider.overrideWithValue(
+        await _prefs(AppSettings.of(languageCode: 'ru', place: _almaty)
+            .withValue('hadithNotify', false)),
+      ),
+      notificationServiceProvider.overrideWithValue(fake),
+    ]);
+    addTearDown(container.dispose);
+    final sync = container.read(notificationSyncProvider);
+    await sync.syncNow(now: DateTime.utc(2026, 11, 14, 0));
+    // Five prayers a day for ten days, plus the reminder to open the app.
+    expect(fake.scheduled, hasLength(51));
+    expect(fake.scheduled.first.title, contains('Фаджр'));
+    expect(fake.scheduled.first.body, contains('Алматы'));
+    final ids = {for (final r in fake.scheduled) r.id};
+    expect(ids, hasLength(fake.scheduled.length));
+
+    await sync.scheduleTest();
+    expect(fake.extra.single.channel, NotificationChannel.adhan);
   });
 }

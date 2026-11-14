@@ -200,4 +200,344 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get methodMoonsightingCommittee => 'Moonsighting Committee';
+
+  @override
+  String get navPrayer => 'Prayer';
+
+  @override
+  String get navQuran => 'Quran';
+
+  @override
+  String get navQibla => 'Qibla';
+
+  @override
+  String get navSalawat => 'Salawat';
+
+  @override
+  String get navMore => 'More';
+
+  @override
+  String atTime(String time) {
+    return 'at $time';
+  }
+
+  @override
+  String get hadithOfDay => 'Hadith of the day';
+
+  @override
+  String bukhariRef(int number) {
+    return 'Sahih al-Bukhari, no. $number';
+  }
+
+  @override
+  String get readMore => 'Read in full';
+
+  @override
+  String get previousDay => 'Previous';
+
+  @override
+  String get nextDay => 'Next';
+
+  @override
+  String get copy => 'Copy';
+
+  @override
+  String get copied => 'Copied';
+
+  @override
+  String get adhanOn => 'Adhan on';
+
+  @override
+  String get adhanOff => 'Adhan off';
+
+  @override
+  String get continueReading => 'Continue reading';
+
+  @override
+  String surahAyah(String surah, int ayah) {
+    return '$surah, ayah $ayah';
+  }
+
+  @override
+  String get searchSurah => 'Surah name or number';
+
+  @override
+  String ayahCount(int count) {
+    return '$count ayahs';
+  }
+
+  @override
+  String get makkan => 'Makkan';
+
+  @override
+  String get madinan => 'Madinan';
+
+  @override
+  String get bookmarks => 'Bookmarks';
+
+  @override
+  String get noBookmarks =>
+      'No bookmarks yet. Tap the bookmark icon under an ayah to save it.';
+
+  @override
+  String get tafsir => 'Tafsir';
+
+  @override
+  String get tafsirSource => 'Al-Mukhtasar fi Tafsir al-Quran';
+
+  @override
+  String get showTranslation => 'Translation';
+
+  @override
+  String get textSize => 'Text size';
+
+  @override
+  String get addBookmark => 'Add bookmark';
+
+  @override
+  String get removeBookmark => 'Remove bookmark';
+
+  @override
+  String qiblaDirection(String degrees) {
+    return 'Qibla is $degrees° from north';
+  }
+
+  @override
+  String get qiblaAligned => 'You are facing the qibla';
+
+  @override
+  String qiblaTurnRight(String degrees) {
+    return 'Turn right by $degrees°';
+  }
+
+  @override
+  String qiblaTurnLeft(String degrees) {
+    return 'Turn left by $degrees°';
+  }
+
+  @override
+  String get qiblaNoSensor =>
+      'This device has no compass. Use the angle above with any compass.';
+
+  @override
+  String get qiblaCalibrate =>
+      'Hold the phone flat, away from metal. If the arrow drifts, move the phone in a figure of eight.';
+
+  @override
+  String get qiblaNeedsPlace => 'Choose a city to find the qibla';
+
+  @override
+  String get salawatToday => 'Today';
+
+  @override
+  String salawatTotal(int count) {
+    return 'All time: $count';
+  }
+
+  @override
+  String get salawatGoal => 'Daily goal';
+
+  @override
+  String get salawatReset => 'Reset today\'s count';
+
+  @override
+  String get salawatTap => 'Tap to count';
+
+  @override
+  String ofGoal(int goal) {
+    return 'of $goal';
+  }
+
+  @override
+  String get notifications => 'Adhan and notifications';
+
+  @override
+  String get notificationsHint => 'Which prayers to announce';
+
+  @override
+  String get alarmsTitle => 'Alarms';
+
+  @override
+  String get alarms => 'Suhoor and tahajjud alarms';
+
+  @override
+  String get alarmsHint => 'They follow Fajr, so the time shifts every day';
+
+  @override
+  String get prayerSettings => 'Prayer time settings';
+
+  @override
+  String get prayerSettingsHint => 'City, method, corrections';
+
+  @override
+  String get appearance => 'Appearance';
+
+  @override
+  String get sources => 'Sources and licences';
+
+  @override
+  String get permissionNotifications => 'Allow notifications';
+
+  @override
+  String get permissionNotificationsHint =>
+      'Without this permission the adhan cannot sound';
+
+  @override
+  String get permissionExact => 'Allow exact alarms';
+
+  @override
+  String get permissionExactHint =>
+      'Otherwise Android may delay the adhan by several minutes';
+
+  @override
+  String get permissionGranted => 'Allowed';
+
+  @override
+  String get batteryHint =>
+      'If the adhan does not sound on time, turn off battery optimisation for MyFaith in the phone settings and allow autostart. Xiaomi, Huawei and Samsung phones close background apps most often.';
+
+  @override
+  String get testAdhan => 'Test the adhan in 10 seconds';
+
+  @override
+  String get testScheduled => 'Lock the phone and wait 10 seconds';
+
+  @override
+  String get reminderBefore => 'Reminder before prayer';
+
+  @override
+  String get off => 'Off';
+
+  @override
+  String minutesBefore(int count) {
+    return '$count min before';
+  }
+
+  @override
+  String get hadithNotification => 'Daily hadith notification';
+
+  @override
+  String get hadithTime => 'Time';
+
+  @override
+  String get suhoorAlarm => 'Suhoor alarm';
+
+  @override
+  String get suhoorBefore => 'Wake up before Fajr';
+
+  @override
+  String get suhoorDays => 'On which days';
+
+  @override
+  String get suhoorRamadan => 'Ramadan';
+
+  @override
+  String get suhoorMonThu => 'Mondays and Thursdays';
+
+  @override
+  String get suhoorWhite => 'White days (13th to 15th of the lunar month)';
+
+  @override
+  String get suhoorDaily => 'Every day';
+
+  @override
+  String get suhoorStop => 'Warn before Fajr to stop eating';
+
+  @override
+  String nextSuhoor(String when) {
+    return 'Next alarm: $when';
+  }
+
+  @override
+  String get noUpcomingAlarm => 'No alarm in the next 10 days';
+
+  @override
+  String get tahajjudAlarm => 'Tahajjud alarm';
+
+  @override
+  String get tahajjudWhen => 'When to wake';
+
+  @override
+  String get tahajjudLastThird => 'At the start of the last third of the night';
+
+  @override
+  String get tahajjudBeforeFajr => 'A set time before Fajr';
+
+  @override
+  String get weekdays => 'Days of the week';
+
+  @override
+  String get hijriAdjustment => 'Hijri date correction';
+
+  @override
+  String get hijriAdjustmentHint =>
+      'If the month started on a different day in your country';
+
+  @override
+  String daysShift(String count) {
+    return '$count d';
+  }
+
+  @override
+  String notifAdhanTitle(String prayer) {
+    return 'Time for $prayer';
+  }
+
+  @override
+  String get notifSunriseTitle => 'Sunrise';
+
+  @override
+  String notifAdhanBody(String time, String city) {
+    return '$time, $city';
+  }
+
+  @override
+  String notifReminderTitle(String prayer, int minutes) {
+    return '$prayer in $minutes min';
+  }
+
+  @override
+  String get notifSuhoorTitle => 'Time for suhoor';
+
+  @override
+  String notifSuhoorBody(String time) {
+    return 'Fajr at $time';
+  }
+
+  @override
+  String get notifSuhoorStopTitle => 'Finish eating';
+
+  @override
+  String get notifTahajjudTitle => 'Time for tahajjud';
+
+  @override
+  String get notifRefreshTitle => 'Open MyFaith';
+
+  @override
+  String get notifRefreshBody =>
+      'Open the app so the adhan keeps sounding in the coming days';
+
+  @override
+  String get channelAdhan => 'Adhan';
+
+  @override
+  String get channelReminder => 'Reminders';
+
+  @override
+  String get channelAlarm => 'Alarms';
+
+  @override
+  String get channelHadith => 'Hadith of the day';
+
+  @override
+  String get sourcesQuran =>
+      'Quran text: King Fahd Complex, Uthmani script, Hafs. Translations: Elmir Kuliev (Russian), Saheeh International (English). Tafsir: Al-Mukhtasar, Tafsir Center for Quranic Studies.';
+
+  @override
+  String get sourcesHadith =>
+      'Hadith: Sahih al-Bukhari. English by Muhsin Khan, Russian by Abdullah Nirsha. The hadith of the day is picked automatically from the shorter narrations.';
+
+  @override
+  String get sourcesOther =>
+      'Prayer times: adhan_dart. Cities: GeoNames, CC BY 4.0. Arabic font: Amiri Quran, SIL Open Font License. Data collected from the open projects quran-api, hadith-api and tafsir_api. The translations belong to their authors and are used here for personal, non-commercial reading.';
 }

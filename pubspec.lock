@@ -150,6 +150,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_compass:
+    dependency: "direct main"
+    description:
+      name: flutter_compass
+      sha256: "1b4d7e6c95a675ec8482b5c9c9ccf1ebf0ced3dbec59dce28ad609da953de850"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.8.1"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -158,6 +166,46 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.0.0"
+  flutter_local_notifications:
+    dependency: "direct main"
+    description:
+      name: flutter_local_notifications
+      sha256: fac349e7361f80591a0cedff03548f807282c9faee9fc6192763166e5f81def2
+      url: "https://pub.dev"
+    source: hosted
+    version: "23.0.2"
+  flutter_local_notifications_linux:
+    dependency: transitive
+    description:
+      name: flutter_local_notifications_linux
+      sha256: bcbcf3c15e33b6866805092308f5f6ef27e1191874f6a92ef59213a0812a79a2
+      url: "https://pub.dev"
+    source: hosted
+    version: "9.0.0"
+  flutter_local_notifications_platform_interface:
+    dependency: transitive
+    description:
+      name: flutter_local_notifications_platform_interface
+      sha256: "4a49db4ce3d633ebc85c85b5fa959572600ec10bd097419c454579444308a0a0"
+      url: "https://pub.dev"
+    source: hosted
+    version: "13.0.0"
+  flutter_local_notifications_web:
+    dependency: transitive
+    description:
+      name: flutter_local_notifications_web
+      sha256: ef117694fbfcd82308ab0e324cfc9282fa50c192e24ec54a58173ae327ebc544
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.0"
+  flutter_local_notifications_windows:
+    dependency: transitive
+    description:
+      name: flutter_local_notifications_windows
+      sha256: "8e80ac29433c71e267493b397457e3a8430c5c1d9c76bb58a6971c016cdba3d7"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.0.1"
   flutter_localizations:
     dependency: "direct main"
     description: flutter
@@ -261,6 +309,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.2.8"
+  hijri:
+    dependency: "direct main"
+    description:
+      name: hijri
+      sha256: b3f754c35bfa87fb53a5b5066e6390faf85200198a7d1b25f8dae1f14b96c47a
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.1"
   hooks:
     dependency: transitive
     description:
@@ -501,6 +557,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.5.0"
+  scrollable_positioned_list:
+    dependency: "direct main"
+    description:
+      name: scrollable_positioned_list
+      sha256: "1b54d5f1329a1e263269abc9e2543d90806131aa14fe7c6062a8054d57249287"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.8"
   shared_preferences:
     dependency: "direct main"
     description:

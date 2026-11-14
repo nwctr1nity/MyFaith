@@ -4,18 +4,24 @@ plugins {
     id("dev.flutter.flutter-gradle-plugin")
 }
 
+// CI passes a keystore so that every build is signed with the same key and
+// installs over the previous one. Without it the debug key is used.
+val releaseKeystore: String? = System.getenv("MYFAITH_KEYSTORE")
+
 android {
     namespace = "app.myfaith"
-    compileSdk = flutter.compileSdkVersion
+    // flutter_local_notifications needs 37 or newer.
+    compileSdk = maxOf(flutter.compileSdkVersion, 37)
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
+        // Required by flutter_local_notifications.
+        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId = "app.myfaith"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
@@ -27,13 +33,31 @@ android {
         // flag during build.
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+        multiDexEnabled = true
+    }
+
+    signingConfigs {
+        if (releaseKeystore != null) {
+            create("release") {
+                storeFile = file(releaseKeystore)
+                storePassword = System.getenv("MYFAITH_KEYSTORE_PASSWORD")
+                keyAlias = "myfaith"
+                keyPassword = System.getenv("MYFAITH_KEYSTORE_PASSWORD")
+            }
+        }
     }
 
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig = signingConfigs.getByName("debug")
+            // The notification plugin looks up its icon and the adhan
+            // recordings by name and stores schedules with reflection.
+            // Shrinking breaks both without any error on screen, and the
+            // size it saves is small next to the bundled texts and audio.
+            isMinifyEnabled = false
+            isShrinkResources = false
+            signingConfig = signingConfigs.getByName(
+                if (releaseKeystore != null) "release" else "debug",
+            )
         }
     }
 }
@@ -46,4 +70,8 @@ kotlin {
 
 flutter {
     source = "../.."
+}
+
+dependencies {
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
 }

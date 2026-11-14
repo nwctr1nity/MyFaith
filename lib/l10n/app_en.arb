@@ -8,7 +8,13 @@
   "prayerMaghrib": "Maghrib",
   "prayerIsha": "Isha",
   "nextPrayerIn": "{prayer} in",
-  "@nextPrayerIn": {"placeholders": {"prayer": {"type": "String"}}},
+  "@nextPrayerIn": {
+    "placeholders": {
+      "prayer": {
+        "type": "String"
+      }
+    }
+  },
   "nowLabel": "Now",
   "lastThirdOfNight": "Last third of the night",
   "settings": "Settings",
@@ -28,16 +34,40 @@
   "calculation": "Calculation",
   "method": "Method",
   "methodAngles": "Fajr {fajr}°, Isha {isha}°",
-  "@methodAngles": {"placeholders": {"fajr": {"type": "String"}, "isha": {"type": "String"}}},
+  "@methodAngles": {
+    "placeholders": {
+      "fajr": {
+        "type": "String"
+      },
+      "isha": {
+        "type": "String"
+      }
+    }
+  },
   "methodAnglesInterval": "Fajr {fajr}°, Isha {minutes} min after Maghrib",
-  "@methodAnglesInterval": {"placeholders": {"fajr": {"type": "String"}, "minutes": {"type": "int"}}},
+  "@methodAnglesInterval": {
+    "placeholders": {
+      "fajr": {
+        "type": "String"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
   "asrMadhab": "Asr time",
   "madhabShafi": "Shafi, Maliki, Hanbali",
   "madhabHanafi": "Hanafi (later)",
   "adjustments": "Corrections in minutes",
   "adjustmentsHint": "Shift a time to match your mosque's timetable",
   "minutesShort": "{count} min",
-  "@minutesShort": {"placeholders": {"count": {"type": "String"}}},
+  "@minutesShort": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
   "theme": "Theme",
   "themeSystem": "As on the device",
   "themeLight": "Light",
@@ -63,5 +93,245 @@
   "methodAlgerian": "Algeria",
   "methodTunisia": "Tunisia",
   "methodPortugal": "Portugal",
-  "methodMoonsightingCommittee": "Moonsighting Committee"
+  "methodMoonsightingCommittee": "Moonsighting Committee",
+  "navPrayer": "Prayer",
+  "navQuran": "Quran",
+  "navQibla": "Qibla",
+  "navSalawat": "Salawat",
+  "navMore": "More",
+  "atTime": "at {time}",
+  "@atTime": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "hadithOfDay": "Hadith of the day",
+  "bukhariRef": "Sahih al-Bukhari, no. {number}",
+  "@bukhariRef": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "readMore": "Read in full",
+  "previousDay": "Previous",
+  "nextDay": "Next",
+  "copy": "Copy",
+  "copied": "Copied",
+  "adhanOn": "Adhan on",
+  "adhanOff": "Adhan off",
+  "continueReading": "Continue reading",
+  "surahAyah": "{surah}, ayah {ayah}",
+  "@surahAyah": {
+    "placeholders": {
+      "surah": {
+        "type": "String"
+      },
+      "ayah": {
+        "type": "int"
+      }
+    }
+  },
+  "searchSurah": "Surah name or number",
+  "ayahCount": "{count} ayahs",
+  "@ayahCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "makkan": "Makkan",
+  "madinan": "Madinan",
+  "bookmarks": "Bookmarks",
+  "noBookmarks": "No bookmarks yet. Tap the bookmark icon under an ayah to save it.",
+  "tafsir": "Tafsir",
+  "tafsirSource": "Al-Mukhtasar fi Tafsir al-Quran",
+  "showTranslation": "Translation",
+  "textSize": "Text size",
+  "addBookmark": "Add bookmark",
+  "removeBookmark": "Remove bookmark",
+  "qiblaDirection": "Qibla is {degrees}° from north",
+  "@qiblaDirection": {
+    "placeholders": {
+      "degrees": {
+        "type": "String"
+      }
+    }
+  },
+  "qiblaAligned": "You are facing the qibla",
+  "qiblaTurnRight": "Turn right by {degrees}°",
+  "@qiblaTurnRight": {
+    "placeholders": {
+      "degrees": {
+        "type": "String"
+      }
+    }
+  },
+  "qiblaTurnLeft": "Turn left by {degrees}°",
+  "@qiblaTurnLeft": {
+    "placeholders": {
+      "degrees": {
+        "type": "String"
+      }
+    }
+  },
+  "qiblaNoSensor": "This device has no compass. Use the angle above with any compass.",
+  "qiblaCalibrate": "Hold the phone flat, away from metal. If the arrow drifts, move the phone in a figure of eight.",
+  "qiblaNeedsPlace": "Choose a city to find the qibla",
+  "salawatToday": "Today",
+  "salawatTotal": "All time: {count}",
+  "@salawatTotal": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "salawatGoal": "Daily goal",
+  "salawatReset": "Reset today's count",
+  "salawatTap": "Tap to count",
+  "ofGoal": "of {goal}",
+  "@ofGoal": {
+    "placeholders": {
+      "goal": {
+        "type": "int"
+      }
+    }
+  },
+  "notifications": "Adhan and notifications",
+  "notificationsHint": "Which prayers to announce",
+  "alarmsTitle": "Alarms",
+  "alarms": "Suhoor and tahajjud alarms",
+  "alarmsHint": "They follow Fajr, so the time shifts every day",
+  "prayerSettings": "Prayer time settings",
+  "prayerSettingsHint": "City, method, corrections",
+  "appearance": "Appearance",
+  "sources": "Sources and licences",
+  "permissionNotifications": "Allow notifications",
+  "permissionNotificationsHint": "Without this permission the adhan cannot sound",
+  "permissionExact": "Allow exact alarms",
+  "permissionExactHint": "Otherwise Android may delay the adhan by several minutes",
+  "permissionGranted": "Allowed",
+  "batteryHint": "If the adhan does not sound on time, turn off battery optimisation for MyFaith in the phone settings and allow autostart. Xiaomi, Huawei and Samsung phones close background apps most often.",
+  "testAdhan": "Play the adhan now",
+  "testScheduled": "The adhan should be playing. If it is silent, check the alarm volume.",
+  "reminderBefore": "Reminder before prayer",
+  "off": "Off",
+  "minutesBefore": "{count} min before",
+  "@minutesBefore": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "hadithNotification": "Daily hadith notification",
+  "hadithTime": "Time",
+  "suhoorAlarm": "Suhoor alarm",
+  "suhoorBefore": "Wake up before Fajr",
+  "suhoorDays": "On which days",
+  "suhoorRamadan": "Ramadan",
+  "suhoorMonThu": "Mondays and Thursdays",
+  "suhoorWhite": "White days (13th to 15th of the lunar month)",
+  "suhoorDaily": "Every day",
+  "suhoorStop": "Warn before Fajr to stop eating",
+  "nextSuhoor": "Next alarm: {when}",
+  "@nextSuhoor": {
+    "placeholders": {
+      "when": {
+        "type": "String"
+      }
+    }
+  },
+  "noUpcomingAlarm": "No alarm in the next 10 days",
+  "tahajjudAlarm": "Tahajjud alarm",
+  "tahajjudWhen": "When to wake",
+  "tahajjudLastThird": "At the start of the last third of the night",
+  "tahajjudBeforeFajr": "A set time before Fajr",
+  "weekdays": "Days of the week",
+  "hijriAdjustment": "Hijri date correction",
+  "hijriAdjustmentHint": "If the month started on a different day in your country",
+  "daysShift": "{count} d",
+  "@daysShift": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "notifAdhanTitle": "Time for {prayer}",
+  "@notifAdhanTitle": {
+    "placeholders": {
+      "prayer": {
+        "type": "String"
+      }
+    }
+  },
+  "notifSunriseTitle": "Sunrise",
+  "notifAdhanBody": "{time}, {city}",
+  "@notifAdhanBody": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      },
+      "city": {
+        "type": "String"
+      }
+    }
+  },
+  "notifReminderTitle": "{prayer} in {minutes} min",
+  "@notifReminderTitle": {
+    "placeholders": {
+      "prayer": {
+        "type": "String"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "notifSuhoorTitle": "Time for suhoor",
+  "notifSuhoorBody": "Fajr at {time}",
+  "@notifSuhoorBody": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "notifSuhoorStopTitle": "Finish eating",
+  "notifTahajjudTitle": "Time for tahajjud",
+  "notifRefreshTitle": "Open MyFaith",
+  "notifRefreshBody": "Open the app so the adhan keeps sounding in the coming days",
+  "channelAdhan": "Adhan",
+  "channelReminder": "Reminders",
+  "channelAlarm": "Alarms",
+  "channelHadith": "Hadith of the day",
+  "sourcesQuran": "Quran text: King Fahd Complex, Uthmani script, Hafs. Translations: Elmir Kuliev (Russian), Saheeh International (English). Tafsir: Al-Mukhtasar, Tafsir Center for Quranic Studies.",
+  "sourcesHadith": "Hadith: Sahih al-Bukhari. English by Muhsin Khan, Russian by Abdullah Nirsha. The hadith of the day is picked automatically from the shorter narrations.",
+  "sourcesOther": "Prayer times: adhan_dart. Cities: GeoNames, CC BY 4.0. Arabic font: Amiri Quran, SIL Open Font License. Data collected from the open projects quran-api, hadith-api and tafsir_api. The translations belong to their authors and are used here for personal, non-commercial reading.",
+  "channelAdhanFajr": "Fajr adhan",
+  "testAdhanFajr": "Play the Fajr adhan",
+  "syncPending": "Notifications scheduled: {count}",
+  "syncError": "Scheduling failed: {error}",
+  "@syncPending": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@syncError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "stopAdhan": "Stop",
+  "widgetOpenHint": "Open MyFaith to refresh"
 }

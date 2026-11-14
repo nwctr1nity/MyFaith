@@ -78,3 +78,33 @@ String methodDetails(AppLocalizations l, CalcMethod method) {
   }
   return l.methodAngles(_angle(a.fajr), _angle(a.isha));
 }
+
+const _hijriMonths = <String, List<String>>{
+  'en': [
+    'Muharram', 'Safar', 'Rabi al-Awwal', 'Rabi al-Thani', 'Jumada al-Ula',
+    'Jumada al-Akhira', 'Rajab', 'Shaban', 'Ramadan', 'Shawwal',
+    'Dhu al-Qadah', 'Dhu al-Hijjah',
+  ],
+  'ru': [
+    'мухаррама', 'сафара', 'раби аль-авваль', 'раби ас-сани',
+    'джумада аль-уля', 'джумада аль-ахира', 'раджаба', 'шабана', 'рамадана',
+    'шавваля', 'зуль-када', 'зуль-хиджа',
+  ],
+  'ar': [
+    'محرم', 'صفر', 'ربيع الأول', 'ربيع الآخر', 'جمادى الأولى',
+    'جمادى الآخرة', 'رجب', 'شعبان', 'رمضان', 'شوال', 'ذو القعدة',
+    'ذو الحجة',
+  ],
+};
+
+/// A Hijri date as text, for example `4 джумада аль-ахира 1448`.
+String hijriText(String languageCode, int year, int month, int day) {
+  final months = _hijriMonths[languageCode] ?? _hijriMonths['en']!;
+  final text = '$day ${months[(month - 1).clamp(0, 11)]} $year';
+  if (languageCode != 'ar') return text;
+  // Arabic dates and times elsewhere on the screen use Arabic-Indic digits.
+  return text.replaceAllMapped(
+    RegExp(r'\d'),
+    (m) => String.fromCharCode(0x0660 + int.parse(m[0]!)),
+  );
+}

@@ -44,6 +44,10 @@ dependencies:
   flutter_timezone: ^5.1.1
   flutter_localizations:
     sdk: flutter
+  flutter_local_notifications: ^23.0.2
+  flutter_compass: ^0.8.1
+  hijri: ^3.0.1
+  scrollable_positioned_list: ^0.3.8
 
 dev_dependencies:
   flutter_test:
@@ -69,6 +73,16 @@ flutter:
   generate: true
   assets:
     - assets/cities.tsv
+    - assets/quran/surahs.json
+    - assets/quran/s/
+    - assets/tafsir/ru/
+    - assets/tafsir/en/
+    - assets/tafsir/ar/
+    - assets/hadith/daily.json
+  fonts:
+    - family: AmiriQuran
+      fonts:
+        - asset: assets/fonts/AmiriQuran.ttf
 
   # To add assets to your application, add an assets section, like this:
   # assets:

@@ -43,10 +43,14 @@ class FakeNotifications implements NotificationService {
   @override
   Future<void> replaceAll(
     List<NotificationRequest> requests,
-    ChannelNames names,
-  ) async {
+    ChannelNames names, {
+    WidgetData widget = const WidgetData(),
+  }) async {
     scheduled = requests;
+    this.widget = widget;
   }
+
+  WidgetData widget = const WidgetData();
 
   @override
   Future<void> showNow(NotificationRequest request, ChannelNames names) async {
@@ -322,6 +326,18 @@ void main() {
       hasLength(10),
     );
     expect(sync.status.value!.pending, 51);
+
+    // The widgets get every prayer of the next ten days, in order.
+    final prayers = fake.widget.prayers;
+    expect(fake.widget.city, 'Алматы');
+    expect(prayers, hasLength(60));
+    expect(prayers.first.name, 'Фаджр');
+    expect(prayers.first.clock, matches(RegExp(r'^0\d:\d\d$')));
+    expect(prayers.take(6).map((p) => p.slot), [0, 1, 2, 3, 4, 5]);
+    expect({for (final p in prayers.take(6)) p.day}, hasLength(1));
+    for (var i = 1; i < prayers.length; i++) {
+      expect(prayers[i].time.isAfter(prayers[i - 1].time), isTrue);
+    }
 
     await sync.playTest(fajr: true);
     expect(fake.extra.single.channel, NotificationChannel.adhanFajr);

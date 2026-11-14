@@ -1,4 +1,7 @@
+import 'dart:convert';
 import 'dart:typed_data';
+
+import 'package:flutter/services.dart';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/timezone.dart' as tz;
@@ -49,6 +52,50 @@ class NotificationPermissions {
   final bool exactAlarms;
 }
 
+/// One prayer time as the home-screen widgets show it.
+class WidgetPrayer {
+  const WidgetPrayer({
+    required this.time,
+    required this.day,
+    required this.slot,
+    required this.name,
+    required this.clock,
+  });
+
+  final DateTime time;
+
+  /// Calendar day in the place's zone, the same for all prayers of a day.
+  final String day;
+
+  /// Index of the prayer in the day, 0 for Fajr to 5 for Isha.
+  final int slot;
+  final String name;
+  final String clock;
+
+  Map<String, Object?> toJson() => {
+        't': time.millisecondsSinceEpoch,
+        'day': day,
+        'slot': slot,
+        'name': name,
+        'clock': clock,
+      };
+}
+
+/// Everything the widgets and the adhan player need besides the schedule.
+class WidgetData {
+  const WidgetData({
+    this.city = '',
+    this.prayers = const [],
+    this.stopLabel = 'Stop',
+    this.openHint = '',
+  });
+
+  final String city;
+  final List<WidgetPrayer> prayers;
+  final String stopLabel;
+  final String openHint;
+}
+
 /// The seam between the app and the notification plugin, so tests can
 /// replace it.
 abstract class NotificationService {
@@ -57,8 +104,13 @@ abstract class NotificationService {
   Future<void> requestNotifications();
   Future<void> requestExactAlarms();
 
-  /// Replaces everything scheduled with [requests].
-  Future<void> replaceAll(List<NotificationRequest> requests, ChannelNames names);
+  /// Replaces everything scheduled with [requests] and hands [widget] to
+  /// the home-screen widgets.
+  Future<void> replaceAll(
+    List<NotificationRequest> requests,
+    ChannelNames names, {
+    WidgetData widget = const WidgetData(),
+  });
 
   /// Shows one notification right away, without touching the others.
   Future<void> showNow(NotificationRequest request, ChannelNames names);
@@ -67,9 +119,18 @@ abstract class NotificationService {
   Future<int> pendingCount();
 }
 
+bool _isAdhan(NotificationRequest r) =>
+    r.channel == NotificationChannel.adhan ||
+    r.channel == NotificationChannel.adhanFajr;
+
 class LocalNotificationService implements NotificationService {
   final _plugin = FlutterLocalNotificationsPlugin();
+
+  /// The app's own Android code: it plays the adhan recording in a service
+  /// and draws the widgets. The plugin handles every other notification.
+  static const _native = MethodChannel('app.myfaith/native');
   bool _ready = false;
+  int _nativeScheduled = 0;
 
   AndroidFlutterLocalNotificationsPlugin? get _android =>
       _plugin.resolvePlatformSpecificImplementation<
@@ -123,23 +184,7 @@ class LocalNotificationService implements NotificationService {
     switch (channel) {
       case NotificationChannel.adhan:
       case NotificationChannel.adhanFajr:
-        // Alarm usage plays at alarm volume, so a muted ringer does not
-        // silence the adhan. The channel id carries a version: Android
-        // fixes a channel's sound when the channel is first created.
-        final fajr = channel == NotificationChannel.adhanFajr;
-        return AndroidNotificationDetails(
-          fajr ? 'adhan_fajr_v2' : 'adhan_v2',
-          fajr ? names.adhanFajr : names.adhan,
-          importance: Importance.max,
-          priority: Priority.max,
-          category: AndroidNotificationCategory.alarm,
-          audioAttributesUsage: AudioAttributesUsage.alarm,
-          sound: RawResourceAndroidNotificationSound(
-            fajr ? 'azan_fajr' : 'azan_main',
-          ),
-          visibility: NotificationVisibility.public,
-          styleInformation: style,
-        );
+        throw StateError('the adhan is played by the native service');
       case NotificationChannel.reminder:
         return AndroidNotificationDetails(
           'reminder_v1',
@@ -181,22 +226,53 @@ class LocalNotificationService implements NotificationService {
   @override
   Future<void> replaceAll(
     List<NotificationRequest> requests,
-    ChannelNames names,
-  ) async {
+    ChannelNames names, {
+    WidgetData widget = const WidgetData(),
+  }) async {
     await init();
     final android = _android;
     if (android == null) return;
-    // Channels of earlier builds, which had no adhan recording.
-    await android.deleteNotificationChannel(channelId: 'adhan_v1');
+    // Channels of earlier builds, which played the adhan as a notification
+    // sound.
+    for (final old in const ['adhan_v1', 'adhan_v2', 'adhan_fajr_v2']) {
+      await android.deleteNotificationChannel(channelId: old);
+    }
     await _plugin.cancelAllPendingNotifications();
     final exact = await android.canScheduleExactNotifications() ?? false;
     for (final r in requests) {
-      await _schedule(r, names, exact);
+      if (!_isAdhan(r)) await _schedule(r, names, exact);
     }
+    _nativeScheduled = await _native.invokeMethod<int>('sync', {
+          'adhans': jsonEncode([
+            for (final r in requests)
+              if (_isAdhan(r))
+                {
+                  'id': r.id,
+                  't': r.time.millisecondsSinceEpoch,
+                  'title': r.title,
+                  'body': r.body ?? '',
+                  'fajr': r.channel == NotificationChannel.adhanFajr,
+                },
+          ]),
+          'prayers': jsonEncode([for (final p in widget.prayers) p.toJson()]),
+          'city': widget.city,
+          'stopLabel': widget.stopLabel,
+          'channelName': names.adhan,
+          'openHint': widget.openHint,
+        }) ??
+        0;
   }
 
   @override
   Future<void> showNow(NotificationRequest request, ChannelNames names) async {
+    if (_isAdhan(request)) {
+      await _native.invokeMethod<void>('play', {
+        'title': request.title,
+        'body': request.body ?? '',
+        'fajr': request.channel == NotificationChannel.adhanFajr,
+      });
+      return;
+    }
     await init();
     await _plugin.show(
       id: request.id,
@@ -211,7 +287,8 @@ class LocalNotificationService implements NotificationService {
   @override
   Future<int> pendingCount() async {
     await init();
-    return (await _plugin.pendingNotificationRequests()).length;
+    return (await _plugin.pendingNotificationRequests()).length +
+        _nativeScheduled;
   }
 
   Future<void> _schedule(

@@ -558,4 +558,10 @@ class AppLocalizationsRu extends AppLocalizations {
   String syncError(String error) {
     return 'Не удалось запланировать: $error';
   }
+
+  @override
+  String get stopAdhan => 'Остановить';
+
+  @override
+  String get widgetOpenHint => 'Откройте MyFaith';
 }

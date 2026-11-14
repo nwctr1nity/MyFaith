@@ -162,5 +162,7 @@
   "channelAdhanFajr": "Азан на фаджр",
   "testAdhanFajr": "Включить азан фаджра",
   "syncPending": "Запланировано уведомлений: {count}",
-  "syncError": "Не удалось запланировать: {error}"
+  "syncError": "Не удалось запланировать: {error}",
+  "stopAdhan": "Остановить",
+  "widgetOpenHint": "Откройте MyFaith"
 }

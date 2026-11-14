@@ -550,4 +550,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String syncError(String error) {
     return 'تعذرت الجدولة: $error';
   }
+
+  @override
+  String get stopAdhan => 'إيقاف';
+
+  @override
+  String get widgetOpenHint => 'افتح MyFaith للتحديث';
 }

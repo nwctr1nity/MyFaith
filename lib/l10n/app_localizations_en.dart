@@ -557,4 +557,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String syncError(String error) {
     return 'Scheduling failed: $error';
   }
+
+  @override
+  String get stopAdhan => 'Stop';
+
+  @override
+  String get widgetOpenHint => 'Open MyFaith to refresh';
 }

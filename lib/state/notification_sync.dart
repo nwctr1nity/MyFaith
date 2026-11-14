@@ -117,6 +117,42 @@ List<NotificationRequest> buildRequests({
   return requests;
 }
 
+/// Prayer times for the home-screen widgets: the day [now] falls on and the
+/// days after it, as far ahead as notifications are planned.
+List<WidgetPrayer> widgetPrayers({
+  required PrayerPlace place,
+  required PrayerSettings prayerSettings,
+  required DateTime now,
+  required AppLocalizations l,
+  int days = planHorizonDays,
+  PrayerCalculator calculator = const PrayerCalculator(),
+}) {
+  final local = tz.TZDateTime.from(now, tz.getLocation(place.timeZone));
+  final clock = DateFormat.Hm(l.localeName);
+  final result = <WidgetPrayer>[];
+  for (var d = 0; d < days; d++) {
+    final date = DateTime.utc(local.year, local.month, local.day + d);
+    final day = calculator.compute(
+      place: place,
+      settings: prayerSettings,
+      year: date.year,
+      month: date.month,
+      day: date.day,
+    );
+    for (final slot in PrayerSlot.values) {
+      final t = day[slot];
+      result.add(WidgetPrayer(
+        time: t,
+        day: '${date.year}-${date.month}-${date.day}',
+        slot: slot.index,
+        name: prayerName(l, slot),
+        clock: clock.format(DateTime(t.year, t.month, t.day, t.hour, t.minute)),
+      ));
+    }
+  }
+  return result;
+}
+
 /// Keeps the scheduled notifications in step with the settings. Watching
 /// this provider is enough: it replans shortly after any settings change.
 final notificationSyncProvider = Provider<NotificationSync>((ref) {
@@ -199,7 +235,14 @@ class NotificationSync {
     final names = _names(l);
     try {
       if (place == null) {
-        await service.replaceAll(const [], names);
+        await service.replaceAll(
+          const [],
+          names,
+          widget: WidgetData(
+            stopLabel: l.stopAdhan,
+            openHint: l.locationNotSet,
+          ),
+        );
         status.value = const SyncStatus(pending: 0);
         return;
       }
@@ -220,6 +263,17 @@ class NotificationSync {
           hadiths: hadiths,
         ),
         names,
+        widget: WidgetData(
+          city: place.name,
+          prayers: widgetPrayers(
+            place: place.prayerPlace,
+            prayerSettings: settings.prayerSettings,
+            now: now ?? DateTime.now(),
+            l: l,
+          ),
+          stopLabel: l.stopAdhan,
+          openHint: l.widgetOpenHint,
+        ),
       );
       status.value = SyncStatus(pending: await service.pendingCount());
     } on Exception catch (error) {

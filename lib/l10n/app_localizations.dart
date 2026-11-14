@@ -1077,6 +1077,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Scheduling failed: {error}'**
   String syncError(String error);
+
+  /// No description provided for @stopAdhan.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop'**
+  String get stopAdhan;
+
+  /// No description provided for @widgetOpenHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Open MyFaith to refresh'**
+  String get widgetOpenHint;
 }
 
 class _AppLocalizationsDelegate

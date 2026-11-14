@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_next_title">Следующий намаз</string>
+    <string name="widget_next_description">Следующий намаз, его время и сколько осталось</string>
+    <string name="widget_timetable_title">Время намаза</string>
+    <string name="widget_timetable_description">Все намазы на день</string>
+</resources>

@@ -162,5 +162,7 @@
   "channelAdhanFajr": "أذان الفجر",
   "testAdhanFajr": "تشغيل أذان الفجر",
   "syncPending": "الإشعارات المجدولة: {count}",
-  "syncError": "تعذرت الجدولة: {error}"
+  "syncError": "تعذرت الجدولة: {error}",
+  "stopAdhan": "إيقاف",
+  "widgetOpenHint": "افتح MyFaith للتحديث"
 }

@@ -23,10 +23,19 @@ Interface languages: Russian, English, Arabic (right to left).
 - Qibla compass, salawat with a daily counter, Hijri date.
 
 Notifications are scheduled ten days ahead and renewed every time the app is
-opened. The adhan recordings are `azan_fajr.m4a` (Fajr) and `azan_main.m4a`
-(the other prayers) in `android/app/src/main/res/raw`. Android fixes a
-channel's sound when the channel is created, so after replacing a recording
-bump the channel ids in `lib/services/notification_service.dart`.
+opened.
+
+The adhan is played by the app's own Android service
+(`android/app/src/main/kotlin/app/myfaith/AdhanService.kt`), not as a
+notification sound: the volume keys change its volume instead of cutting it
+off, and its notification has a Stop button. The recordings are
+`azan_fajr.m4a` (Fajr) and `azan_main.m4a` (the other prayers) in
+`android/app/src/main/res/raw`.
+
+Two home-screen widgets (`Widgets.kt`): a 1x1 one with the next prayer, its
+time and a countdown, and a wide one with all times of the day. They are
+drawn from data the app stores on every sync, so they work without the app
+running.
 
 ## Run
 

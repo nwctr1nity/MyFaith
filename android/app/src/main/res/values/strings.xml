@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">MyFaith</string>
+    <string name="widget_next_title">Next prayer</string>
+    <string name="widget_next_description">The next prayer, its time and how long is left</string>
+    <string name="widget_timetable_title">Prayer times</string>
+    <string name="widget_timetable_description">All prayer times of the day</string>
 </resources>

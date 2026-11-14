@@ -79,3 +79,9 @@ CI signs the APK with the key from the `KEYSTORE_BASE64` and
 `KEYSTORE_PASSWORD` repository secrets (key alias `myfaith`). Without them it
 generates a key once and keeps it in the Actions cache, so later builds from
 the same branch install over earlier ones.
+
+## License
+
+The source code is under the MIT License, see [LICENSE](LICENSE). The bundled
+religious texts, translations, recordings and fonts are not covered by it and
+remain the property of their authors.

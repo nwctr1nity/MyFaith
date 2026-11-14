@@ -44,8 +44,10 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen>
     try {
       final p = await ref.read(notificationServiceProvider).permissions();
       if (mounted) setState(() => _permissions = p);
-    } on Exception {
-      // Leaves the rows in their "not granted" state.
+    } on Exception catch (error) {
+      // Shown under the test buttons: without it a broken setup is silent.
+      ref.read(notificationSyncProvider).status.value =
+          SyncStatus(error: '$error');
     }
   }
 
@@ -149,23 +151,38 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen>
             ),
           ),
           const Divider(),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(20, 8, 20, 0),
-            child: OutlinedButton.icon(
-              icon: const Icon(Icons.volume_up_outlined),
-              label: Text(l.testAdhan),
-              onPressed: () async {
-                final messenger = ScaffoldMessenger.of(context);
-                try {
-                  await ref.read(notificationSyncProvider).scheduleTest();
-                  messenger.showSnackBar(
-                    SnackBar(content: Text(l.testScheduled)),
-                  );
-                } on Exception catch (error) {
-                  messenger.showSnackBar(SnackBar(content: Text('$error')));
-                }
-              },
+          for (final fajr in const [false, true])
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 8, 20, 0),
+              child: OutlinedButton.icon(
+                icon: const Icon(Icons.volume_up_outlined),
+                label: Text(fajr ? l.testAdhanFajr : l.testAdhan),
+                onPressed: () async {
+                  final messenger = ScaffoldMessenger.of(context);
+                  try {
+                    await ref
+                        .read(notificationSyncProvider)
+                        .playTest(fajr: fajr);
+                    messenger.showSnackBar(
+                      SnackBar(content: Text(l.testScheduled)),
+                    );
+                  } on Exception catch (error) {
+                    messenger.showSnackBar(SnackBar(content: Text('$error')));
+                  }
+                },
+              ),
             ),
+          ValueListenableBuilder<SyncStatus?>(
+            valueListenable: ref.read(notificationSyncProvider).status,
+            builder: (context, status, _) {
+              if (status == null) return const SizedBox.shrink();
+              final error = status.error;
+              return HintText(
+                error != null
+                    ? l.syncError(error)
+                    : l.syncPending(status.pending ?? 0),
+              );
+            },
           ),
           HintText(l.batteryHint),
         ],

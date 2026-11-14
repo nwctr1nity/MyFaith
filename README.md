@@ -23,9 +23,10 @@ Interface languages: Russian, English, Arabic (right to left).
 - Qibla compass, salawat with a daily counter, Hijri date.
 
 Notifications are scheduled ten days ahead and renewed every time the app is
-opened. The adhan currently plays the phone's notification sound; to ship a
-recorded adhan, put an audio file in `android/app/src/main/res/raw` and point
-the adhan channel in `lib/services/notification_service.dart` at it.
+opened. The adhan recordings are `azan_fajr.m4a` (Fajr) and `azan_main.m4a`
+(the other prayers) in `android/app/src/main/res/raw`. Android fixes a
+channel's sound when the channel is created, so after replacing a recording
+bump the channel ids in `lib/services/notification_service.dart`.
 
 ## Run
 

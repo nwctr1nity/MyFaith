@@ -217,8 +217,8 @@
   "permissionExactHint": "Otherwise Android may delay the adhan by several minutes",
   "permissionGranted": "Allowed",
   "batteryHint": "If the adhan does not sound on time, turn off battery optimisation for MyFaith in the phone settings and allow autostart. Xiaomi, Huawei and Samsung phones close background apps most often.",
-  "testAdhan": "Test the adhan in 10 seconds",
-  "testScheduled": "Lock the phone and wait 10 seconds",
+  "testAdhan": "Play the adhan now",
+  "testScheduled": "The adhan should be playing. If it is silent, check the alarm volume.",
   "reminderBefore": "Reminder before prayer",
   "off": "Off",
   "minutesBefore": "{count} min before",
@@ -313,5 +313,23 @@
   "channelHadith": "Hadith of the day",
   "sourcesQuran": "Quran text: King Fahd Complex, Uthmani script, Hafs. Translations: Elmir Kuliev (Russian), Saheeh International (English). Tafsir: Al-Mukhtasar, Tafsir Center for Quranic Studies.",
   "sourcesHadith": "Hadith: Sahih al-Bukhari. English by Muhsin Khan, Russian by Abdullah Nirsha. The hadith of the day is picked automatically from the shorter narrations.",
-  "sourcesOther": "Prayer times: adhan_dart. Cities: GeoNames, CC BY 4.0. Arabic font: Amiri Quran, SIL Open Font License. Data collected from the open projects quran-api, hadith-api and tafsir_api. The translations belong to their authors and are used here for personal, non-commercial reading."
+  "sourcesOther": "Prayer times: adhan_dart. Cities: GeoNames, CC BY 4.0. Arabic font: Amiri Quran, SIL Open Font License. Data collected from the open projects quran-api, hadith-api and tafsir_api. The translations belong to their authors and are used here for personal, non-commercial reading.",
+  "channelAdhanFajr": "Fajr adhan",
+  "testAdhanFajr": "Play the Fajr adhan",
+  "syncPending": "Notifications scheduled: {count}",
+  "syncError": "Scheduling failed: {error}",
+  "@syncPending": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@syncError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  }
 }

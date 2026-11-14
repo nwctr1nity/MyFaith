@@ -98,7 +98,7 @@ class AppSettings {
     ThemeMode themeMode = ThemeMode.system,
     SavedPlace? place,
     CalcMethod method = CalcMethod.muslimWorldLeague,
-    AsrMadhab madhab = AsrMadhab.shafi,
+    AsrMadhab madhab = AsrMadhab.hanafi,
     Map<PrayerSlot, int> adjustments = const {},
   }) {
     return AppSettings({
@@ -159,7 +159,7 @@ class AppSettings {
       _byName(CalcMethod.values, _data['method']) ?? CalcMethod.muslimWorldLeague;
 
   AsrMadhab get madhab =>
-      _byName(AsrMadhab.values, _data['madhab']) ?? AsrMadhab.shafi;
+      _byName(AsrMadhab.values, _data['madhab']) ?? AsrMadhab.hanafi;
 
   Map<PrayerSlot, int> get adjustments {
     final result = <PrayerSlot, int>{};

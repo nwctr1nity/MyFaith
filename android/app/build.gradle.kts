@@ -49,6 +49,12 @@ android {
 
     buildTypes {
         release {
+            // The notification plugin looks up its icon and the adhan
+            // recordings by name and stores schedules with reflection.
+            // Shrinking breaks both without any error on screen, and the
+            // size it saves is small next to the bundled texts and audio.
+            isMinifyEnabled = false
+            isShrinkResources = false
             signingConfig = signingConfigs.getByName(
                 if (releaseKeystore != null) "release" else "debug",
             )

@@ -26,9 +26,22 @@ class _AppShellState extends ConsumerState<AppShell>
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     // Replan on launch: the schedule only reaches a few days ahead.
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(notificationSyncProvider).schedule();
-    });
+    WidgetsBinding.instance.addPostFrameCallback((_) => _start());
+  }
+
+  /// Asks for the notification permission as soon as the app opens: an
+  /// adhan app is of little use without it. Android shows its dialog only
+  /// while the permission is still undecided.
+  Future<void> _start() async {
+    final service = ref.read(notificationServiceProvider);
+    try {
+      if (!(await service.permissions()).notifications) {
+        await service.requestNotifications();
+      }
+    } on Exception {
+      // The notifications screen reports what is missing.
+    }
+    if (mounted) ref.read(notificationSyncProvider).schedule();
   }
 
   @override

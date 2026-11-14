@@ -805,13 +805,13 @@ abstract class AppLocalizations {
   /// No description provided for @testAdhan.
   ///
   /// In en, this message translates to:
-  /// **'Test the adhan in 10 seconds'**
+  /// **'Play the adhan now'**
   String get testAdhan;
 
   /// No description provided for @testScheduled.
   ///
   /// In en, this message translates to:
-  /// **'Lock the phone and wait 10 seconds'**
+  /// **'The adhan should be playing. If it is silent, check the alarm volume.'**
   String get testScheduled;
 
   /// No description provided for @reminderBefore.
@@ -1053,6 +1053,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Prayer times: adhan_dart. Cities: GeoNames, CC BY 4.0. Arabic font: Amiri Quran, SIL Open Font License. Data collected from the open projects quran-api, hadith-api and tafsir_api. The translations belong to their authors and are used here for personal, non-commercial reading.'**
   String get sourcesOther;
+
+  /// No description provided for @channelAdhanFajr.
+  ///
+  /// In en, this message translates to:
+  /// **'Fajr adhan'**
+  String get channelAdhanFajr;
+
+  /// No description provided for @testAdhanFajr.
+  ///
+  /// In en, this message translates to:
+  /// **'Play the Fajr adhan'**
+  String get testAdhanFajr;
+
+  /// No description provided for @syncPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications scheduled: {count}'**
+  String syncPending(int count);
+
+  /// No description provided for @syncError.
+  ///
+  /// In en, this message translates to:
+  /// **'Scheduling failed: {error}'**
+  String syncError(String error);
 }
 
 class _AppLocalizationsDelegate

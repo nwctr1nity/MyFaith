@@ -30,10 +30,12 @@ class FakeNotifications implements NotificationService {
 
   @override
   Future<NotificationPermissions> permissions() async =>
-      const NotificationPermissions(notifications: true, exactAlarms: false);
+      NotificationPermissions(notifications: granted, exactAlarms: false);
 
   @override
-  Future<void> requestNotifications() async {}
+  Future<void> requestNotifications() async {
+    asked++;
+  }
 
   @override
   Future<void> requestExactAlarms() async {}
@@ -47,9 +49,15 @@ class FakeNotifications implements NotificationService {
   }
 
   @override
-  Future<void> scheduleOne(NotificationRequest request, ChannelNames names) async {
+  Future<void> showNow(NotificationRequest request, ChannelNames names) async {
     extra.add(request);
   }
+
+  @override
+  Future<int> pendingCount() async => scheduled.length;
+
+  bool granted = true;
+  int asked = 0;
 }
 
 Future<SharedPreferences> _prefs([AppSettings? settings]) async {
@@ -59,11 +67,16 @@ Future<SharedPreferences> _prefs([AppSettings? settings]) async {
   return SharedPreferences.getInstance();
 }
 
-Future<void> _pump(WidgetTester tester, SharedPreferences prefs) async {
+Future<void> _pump(
+  WidgetTester tester,
+  SharedPreferences prefs, {
+  FakeNotifications? notifications,
+}) async {
   await tester.pumpWidget(ProviderScope(
     overrides: [
       sharedPreferencesProvider.overrideWithValue(prefs),
-      notificationServiceProvider.overrideWithValue(FakeNotifications()),
+      notificationServiceProvider
+          .overrideWithValue(notifications ?? FakeNotifications()),
       compassProvider.overrideWithValue(() => Stream.value(40)),
     ],
     child: const MuslimApp(),
@@ -194,6 +207,27 @@ void main() {
     expect(find.text('Настройки'), findsOneWidget);
   });
 
+  testWidgets('the app asks for notifications on launch when not granted',
+      (tester) async {
+    final denied = FakeNotifications()..granted = false;
+    await _pump(tester, await _prefs(), notifications: denied);
+    await tester.pump();
+    expect(denied.asked, 1);
+
+    final allowed = FakeNotifications();
+    await _pump(tester, await _prefs(), notifications: allowed);
+    await tester.pump();
+    expect(allowed.asked, 0);
+  });
+
+  test('Asr follows the Hanafi school unless another is chosen', () {
+    expect(const AppSettings().madhab, AsrMadhab.hanafi);
+    expect(
+      const AppSettings().withValue('madhab', 'shafi').madhab,
+      AsrMadhab.shafi,
+    );
+  });
+
   testWidgets('the bell on a prayer row turns its adhan off', (tester) async {
     final prefs =
         await _prefs(AppSettings.of(languageCode: 'en', place: _almaty));
@@ -277,7 +311,19 @@ void main() {
     final ids = {for (final r in fake.scheduled) r.id};
     expect(ids, hasLength(fake.scheduled.length));
 
-    await sync.scheduleTest();
-    expect(fake.extra.single.channel, NotificationChannel.adhan);
+    // Fajr has its own recording, the other prayers share one.
+    final channels = {
+      for (final r in fake.scheduled.take(5)) r.channel,
+    };
+    expect(channels,
+        {NotificationChannel.adhanFajr, NotificationChannel.adhan});
+    expect(
+      fake.scheduled.where((r) => r.channel == NotificationChannel.adhanFajr),
+      hasLength(10),
+    );
+    expect(sync.status.value!.pending, 51);
+
+    await sync.playTest(fajr: true);
+    expect(fake.extra.single.channel, NotificationChannel.adhanFajr);
   });
 }

@@ -397,10 +397,11 @@ class AppLocalizationsRu extends AppLocalizations {
       'Если азан не звучит вовремя, отключите для MyFaith оптимизацию батареи в настройках телефона и разрешите автозапуск. Чаще всего фоновые приложения закрывают телефоны Xiaomi, Huawei и Samsung.';
 
   @override
-  String get testAdhan => 'Проверить азан через 10 секунд';
+  String get testAdhan => 'Включить азан сейчас';
 
   @override
-  String get testScheduled => 'Заблокируйте телефон и подождите 10 секунд';
+  String get testScheduled =>
+      'Азан должен зазвучать. Если тихо, проверьте громкость будильника.';
 
   @override
   String get reminderBefore => 'Напоминание до намаза';
@@ -541,4 +542,20 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get sourcesOther =>
       'Время намаза: adhan_dart. Города: GeoNames, CC BY 4.0. Арабский шрифт: Amiri Quran, SIL Open Font License. Данные собраны из открытых проектов quran-api, hadith-api и tafsir_api. Переводы принадлежат их авторам и используются здесь для личного некоммерческого чтения.';
+
+  @override
+  String get channelAdhanFajr => 'Азан на фаджр';
+
+  @override
+  String get testAdhanFajr => 'Включить азан фаджра';
+
+  @override
+  String syncPending(int count) {
+    return 'Запланировано уведомлений: $count';
+  }
+
+  @override
+  String syncError(String error) {
+    return 'Не удалось запланировать: $error';
+  }
 }

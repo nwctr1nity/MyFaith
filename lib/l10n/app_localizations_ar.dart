@@ -392,10 +392,11 @@ class AppLocalizationsAr extends AppLocalizations {
       'إذا لم يُسمع الأذان في وقته فأوقف تحسين البطارية لتطبيق MyFaith من إعدادات الهاتف واسمح بالتشغيل التلقائي. هواتف شاومي وهواوي وسامسونج هي الأكثر إغلاقًا للتطبيقات في الخلفية.';
 
   @override
-  String get testAdhan => 'تجربة الأذان بعد 10 ثوانٍ';
+  String get testAdhan => 'تشغيل الأذان الآن';
 
   @override
-  String get testScheduled => 'اقفل الهاتف وانتظر 10 ثوانٍ';
+  String get testScheduled =>
+      'من المفترض أن يُسمع الأذان الآن. إن لم تسمعه فتحقق من مستوى صوت المنبه.';
 
   @override
   String get reminderBefore => 'تذكير قبل الصلاة';
@@ -533,4 +534,20 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get sourcesOther =>
       'مواقيت الصلاة: adhan_dart. المدن: GeoNames، CC BY 4.0. الخط العربي: Amiri Quran برخصة SIL Open Font. جُمعت البيانات من المشاريع المفتوحة quran-api و hadith-api و tafsir_api. الترجمات ملك لأصحابها وتُستخدم هنا للقراءة الشخصية غير التجارية.';
+
+  @override
+  String get channelAdhanFajr => 'أذان الفجر';
+
+  @override
+  String get testAdhanFajr => 'تشغيل أذان الفجر';
+
+  @override
+  String syncPending(int count) {
+    return 'الإشعارات المجدولة: $count';
+  }
+
+  @override
+  String syncError(String error) {
+    return 'تعذرت الجدولة: $error';
+  }
 }

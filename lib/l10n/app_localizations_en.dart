@@ -397,10 +397,11 @@ class AppLocalizationsEn extends AppLocalizations {
       'If the adhan does not sound on time, turn off battery optimisation for MyFaith in the phone settings and allow autostart. Xiaomi, Huawei and Samsung phones close background apps most often.';
 
   @override
-  String get testAdhan => 'Test the adhan in 10 seconds';
+  String get testAdhan => 'Play the adhan now';
 
   @override
-  String get testScheduled => 'Lock the phone and wait 10 seconds';
+  String get testScheduled =>
+      'The adhan should be playing. If it is silent, check the alarm volume.';
 
   @override
   String get reminderBefore => 'Reminder before prayer';
@@ -540,4 +541,20 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get sourcesOther =>
       'Prayer times: adhan_dart. Cities: GeoNames, CC BY 4.0. Arabic font: Amiri Quran, SIL Open Font License. Data collected from the open projects quran-api, hadith-api and tafsir_api. The translations belong to their authors and are used here for personal, non-commercial reading.';
+
+  @override
+  String get channelAdhanFajr => 'Fajr adhan';
+
+  @override
+  String get testAdhanFajr => 'Play the Fajr adhan';
+
+  @override
+  String syncPending(int count) {
+    return 'Notifications scheduled: $count';
+  }
+
+  @override
+  String syncError(String error) {
+    return 'Scheduling failed: $error';
+  }
 }

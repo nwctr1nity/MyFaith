@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:ui' show Locale, PlatformDispatcher;
 
+import 'package:flutter/foundation.dart' show ValueNotifier;
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:timezone/timezone.dart' as tz;
@@ -48,9 +50,11 @@ List<NotificationRequest> buildRequests({
         requests.add(NotificationRequest(
           id: p.id,
           time: p.time,
-          channel: slot == PrayerSlot.sunrise
-              ? NotificationChannel.reminder
-              : NotificationChannel.adhan,
+          channel: switch (slot) {
+            PrayerSlot.sunrise => NotificationChannel.reminder,
+            PrayerSlot.fajr => NotificationChannel.adhanFajr,
+            _ => NotificationChannel.adhan,
+          },
           title: slot == PrayerSlot.sunrise
               ? l.notifSunriseTitle
               : l.notifAdhanTitle(prayerName(l, slot)),
@@ -122,6 +126,13 @@ final notificationSyncProvider = Provider<NotificationSync>((ref) {
   return sync;
 });
 
+class SyncStatus {
+  const SyncStatus({this.pending, this.error});
+
+  final int? pending;
+  final String? error;
+}
+
 /// Outside every range the planner uses.
 const testNotificationId = 9900;
 
@@ -140,41 +151,45 @@ class NotificationSync {
     });
   }
 
-  void dispose() => _debounce?.cancel();
+  void dispose() {
+    _debounce?.cancel();
+    status.dispose();
+  }
 
   ChannelNames _names(AppLocalizations l) => ChannelNames(
         adhan: l.channelAdhan,
+        adhanFajr: l.channelAdhanFajr,
         reminder: l.channelReminder,
         alarm: l.channelAlarm,
         hadith: l.channelHadith,
       );
 
-  /// Schedules a sample adhan notification [delay] from now, so the sound
-  /// and the permissions can be checked without waiting for a prayer.
-  Future<void> scheduleTest({
-    Duration delay = const Duration(seconds: 10),
-  }) async {
+  /// Plays a sample adhan notification right away, so the sound and the
+  /// permissions can be checked without waiting for a prayer.
+  Future<void> playTest({bool fajr = false}) async {
     final settings = _ref.read(settingsProvider);
     final l = notificationStrings(settings.languageCode);
-    final place = settings.place;
-    final location =
-        place == null ? tz.UTC : tz.getLocation(place.timeZone);
-    final time = tz.TZDateTime.now(location).add(delay);
-    final clock = DateFormat.Hm(l.localeName);
-    await _ref.read(notificationServiceProvider).scheduleOne(
+    final now = DateTime.now();
+    await _ref.read(notificationServiceProvider).showNow(
           NotificationRequest(
             id: testNotificationId,
-            time: time,
-            channel: NotificationChannel.adhan,
-            title: l.notifAdhanTitle(l.prayerDhuhr),
+            time: tz.TZDateTime.from(now, tz.UTC),
+            channel: fajr
+                ? NotificationChannel.adhanFajr
+                : NotificationChannel.adhan,
+            title: l.notifAdhanTitle(fajr ? l.prayerFajr : l.prayerDhuhr),
             body: l.notifAdhanBody(
-              clock.format(DateTime(2000, 1, 1, time.hour, time.minute)),
-              place?.name ?? l.appTitle,
+              DateFormat.Hm(l.localeName).format(now),
+              settings.place?.name ?? l.appTitle,
             ),
           ),
           _names(l),
         );
   }
+
+  /// What happened on the last replanning, for the notifications screen:
+  /// the number of notifications waiting, or the error text.
+  final status = ValueNotifier<SyncStatus?>(null);
 
   Future<void> syncNow({DateTime? now}) async {
     final settings = _ref.read(settingsProvider);
@@ -185,6 +200,7 @@ class NotificationSync {
     try {
       if (place == null) {
         await service.replaceAll(const [], names);
+        status.value = const SyncStatus(pending: 0);
         return;
       }
       final hadiths = settings.hadithNotification
@@ -205,9 +221,12 @@ class NotificationSync {
         ),
         names,
       );
-    } on Exception {
+      status.value = SyncStatus(pending: await service.pendingCount());
+    } on Exception catch (error) {
       // Scheduling is best effort: a platform failure must not break the UI.
-      // The next launch or settings change tries again.
+      // The next launch or settings change tries again, and the
+      // notifications screen shows what went wrong.
+      status.value = SyncStatus(error: '$error');
     }
   }
 }

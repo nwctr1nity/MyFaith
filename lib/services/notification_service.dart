@@ -20,18 +20,20 @@ class NotificationRequest {
   final String? body;
 }
 
-enum NotificationChannel { adhan, reminder, alarm, hadith }
+enum NotificationChannel { adhan, adhanFajr, reminder, alarm, hadith }
 
 /// Names of the channels as the user sees them in Android settings.
 class ChannelNames {
   const ChannelNames({
     required this.adhan,
+    required this.adhanFajr,
     required this.reminder,
     required this.alarm,
     required this.hadith,
   });
 
   final String adhan;
+  final String adhanFajr;
   final String reminder;
   final String alarm;
   final String hadith;
@@ -58,8 +60,11 @@ abstract class NotificationService {
   /// Replaces everything scheduled with [requests].
   Future<void> replaceAll(List<NotificationRequest> requests, ChannelNames names);
 
-  /// Schedules one extra notification without touching the others.
-  Future<void> scheduleOne(NotificationRequest request, ChannelNames names);
+  /// Shows one notification right away, without touching the others.
+  Future<void> showNow(NotificationRequest request, ChannelNames names);
+
+  /// How many notifications are waiting to fire.
+  Future<int> pendingCount();
 }
 
 class LocalNotificationService implements NotificationService {
@@ -75,7 +80,7 @@ class LocalNotificationService implements NotificationService {
     if (_ready) return;
     await _plugin.initialize(
       settings: const InitializationSettings(
-        android: AndroidInitializationSettings('@mipmap/ic_launcher'),
+        android: AndroidInitializationSettings('ic_notification'),
       ),
     );
     _ready = true;
@@ -117,16 +122,21 @@ class LocalNotificationService implements NotificationService {
     final style = body == null ? null : BigTextStyleInformation(body);
     switch (channel) {
       case NotificationChannel.adhan:
+      case NotificationChannel.adhanFajr:
         // Alarm usage plays at alarm volume, so a muted ringer does not
         // silence the adhan. The channel id carries a version: Android
         // fixes a channel's sound when the channel is first created.
+        final fajr = channel == NotificationChannel.adhanFajr;
         return AndroidNotificationDetails(
-          'adhan_v1',
-          names.adhan,
+          fajr ? 'adhan_fajr_v2' : 'adhan_v2',
+          fajr ? names.adhanFajr : names.adhan,
           importance: Importance.max,
           priority: Priority.max,
           category: AndroidNotificationCategory.alarm,
           audioAttributesUsage: AudioAttributesUsage.alarm,
+          sound: RawResourceAndroidNotificationSound(
+            fajr ? 'azan_fajr' : 'azan_main',
+          ),
           visibility: NotificationVisibility.public,
           styleInformation: style,
         );
@@ -176,6 +186,8 @@ class LocalNotificationService implements NotificationService {
     await init();
     final android = _android;
     if (android == null) return;
+    // Channels of earlier builds, which had no adhan recording.
+    await android.deleteNotificationChannel(channelId: 'adhan_v1');
     await _plugin.cancelAllPendingNotifications();
     final exact = await android.canScheduleExactNotifications() ?? false;
     for (final r in requests) {
@@ -184,12 +196,22 @@ class LocalNotificationService implements NotificationService {
   }
 
   @override
-  Future<void> scheduleOne(NotificationRequest request, ChannelNames names) async {
+  Future<void> showNow(NotificationRequest request, ChannelNames names) async {
     await init();
-    final android = _android;
-    if (android == null) return;
-    final exact = await android.canScheduleExactNotifications() ?? false;
-    await _schedule(request, names, exact);
+    await _plugin.show(
+      id: request.id,
+      title: request.title,
+      body: request.body,
+      notificationDetails: NotificationDetails(
+        android: _details(request.channel, names, request.body),
+      ),
+    );
+  }
+
+  @override
+  Future<int> pendingCount() async {
+    await init();
+    return (await _plugin.pendingNotificationRequests()).length;
   }
 
   Future<void> _schedule(

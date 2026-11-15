@@ -102,6 +102,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get recitationSpeed => 'Recitation speed';
 
   @override
+  String get resetSpeed => 'Reset to 1×';
+
+  @override
   String get lastThirdOfNight => 'Last third of the night';
 
   @override

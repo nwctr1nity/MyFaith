@@ -101,6 +101,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get recitationSpeed => 'سرعة التلاوة';
 
   @override
+  String get resetSpeed => 'إعادة إلى 1×';
+
+  @override
   String get lastThirdOfNight => 'الثلث الأخير من الليل';
 
   @override

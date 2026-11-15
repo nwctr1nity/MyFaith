@@ -692,6 +692,19 @@ class _ReaderOptions extends ConsumerWidget {
                 onChanged: (v) => controller.setValue('qSpeed', v.round()),
               ),
             ),
+            Align(
+              alignment: AlignmentDirectional.centerEnd,
+              child: Padding(
+                padding: const EdgeInsetsDirectional.only(end: 16),
+                child: TextButton.icon(
+                  onPressed: settings.quranSpeedTenths == 10
+                      ? null
+                      : () => controller.setValue('qSpeed', 10),
+                  icon: const Icon(Icons.refresh, size: 18),
+                  label: Text(l.resetSpeed),
+                ),
+              ),
+            ),
             ListTile(
               title: Text(l.reciter),
               subtitle: Text(reciterName(reciter)),

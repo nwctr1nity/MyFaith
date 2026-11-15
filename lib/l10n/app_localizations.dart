@@ -274,6 +274,12 @@ abstract class AppLocalizations {
   /// **'Recitation speed'**
   String get recitationSpeed;
 
+  /// No description provided for @resetSpeed.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset to 1×'**
+  String get resetSpeed;
+
   /// No description provided for @lastThirdOfNight.
   ///
   /// In en, this message translates to:

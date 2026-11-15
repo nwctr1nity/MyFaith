@@ -101,6 +101,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get recitationSpeed => 'Скорость чтения';
 
   @override
+  String get resetSpeed => 'Сбросить до 1×';
+
+  @override
   String get lastThirdOfNight => 'Последняя треть ночи';
 
   @override

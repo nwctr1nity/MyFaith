@@ -21,6 +21,9 @@ class _AppShellState extends ConsumerState<AppShell>
   /// The prayer times are the main tab and sit in the middle.
   static const _home = 2;
 
+  /// Dhikr opens its counters inside the tab, under the bottom bar.
+  final _dhikrNavigator = GlobalKey<NavigatorState>();
+
   int _index = _home;
   final _visited = <int>{_home};
 
@@ -72,7 +75,19 @@ class _AppShellState extends ConsumerState<AppShell>
         // its scroll position without slowing down the launch.
         children: [
           _visited.contains(0) ? const SalawatScreen() : const SizedBox(),
-          _visited.contains(1) ? const DhikrScreen() : const SizedBox(),
+          _visited.contains(1)
+              ? NavigatorPopHandler(
+                  enabled: _index == 1,
+                  onPopWithResult: (_) =>
+                      _dhikrNavigator.currentState?.maybePop(),
+                  child: Navigator(
+                    key: _dhikrNavigator,
+                    onGenerateRoute: (_) => MaterialPageRoute<void>(
+                      builder: (_) => const DhikrScreen(),
+                    ),
+                  ),
+                )
+              : const SizedBox(),
           const HomeScreen(),
           _visited.contains(3) ? const QuranScreen() : const SizedBox(),
           _visited.contains(4) ? const MoreScreen() : const SizedBox(),
@@ -81,6 +96,10 @@ class _AppShellState extends ConsumerState<AppShell>
       bottomNavigationBar: NavigationBar(
         selectedIndex: _index,
         onDestinationSelected: (i) => setState(() {
+          // A second tap on the open dhikr tab goes back to its list.
+          if (i == 1 && _index == 1) {
+            _dhikrNavigator.currentState?.popUntil((r) => r.isFirst);
+          }
           _index = i;
           _visited.add(i);
         }),

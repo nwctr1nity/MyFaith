@@ -1,6 +1,5 @@
 import 'dart:math' as math;
 
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -127,27 +126,52 @@ class _DhikrList extends ConsumerWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        Text(
-                          d.arabic,
-                          textDirection: TextDirection.rtl,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: quranTextStyle(
-                            21,
-                            scheme.onSurface,
-                          ).copyWith(height: 1.7),
-                        ),
-                        if (language != 'ar' &&
-                            settings.dhikrShowTransliteration) ...[
-                          const SizedBox(height: 4),
+                        // A dua is told by what it asks for; the words
+                        // themselves are inside the card.
+                        if (d.dua && d.note(language).isNotEmpty) ...[
                           Text(
-                            d.transliteration(language),
-                            maxLines: 1,
+                            d.note(language),
+                            maxLines: 3,
                             overflow: TextOverflow.ellipsis,
                             style: theme.textTheme.bodyMedium?.copyWith(
-                              color: scheme.onSurfaceVariant,
+                              height: 1.4,
+                              color: scheme.primary,
                             ),
                           ),
+                          const SizedBox(height: 6),
+                          Text(
+                            d.arabic,
+                            textDirection: TextDirection.rtl,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: quranTextStyle(
+                              18,
+                              scheme.onSurfaceVariant,
+                            ).copyWith(height: 1.7),
+                          ),
+                        ] else ...[
+                          Text(
+                            d.arabic,
+                            textDirection: TextDirection.rtl,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: quranTextStyle(
+                              21,
+                              scheme.onSurface,
+                            ).copyWith(height: 1.7),
+                          ),
+                          if (language != 'ar' &&
+                              settings.dhikrShowTransliteration) ...[
+                            const SizedBox(height: 4),
+                            Text(
+                              d.transliteration(language),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: theme.textTheme.bodyMedium?.copyWith(
+                                color: scheme.onSurfaceVariant,
+                              ),
+                            ),
+                          ],
                         ],
                       ],
                     ),
@@ -298,152 +322,75 @@ class _DhikrCounterScreenState extends ConsumerState<DhikrCounterScreen> {
                 final d = widget.items[i];
                 final translation = d.translation(language);
                 final note = d.note(language);
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 6),
-                  child: Card(
-                    child: ListView(
-                      padding: const EdgeInsets.all(20),
-                      children: [
-                        // What the words are for comes first.
-                        if (note.isNotEmpty) ...[
-                          Text(
-                            note,
-                            textAlign: TextAlign.center,
-                            style: theme.textTheme.bodySmall?.copyWith(
-                              height: 1.5,
-                              color: scheme.primary,
-                            ),
-                          ),
-                          const SizedBox(height: 12),
-                        ],
-                        Text(
-                          d.arabic,
-                          textDirection: TextDirection.rtl,
-                          textAlign: TextAlign.center,
-                          style: quranTextStyle(24, scheme.onSurface),
-                        ),
-                        if (language != 'ar' &&
-                            settings.dhikrShowTransliteration) ...[
-                          const SizedBox(height: 12),
-                          Text(
-                            d.transliteration(language),
-                            textAlign: TextAlign.center,
-                            style: theme.textTheme.bodyMedium?.copyWith(
-                              height: 1.5,
-                              color: scheme.onSurfaceVariant,
-                            ),
-                          ),
-                        ],
-                        if (translation != null) ...[
-                          const SizedBox(height: 12),
-                          Text(
-                            translation,
-                            textAlign: TextAlign.center,
-                            style: theme.textTheme.bodyLarge?.copyWith(
-                              height: 1.5,
-                              color: scheme.onSurface,
-                            ),
-                          ),
-                        ],
-                        const SizedBox(height: 14),
-                        Text(
-                          d.source,
-                          textAlign: TextAlign.center,
-                          style: theme.textTheme.bodySmall?.copyWith(
-                            color: scheme.onSurfaceVariant,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-          Expanded(
-            flex: 5,
-            child: LayoutBuilder(
-              builder: (context, box) {
-                // The ring is the largest square that fits; the reset
-                // button sits level with its top, under the right edge
-                // of the card above.
-                final side = math.max(
-                  0.0,
-                  math.min(box.maxWidth, box.maxHeight) - 32,
-                );
-                return Stack(
+                return ScrollCard(
                   children: [
-                    PositionedDirectional(
-                      top: (box.maxHeight - side) / 2,
-                      end: box.maxWidth * 0.04 + 10,
-                      child: IconButton.filledTonal(
-                        tooltip: l.salawatReset,
-                        visualDensity: VisualDensity.compact,
-                        icon: const Icon(Icons.refresh, size: 20),
-                        onPressed: count == 0
-                            ? null
-                            : () => controller.resetDhikr(current.id, today),
-                      ),
-                    ),
-                    Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(16),
-                        child: AspectRatio(
-                          aspectRatio: 1,
-                          child: Semantics(
-                            button: true,
-                            label: l.salawatTap,
-                            child: GestureDetector(
-                              behavior: HitTestBehavior.opaque,
-                              onTap: () {
-                                // A longer buzz tells the hand the goal is reached.
-                                count + 1 == goal
-                                    ? HapticFeedback.heavyImpact()
-                                    : HapticFeedback.lightImpact();
-                                controller.addDhikr(current.id, today);
-                              },
-                              child: TweenAnimationBuilder<double>(
-                                tween: Tween(end: math.min(1, count / goal)),
-                                duration: const Duration(milliseconds: 250),
-                                builder: (context, progress, child) =>
-                                    CustomPaint(
-                                      painter: RingPainter(progress, scheme),
-                                      child: child,
-                                    ),
-                                child: Center(
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Text(
-                                        '$count',
-                                        style: theme.textTheme.displayLarge
-                                            ?.copyWith(
-                                              fontWeight: FontWeight.w300,
-                                              color: scheme.onSurface,
-                                              fontFeatures: const [
-                                                FontFeature.tabularFigures(),
-                                              ],
-                                            ),
-                                      ),
-                                      Text(
-                                        l.ofGoal(goal),
-                                        style: theme.textTheme.bodyMedium
-                                            ?.copyWith(
-                                              color: scheme.onSurfaceVariant,
-                                            ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
+                    // What the words are for comes first.
+                    if (note.isNotEmpty) ...[
+                      Text(
+                        note,
+                        textAlign: TextAlign.center,
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          height: 1.5,
+                          color: scheme.primary,
                         ),
+                      ),
+                      const SizedBox(height: 12),
+                    ],
+                    Text(
+                      d.arabic,
+                      textDirection: TextDirection.rtl,
+                      textAlign: TextAlign.center,
+                      style: quranTextStyle(24, scheme.onSurface),
+                    ),
+                    if (language != 'ar' &&
+                        settings.dhikrShowTransliteration) ...[
+                      const SizedBox(height: 12),
+                      Text(
+                        d.transliteration(language),
+                        textAlign: TextAlign.center,
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          height: 1.5,
+                          color: scheme.onSurfaceVariant,
+                        ),
+                      ),
+                    ],
+                    if (translation != null) ...[
+                      const SizedBox(height: 12),
+                      Text(
+                        translation,
+                        textAlign: TextAlign.center,
+                        style: theme.textTheme.bodyLarge?.copyWith(
+                          height: 1.5,
+                          color: scheme.onSurface,
+                        ),
+                      ),
+                    ],
+                    const SizedBox(height: 14),
+                    Text(
+                      d.localizedSource(language),
+                      textAlign: TextAlign.center,
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: scheme.primary,
                       ),
                     ),
                   ],
                 );
               },
+            ),
+          ),
+          const SizedBox(height: 10),
+          PageDots(count: widget.items.length, index: _index),
+          Expanded(
+            flex: 5,
+            child: CounterRing(
+              count: count,
+              goal: goal,
+              caption: l.salawatToday,
+              goalText: l.ofGoal(goal),
+              tapLabel: l.salawatTap,
+              resetLabel: l.salawatReset,
+              onTap: () => controller.addDhikr(current.id, today),
+              onReset: () => controller.resetDhikr(current.id, today),
             ),
           ),
           Padding(

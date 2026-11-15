@@ -571,6 +571,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'Prayer times: adhan_dart. Cities: GeoNames, CC BY 4.0. Arabic font: Amiri Quran, SIL Open Font License. Data collected from the open projects quran-api, hadith-api and tafsir_api. The translations belong to their authors and are used here for personal, non-commercial reading. Transliteration: quran-api (Latin); the Cyrillic one is derived from it automatically and is only a reading aid. Tajweed colours are derived by the app from the marks of the Uthmani text and do not replace learning with a teacher. Recitations are streamed from everyayah.com and need an internet connection. Dhikr, dua and the 99 names give their hadith sources on each card.';
 
   @override
+  String get sourcesAdhan =>
+      'The adhan is recited by Sheikh Abdullah ibn Ahmad ibn Abdurrahman Ba-Afif.';
+
+  @override
   String get channelAdhanFajr => 'Fajr adhan';
 
   @override

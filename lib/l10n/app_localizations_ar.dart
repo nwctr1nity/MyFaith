@@ -563,6 +563,10 @@ class AppLocalizationsAr extends AppLocalizations {
       'مواقيت الصلاة: adhan_dart. المدن: GeoNames، CC BY 4.0. الخط العربي: Amiri Quran برخصة SIL Open Font. جُمعت البيانات من المشاريع المفتوحة quran-api و hadith-api و tafsir_api. الترجمات ملك لأصحابها وتُستخدم هنا للقراءة الشخصية غير التجارية. النطق بالحروف اللاتينية من quran-api. ألوان التجويد يستخرجها التطبيق من علامات الرسم العثماني ولا تغني عن التلقي من معلم. التلاوات تُبث من everyayah.com وتحتاج إلى الإنترنت.';
 
   @override
+  String get sourcesAdhan =>
+      'الأذان بصوت الشيخ عبد الله بن أحمد بن عبد الرحمن باعفيف.';
+
+  @override
   String get channelAdhanFajr => 'أذان الفجر';
 
   @override

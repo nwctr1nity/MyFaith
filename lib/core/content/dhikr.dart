@@ -52,12 +52,41 @@ class Dhikr {
     }
   }
 
+  /// The source with the names of the collections in the interface
+  /// language; the data keeps them in English.
+  String localizedSource(String languageCode) {
+    final names = _collections[languageCode];
+    if (names == null) return source;
+    var text = source;
+    names.forEach((english, local) => text = text.replaceAll(english, local));
+    return languageCode == 'ar' ? text.replaceAll(', ', '، ') : text;
+  }
+
   String note(String languageCode) => languageCode == 'ru' ? noteRu : noteEn;
 }
 
 /// The first three are the tasbih said after every prayer. The numbers come
 /// from the hadiths named in each entry; where none is narrated the entry
 /// says so and the goal is a suggestion the user can change.
+const _collections = {
+  'ru': {
+    'al-Bukhari': 'аль-Бухари',
+    'Muslim': 'Муслим',
+    'at-Tirmidhi': 'ат-Тирмизи',
+    'Abu Dawud': 'Абу Дауд',
+    'Ibn Majah': 'Ибн Маджа',
+    'Quran': 'Коран',
+  },
+  'ar': {
+    'al-Bukhari': 'البخاري',
+    'Muslim': 'مسلم',
+    'at-Tirmidhi': 'الترمذي',
+    'Abu Dawud': 'أبو داود',
+    'Ibn Majah': 'ابن ماجه',
+    'Quran': 'القرآن',
+  },
+};
+
 const dhikrList = <Dhikr>[
   Dhikr(
     id: 'subhanallah',
@@ -69,7 +98,7 @@ const dhikrList = <Dhikr>[
     goal: 33,
     source: 'Muslim 597',
     noteEn: '33 times after a prayer.',
-    noteRu: '33 раза после намаза.',
+    noteRu: '33 раза после молитвы.',
   ),
   Dhikr(
     id: 'alhamdulillah',
@@ -81,7 +110,7 @@ const dhikrList = <Dhikr>[
     goal: 33,
     source: 'Muslim 597',
     noteEn: '33 times after a prayer.',
-    noteRu: '33 раза после намаза.',
+    noteRu: '33 раза после молитвы.',
   ),
   Dhikr(
     id: 'allahuakbar',
@@ -93,7 +122,7 @@ const dhikrList = <Dhikr>[
     goal: 33,
     source: 'Muslim 597',
     noteEn: '33 times after a prayer.',
-    noteRu: '33 раза после намаза.',
+    noteRu: '33 раза после молитвы.',
   ),
   Dhikr(
     id: 'tahlil',
@@ -279,7 +308,7 @@ const dhikrList = <Dhikr>[
     goal: 5,
     source: 'Abu Dawud 1522',
     noteEn: 'After each of the five prayers.',
-    noteRu: 'После каждого из пяти намазов.',
+    noteRu: 'После каждого из пяти молитв.',
   ),
   Dhikr(
     id: 'bismillah_protection',
@@ -382,7 +411,7 @@ const dhikrList = <Dhikr>[
     goal: 1,
     source: 'Ibn Majah 925',
     noteEn: 'Once after the Fajr prayer.',
-    noteRu: 'Один раз после утреннего намаза.',
+    noteRu: 'Один раз после утренней молитвы.',
   ),
   Dhikr(
     id: 'afuw',

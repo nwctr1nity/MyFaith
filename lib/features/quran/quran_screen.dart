@@ -277,48 +277,69 @@ class _MushafTabState extends ConsumerState<_MushafTab>
               SliverPadding(
                 padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
                 sliver: SliverToBoxAdapter(
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        child: TextField(
-                          controller: _pageField,
-                          keyboardType: TextInputType.number,
-                          textInputAction: TextInputAction.go,
-                          inputFormatters: [
-                            FilteringTextInputFormatter.digitsOnly,
-                            LengthLimitingTextInputFormatter(3),
-                          ],
-                          decoration: InputDecoration(
-                            labelText: l.enterPage,
-                            helperText: '1–${layout.pageCount}',
-                            errorText: _badPage
-                                ? '1–${layout.pageCount}'
-                                : null,
-                            border: const OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(16),
+                  // The field and the button are one height.
+                  child: SizedBox(
+                    height: 48,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            controller: _pageField,
+                            keyboardType: TextInputType.number,
+                            textInputAction: TextInputAction.go,
+                            style: theme.textTheme.bodyLarge?.copyWith(
+                              height: 1.25,
+                            ),
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly,
+                              LengthLimitingTextInputFormatter(3),
+                            ],
+                            decoration: InputDecoration(
+                              hintText: l.enterPage,
+                              hintStyle: theme.textTheme.bodyMedium?.copyWith(
+                                color: scheme.onSurfaceVariant,
+                              ),
+                              isDense: true,
+                              // 14 + a 20 pixel line + 14: the height of
+                              // the button.
+                              contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 14,
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(24),
+                                borderSide: BorderSide(
+                                  color: _badPage
+                                      ? scheme.error
+                                      : scheme.outline,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(24),
+                                borderSide: BorderSide(
+                                  width: 2,
+                                  color: _badPage
+                                      ? scheme.error
+                                      : scheme.primary,
+                                ),
                               ),
                             ),
+                            onChanged: (_) {
+                              if (_badPage) setState(() => _badPage = false);
+                            },
+                            onSubmitted: (_) => _openTyped(layout.pageCount),
                           ),
-                          onChanged: (_) {
-                            if (_badPage) setState(() => _badPage = false);
-                          },
-                          onSubmitted: (_) => _openTyped(layout.pageCount),
                         ),
-                      ),
-                      const SizedBox(width: 12),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 4),
-                        child: FilledButton(
+                        const SizedBox(width: 12),
+                        FilledButton(
                           style: FilledButton.styleFrom(
                             minimumSize: const Size(0, 48),
                           ),
                           onPressed: () => _openTyped(layout.pageCount),
                           child: Text(l.openPage),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),

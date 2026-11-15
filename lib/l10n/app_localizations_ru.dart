@@ -10,7 +10,7 @@ class AppLocalizationsRu extends AppLocalizations {
   AppLocalizationsRu([String locale = 'ru']) : super(locale);
 
   @override
-  String get appTitle => 'Время намаза';
+  String get appTitle => 'Время молитвы';
 
   @override
   String get prayerFajr => 'Фаджр';
@@ -96,7 +96,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get noCitiesFound => 'Города не найдены';
 
   @override
-  String get locationNotSet => 'Выберите город, чтобы увидеть время намаза';
+  String get locationNotSet => 'Выберите город, чтобы увидеть время молитвы';
 
   @override
   String get locationDenied =>
@@ -229,7 +229,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get methodMoonsightingCommittee => 'Moonsighting Committee';
 
   @override
-  String get navPrayer => 'Намаз';
+  String get navPrayer => 'Молитва';
 
   @override
   String get navQuran => 'Коран';
@@ -379,7 +379,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get notifications => 'Азан и уведомления';
 
   @override
-  String get notificationsHint => 'Для каких намазов звучит азан';
+  String get notificationsHint => 'Для каких молитв звучит азан';
 
   @override
   String get alarmsTitle => 'Будильники';
@@ -391,7 +391,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get alarmsHint => 'Привязаны к фаджру, время сдвигается каждый день';
 
   @override
-  String get prayerSettings => 'Настройки времени намаза';
+  String get prayerSettings => 'Настройки времени молитвы';
 
   @override
   String get prayerSettingsHint => 'Город, метод, поправки';
@@ -431,7 +431,7 @@ class AppLocalizationsRu extends AppLocalizations {
       'Азан должен зазвучать. Если тихо, проверьте громкость будильника.';
 
   @override
-  String get reminderBefore => 'Напоминание до намаза';
+  String get reminderBefore => 'Напоминание до молитвы';
 
   @override
   String get off => 'Выключено';
@@ -508,7 +508,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String notifAdhanTitle(String prayer) {
-    return 'Время намаза: $prayer';
+    return 'Время молитвы: $prayer';
   }
 
   @override
@@ -567,7 +567,11 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get sourcesOther =>
-      'Время намаза: adhan_dart. Города: GeoNames, CC BY 4.0. Арабский шрифт: Amiri Quran, SIL Open Font License. Данные собраны из открытых проектов quran-api, hadith-api и tafsir_api. Переводы принадлежат их авторам и используются здесь для личного некоммерческого чтения. Транскрипция: quran-api (латиница), кириллица получена из неё автоматически и служит только подсказкой для чтения. Цвета таджвида приложение выводит из знаков усманского письма, они не заменяют обучение с учителем. Записи чтецов загружаются с everyayah.com, для них нужен интернет. У зикров и дуа источник указан на каждой карточке.';
+      'Время молитвы: adhan_dart. Города: GeoNames, CC BY 4.0. Арабский шрифт: Amiri Quran, SIL Open Font License. Данные собраны из открытых проектов quran-api, hadith-api и tafsir_api. Переводы принадлежат их авторам и используются здесь для личного некоммерческого чтения. Транскрипция: quran-api (латиница), кириллица получена из неё автоматически и служит только подсказкой для чтения. Цвета таджвида приложение выводит из знаков усманского письма, они не заменяют обучение с учителем. Записи чтецов загружаются с everyayah.com, для них нужен интернет. У зикров и дуа источник указан на каждой карточке.';
+
+  @override
+  String get sourcesAdhan =>
+      'Азан читает шейх Абдулла ибн Ахмад ибн Абдуррахман Ба-Афиф.';
 
   @override
   String get channelAdhanFajr => 'Азан на фаджр';

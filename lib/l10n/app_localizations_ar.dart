@@ -39,6 +39,51 @@ class AppLocalizationsAr extends AppLocalizations {
   String get nowLabel => 'الآن';
 
   @override
+  String get rakaatsFajr => 'ركعتان سنة، ركعتان فرض';
+
+  @override
+  String get rakaatsDhuhr => '4 ركعات سنة، 4 فرض، ركعتان سنة';
+
+  @override
+  String get rakaatsAsr => '4 ركعات فرض';
+
+  @override
+  String get rakaatsMaghrib => '3 ركعات فرض، ركعتان سنة';
+
+  @override
+  String get rakaatsIsha => '4 ركعات فرض، ركعتان سنة، 3 وتر';
+
+  @override
+  String get howToPray => 'كيف أصلي؟';
+
+  @override
+  String get howToPrayHint => 'خطوة بخطوة على المذهب الحنفي';
+
+  @override
+  String get guideRakaats => 'عدد الركعات';
+
+  @override
+  String get guideSunnahBefore => 'سنة قبلية';
+
+  @override
+  String get guideFard => 'فرض';
+
+  @override
+  String get guideSunnahAfter => 'سنة بعدية';
+
+  @override
+  String get guideWitr => 'وتر';
+
+  @override
+  String get guideBefore => 'قبل الصلاة';
+
+  @override
+  String get guideSteps => 'صلاة من ركعتين';
+
+  @override
+  String get guideMore => 'أمور أخرى مهمة';
+
+  @override
   String soonLabel(int minutes) {
     return 'بعد $minutes د!';
   }

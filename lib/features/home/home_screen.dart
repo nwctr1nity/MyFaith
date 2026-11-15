@@ -15,6 +15,7 @@ import '../../state/content_providers.dart';
 import '../hadith/hadith_screen.dart';
 import '../labels.dart';
 import '../location/city_picker_screen.dart';
+import '../prayer_guide/prayer_guide_screen.dart';
 import '../qibla/qibla_screen.dart';
 import '../theme.dart';
 
@@ -278,6 +279,26 @@ class _Timetable extends ConsumerWidget {
                   nowLabel: l.nowLabel,
                 ),
               ],
+            ),
+          ),
+        ),
+        const SizedBox(height: 16),
+        Card(
+          clipBehavior: Clip.antiAlias,
+          child: ListTile(
+            leading: Icon(Icons.school_outlined, color: scheme.primary),
+            title: Text(l.howToPray),
+            subtitle: Text(l.howToPrayHint),
+            trailing: Icon(
+              Directionality.of(context) == TextDirection.rtl
+                  ? Icons.chevron_left
+                  : Icons.chevron_right,
+              color: scheme.outline,
+            ),
+            onTap: () => Navigator.of(context).push(
+              MaterialPageRoute<void>(
+                builder: (_) => const PrayerGuideScreen(),
+              ),
             ),
           ),
         ),

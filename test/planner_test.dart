@@ -59,6 +59,10 @@ void main() {
     final adhans = plan.where((p) => p.kind == PlannedKind.adhan);
     expect(adhans.map((p) => p.slot),
         [PrayerSlot.fajr, PrayerSlot.maghrib]);
+    // The other prayers are announced quietly; sunrise is not a prayer.
+    final notices = plan.where((p) => p.kind == PlannedKind.prayerNotice);
+    expect(notices.map((p) => p.slot),
+        [PrayerSlot.dhuhr, PrayerSlot.asr, PrayerSlot.isha]);
   });
 
   test('reminder comes the chosen minutes before the prayer', () {

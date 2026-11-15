@@ -154,6 +154,96 @@ abstract class AppLocalizations {
   /// **'Now'**
   String get nowLabel;
 
+  /// No description provided for @rakaatsFajr.
+  ///
+  /// In en, this message translates to:
+  /// **'2 rakaats sunnah, 2 rakaats fard'**
+  String get rakaatsFajr;
+
+  /// No description provided for @rakaatsDhuhr.
+  ///
+  /// In en, this message translates to:
+  /// **'4 rakaats sunnah, 4 fard, 2 sunnah'**
+  String get rakaatsDhuhr;
+
+  /// No description provided for @rakaatsAsr.
+  ///
+  /// In en, this message translates to:
+  /// **'4 rakaats fard'**
+  String get rakaatsAsr;
+
+  /// No description provided for @rakaatsMaghrib.
+  ///
+  /// In en, this message translates to:
+  /// **'3 rakaats fard, 2 sunnah'**
+  String get rakaatsMaghrib;
+
+  /// No description provided for @rakaatsIsha.
+  ///
+  /// In en, this message translates to:
+  /// **'4 rakaats fard, 2 sunnah, 3 witr'**
+  String get rakaatsIsha;
+
+  /// No description provided for @howToPray.
+  ///
+  /// In en, this message translates to:
+  /// **'How to pray?'**
+  String get howToPray;
+
+  /// No description provided for @howToPrayHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Step by step, in the Hanafi school'**
+  String get howToPrayHint;
+
+  /// No description provided for @guideRakaats.
+  ///
+  /// In en, this message translates to:
+  /// **'How many rakaats'**
+  String get guideRakaats;
+
+  /// No description provided for @guideSunnahBefore.
+  ///
+  /// In en, this message translates to:
+  /// **'Sunnah before'**
+  String get guideSunnahBefore;
+
+  /// No description provided for @guideFard.
+  ///
+  /// In en, this message translates to:
+  /// **'Fard'**
+  String get guideFard;
+
+  /// No description provided for @guideSunnahAfter.
+  ///
+  /// In en, this message translates to:
+  /// **'Sunnah after'**
+  String get guideSunnahAfter;
+
+  /// No description provided for @guideWitr.
+  ///
+  /// In en, this message translates to:
+  /// **'Witr'**
+  String get guideWitr;
+
+  /// No description provided for @guideBefore.
+  ///
+  /// In en, this message translates to:
+  /// **'Before the prayer'**
+  String get guideBefore;
+
+  /// No description provided for @guideSteps.
+  ///
+  /// In en, this message translates to:
+  /// **'A prayer of two rakaats'**
+  String get guideSteps;
+
+  /// No description provided for @guideMore.
+  ///
+  /// In en, this message translates to:
+  /// **'What else to know'**
+  String get guideMore;
+
   /// No description provided for @soonLabel.
   ///
   /// In en, this message translates to:

@@ -39,6 +39,51 @@ class AppLocalizationsRu extends AppLocalizations {
   String get nowLabel => 'Сейчас';
 
   @override
+  String get rakaatsFajr => '2 ракаата сунны, 2 ракаата фарда';
+
+  @override
+  String get rakaatsDhuhr => '4 ракаата сунны, 4 фарда, 2 сунны';
+
+  @override
+  String get rakaatsAsr => '4 ракаата фарда';
+
+  @override
+  String get rakaatsMaghrib => '3 ракаата фарда, 2 сунны';
+
+  @override
+  String get rakaatsIsha => '4 ракаата фарда, 2 сунны, 3 витра';
+
+  @override
+  String get howToPray => 'Как совершать молитву?';
+
+  @override
+  String get howToPrayHint => 'Пошагово, по ханафитскому мазхабу';
+
+  @override
+  String get guideRakaats => 'Сколько ракаатов';
+
+  @override
+  String get guideSunnahBefore => 'Сунна до';
+
+  @override
+  String get guideFard => 'Фард';
+
+  @override
+  String get guideSunnahAfter => 'Сунна после';
+
+  @override
+  String get guideWitr => 'Витр';
+
+  @override
+  String get guideBefore => 'Перед молитвой';
+
+  @override
+  String get guideSteps => 'Молитва из двух ракаатов';
+
+  @override
+  String get guideMore => 'Что ещё нужно знать';
+
+  @override
   String soonLabel(int minutes) {
     return 'Через $minutes мин!';
   }

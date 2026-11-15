@@ -39,6 +39,51 @@ class AppLocalizationsEn extends AppLocalizations {
   String get nowLabel => 'Now';
 
   @override
+  String get rakaatsFajr => '2 rakaats sunnah, 2 rakaats fard';
+
+  @override
+  String get rakaatsDhuhr => '4 rakaats sunnah, 4 fard, 2 sunnah';
+
+  @override
+  String get rakaatsAsr => '4 rakaats fard';
+
+  @override
+  String get rakaatsMaghrib => '3 rakaats fard, 2 sunnah';
+
+  @override
+  String get rakaatsIsha => '4 rakaats fard, 2 sunnah, 3 witr';
+
+  @override
+  String get howToPray => 'How to pray?';
+
+  @override
+  String get howToPrayHint => 'Step by step, in the Hanafi school';
+
+  @override
+  String get guideRakaats => 'How many rakaats';
+
+  @override
+  String get guideSunnahBefore => 'Sunnah before';
+
+  @override
+  String get guideFard => 'Fard';
+
+  @override
+  String get guideSunnahAfter => 'Sunnah after';
+
+  @override
+  String get guideWitr => 'Witr';
+
+  @override
+  String get guideBefore => 'Before the prayer';
+
+  @override
+  String get guideSteps => 'A prayer of two rakaats';
+
+  @override
+  String get guideMore => 'What else to know';
+
+  @override
   String soonLabel(int minutes) {
     return 'In $minutes min!';
   }

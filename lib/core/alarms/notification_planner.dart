@@ -6,6 +6,10 @@ import 'alarm_settings.dart';
 
 enum PlannedKind {
   adhan,
+
+  /// A quiet notice that a prayer has begun, for the prayers whose adhan
+  /// is switched off.
+  prayerNotice,
   reminder,
   hadith,
   suhoor,
@@ -98,7 +102,21 @@ List<PlannedNotification> planNotifications({
     final fajr = today[PrayerSlot.fajr];
 
     for (final slot in PrayerSlot.values) {
-      if (!alarms.adhanSlots.contains(slot)) continue;
+      if (!alarms.adhanSlots.contains(slot)) {
+        // Sunrise is not a prayer: with its bell off there is nothing to
+        // announce.
+        if (slot != PrayerSlot.sunrise) {
+          add(
+            PlannedNotification(
+              id: 6000 + d * 10 + slot.index,
+              kind: PlannedKind.prayerNotice,
+              time: today[slot],
+              slot: slot,
+            ),
+          );
+        }
+        continue;
+      }
       final time = today[slot];
       add(
         PlannedNotification(

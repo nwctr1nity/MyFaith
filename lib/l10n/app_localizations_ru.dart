@@ -95,7 +95,8 @@ class AppLocalizationsRu extends AppLocalizations {
   String get repeatAyah => 'Повторение для заучивания';
 
   @override
-  String get repeatAyahHint => 'Аят звучит снова и снова, пока не выключишь';
+  String get repeatAyahHint =>
+      'Аят звучит снова и снова, пока вы не выключите повтор';
 
   @override
   String get recitationSpeed => 'Скорость чтения';
@@ -178,7 +179,7 @@ class AppLocalizationsRu extends AppLocalizations {
   }
 
   @override
-  String get asrMadhab => 'Время аср';
+  String get asrMadhab => 'Время асра';
 
   @override
   String get madhabShafi => 'Шафиитский, маликитский, ханбалитский';
@@ -241,7 +242,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get methodKuwait => 'Кувейт';
 
   @override
-  String get methodGulfRegion => 'Страны Залива';
+  String get methodGulfRegion => 'Страны Персидского залива';
 
   @override
   String get methodSingapore => 'Сингапур, Малайзия';
@@ -274,7 +275,8 @@ class AppLocalizationsRu extends AppLocalizations {
   String get methodPortugal => 'Португалия';
 
   @override
-  String get methodMoonsightingCommittee => 'Moonsighting Committee';
+  String get methodMoonsightingCommittee =>
+      'Комитет наблюдения за луной (Moonsighting Committee)';
 
   @override
   String get navPrayer => 'Молитва';
@@ -607,7 +609,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get sourcesQuran =>
-      'Текст Корана: Комплекс имени короля Фахда, усманское письмо, чтение Хафса. Переводы: Эльмир Кулиев (русский), Saheeh International (английский). Тафсир: «Аль-Мухтасар», Центр тафсира коранических исследований.';
+      'Текст Корана: Комплекс имени короля Фахда, усманское письмо, чтение Хафса. Переводы: Эльмир Кулиев (русский), Saheeh International (английский). Тафсир: «Аль-Мухтасар», Центр коранических исследований «Тафсир».';
 
   @override
   String get sourcesHadith =>

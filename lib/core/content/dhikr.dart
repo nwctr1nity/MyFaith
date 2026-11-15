@@ -308,7 +308,7 @@ const dhikrList = <Dhikr>[
     goal: 5,
     source: 'Abu Dawud 1522',
     noteEn: 'After each of the five prayers.',
-    noteRu: 'После каждого из пяти молитв.',
+    noteRu: 'После каждой из пяти молитв.',
   ),
   Dhikr(
     id: 'bismillah_protection',

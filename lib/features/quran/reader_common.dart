@@ -559,6 +559,7 @@ void showReaderOptions(BuildContext context) {
     context: context,
     showDragHandle: true,
     isScrollControlled: true,
+    useSafeArea: true,
     builder: (_) => const _ReaderOptions(),
   );
 }
@@ -577,150 +578,188 @@ class _ReaderOptions extends ConsumerWidget {
     final reciter = reciterById(settings.quranReciter);
     String reciterName(Reciter r) => language == 'ar' ? r.arabicName : r.name;
     return SafeArea(
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            // Arabic needs neither a translation nor a transliteration.
-            if (language != 'ar') ...[
-              SwitchListTile(
-                title: Text(l.showTranslation),
-                value: settings.quranShowTranslation,
-                onChanged: (v) => controller.setValue('qTrans', v),
-              ),
-              SwitchListTile(
-                title: Text(l.showTransliteration),
-                value: settings.quranShowTransliteration,
-                onChanged: (v) => controller.setValue('qTranslit', v),
-              ),
-            ],
-            SwitchListTile(
-              title: Text(l.showTajweed),
-              value: settings.quranShowTajweed,
-              onChanged: (v) => controller.setValue('qTajweed', v),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // The sheet can fill the screen, so it carries its own way out.
+          Padding(
+            padding: const EdgeInsetsDirectional.only(start: 24, end: 8),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    l.readerOptions,
+                    style: theme.textTheme.titleLarge,
+                  ),
+                ),
+                IconButton(
+                  tooltip: MaterialLocalizations.of(context).closeButtonLabel,
+                  icon: const Icon(Icons.close),
+                  onPressed: () => Navigator.of(context).pop(),
+                ),
+              ],
             ),
-            if (settings.quranShowTajweed)
-              Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(20, 0, 20, 8),
-                child: Column(
-                  children: [
-                    for (final kind in TajweedKind.values)
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 5),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              margin: const EdgeInsets.only(top: 2),
-                              width: 16,
-                              height: 16,
-                              decoration: BoxDecoration(
-                                color: tajweedColor(kind, scheme.brightness),
-                                borderRadius: BorderRadius.circular(4),
-                              ),
-                            ),
-                            const SizedBox(width: 10),
-                            Expanded(
-                              child: Column(
+          ),
+          Flexible(
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // Arabic needs neither a translation nor a transliteration.
+                  if (language != 'ar') ...[
+                    SwitchListTile(
+                      title: Text(l.showTranslation),
+                      value: settings.quranShowTranslation,
+                      onChanged: (v) => controller.setValue('qTrans', v),
+                    ),
+                    SwitchListTile(
+                      title: Text(l.showTransliteration),
+                      value: settings.quranShowTransliteration,
+                      onChanged: (v) => controller.setValue('qTranslit', v),
+                    ),
+                  ],
+                  SwitchListTile(
+                    title: Text(l.showTajweed),
+                    value: settings.quranShowTajweed,
+                    onChanged: (v) => controller.setValue('qTajweed', v),
+                  ),
+                  if (settings.quranShowTajweed)
+                    Padding(
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                        20,
+                        0,
+                        20,
+                        8,
+                      ),
+                      child: Column(
+                        children: [
+                          for (final kind in TajweedKind.values)
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 5),
+                              child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    tajweedLabel(kind, l).$1,
-                                    style: theme.textTheme.bodyMedium?.copyWith(
-                                      fontWeight: FontWeight.w600,
+                                  Container(
+                                    margin: const EdgeInsets.only(top: 2),
+                                    width: 16,
+                                    height: 16,
+                                    decoration: BoxDecoration(
                                       color: tajweedColor(
                                         kind,
                                         scheme.brightness,
                                       ),
+                                      borderRadius: BorderRadius.circular(4),
                                     ),
                                   ),
-                                  Text(
-                                    tajweedLabel(kind, l).$2,
-                                    style: theme.textTheme.bodySmall?.copyWith(
-                                      color: scheme.onSurfaceVariant,
+                                  const SizedBox(width: 10),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          tajweedLabel(kind, l).$1,
+                                          style: theme.textTheme.bodyMedium
+                                              ?.copyWith(
+                                                fontWeight: FontWeight.w600,
+                                                color: tajweedColor(
+                                                  kind,
+                                                  scheme.brightness,
+                                                ),
+                                              ),
+                                        ),
+                                        Text(
+                                          tajweedLabel(kind, l).$2,
+                                          style: theme.textTheme.bodySmall
+                                              ?.copyWith(
+                                                color: scheme.onSurfaceVariant,
+                                              ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ],
                               ),
                             ),
-                          ],
-                        ),
+                        ],
                       ),
-                  ],
-                ),
-              ),
-            ListTile(
-              title: Text(l.textSize),
-              subtitle: Slider(
-                value: settings.quranFontStep.toDouble(),
-                max: 4,
-                divisions: 4,
-                onChanged: (v) => controller.setValue('qFont', v.round()),
-              ),
-            ),
-            SwitchListTile(
-              title: Text(l.autoNextAyah),
-              // Kept as chosen while repeating, so that it is back as it
-              // was once repeating is switched off.
-              value: settings.quranAutoNext,
-              onChanged: settings.quranRepeat
-                  ? null
-                  : (v) => controller.setValue('qAutoNext', v),
-            ),
-            SwitchListTile(
-              title: Text(l.repeatAyah),
-              subtitle: Text(l.repeatAyahHint),
-              value: settings.quranRepeat,
-              onChanged: (v) => controller.setValue('qRepeat', v),
-            ),
-            ListTile(
-              title: Row(
-                children: [
-                  Expanded(child: Text(l.recitationSpeed)),
-                  Text(
-                    '${(settings.quranSpeedTenths / 10).toStringAsFixed(1)}×',
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: scheme.onSurfaceVariant,
+                    ),
+                  ListTile(
+                    title: Text(l.textSize),
+                    subtitle: Slider(
+                      value: settings.quranFontStep.toDouble(),
+                      max: 4,
+                      divisions: 4,
+                      onChanged: (v) => controller.setValue('qFont', v.round()),
                     ),
                   ),
+                  SwitchListTile(
+                    title: Text(l.autoNextAyah),
+                    // Kept as chosen while repeating, so that it is back as it
+                    // was once repeating is switched off.
+                    value: settings.quranAutoNext,
+                    onChanged: settings.quranRepeat
+                        ? null
+                        : (v) => controller.setValue('qAutoNext', v),
+                  ),
+                  SwitchListTile(
+                    title: Text(l.repeatAyah),
+                    subtitle: Text(l.repeatAyahHint),
+                    value: settings.quranRepeat,
+                    onChanged: (v) => controller.setValue('qRepeat', v),
+                  ),
+                  ListTile(
+                    title: Row(
+                      children: [
+                        Expanded(child: Text(l.recitationSpeed)),
+                        Text(
+                          '${(settings.quranSpeedTenths / 10).toStringAsFixed(1)}×',
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            color: scheme.onSurfaceVariant,
+                          ),
+                        ),
+                      ],
+                    ),
+                    subtitle: Slider(
+                      value: settings.quranSpeedTenths.toDouble(),
+                      min: 2,
+                      max: 20,
+                      divisions: 18,
+                      onChanged: (v) =>
+                          controller.setValue('qSpeed', v.round()),
+                    ),
+                  ),
+                  Align(
+                    alignment: AlignmentDirectional.centerEnd,
+                    child: Padding(
+                      padding: const EdgeInsetsDirectional.only(end: 16),
+                      child: TextButton.icon(
+                        onPressed: settings.quranSpeedTenths == 10
+                            ? null
+                            : () => controller.setValue('qSpeed', 10),
+                        icon: const Icon(Icons.refresh, size: 18),
+                        label: Text(l.resetSpeed),
+                      ),
+                    ),
+                  ),
+                  ListTile(
+                    title: Text(l.reciter),
+                    subtitle: Text(reciterName(reciter)),
+                    trailing: const Icon(Icons.arrow_drop_down),
+                    onTap: () => pickOption<String>(
+                      context,
+                      title: l.reciter,
+                      selected: reciter.id,
+                      options: {for (final r in reciters) r.id: reciterName(r)},
+                      onSelected: (id) => controller.setValue('qReciter', id),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
                 ],
               ),
-              subtitle: Slider(
-                value: settings.quranSpeedTenths.toDouble(),
-                min: 2,
-                max: 20,
-                divisions: 18,
-                onChanged: (v) => controller.setValue('qSpeed', v.round()),
-              ),
             ),
-            Align(
-              alignment: AlignmentDirectional.centerEnd,
-              child: Padding(
-                padding: const EdgeInsetsDirectional.only(end: 16),
-                child: TextButton.icon(
-                  onPressed: settings.quranSpeedTenths == 10
-                      ? null
-                      : () => controller.setValue('qSpeed', 10),
-                  icon: const Icon(Icons.refresh, size: 18),
-                  label: Text(l.resetSpeed),
-                ),
-              ),
-            ),
-            ListTile(
-              title: Text(l.reciter),
-              subtitle: Text(reciterName(reciter)),
-              trailing: const Icon(Icons.arrow_drop_down),
-              onTap: () => pickOption<String>(
-                context,
-                title: l.reciter,
-                selected: reciter.id,
-                options: {for (final r in reciters) r.id: reciterName(r)},
-                onSelected: (id) => controller.setValue('qReciter', id),
-              ),
-            ),
-            const SizedBox(height: 8),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

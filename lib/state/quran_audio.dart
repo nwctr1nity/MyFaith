@@ -16,6 +16,12 @@ abstract class AyahPlayer {
   Future<void> stop();
   Future<void> seek(Duration position);
 
+  /// Plays the loaded recording again from its beginning.
+  Future<void> replay();
+
+  /// 1.0 is the speed of the recording.
+  Future<void> setSpeed(double speed);
+
   /// Where the recording is now, and how long it is once that is known.
   Stream<Duration> get position;
   Stream<Duration?> get duration;
@@ -59,6 +65,15 @@ class JustAudioAyahPlayer implements AyahPlayer {
 
   @override
   Future<void> seek(Duration position) => _player.seek(position);
+
+  @override
+  Future<void> replay() async {
+    await _player.seek(Duration.zero);
+    unawaited(_player.play());
+  }
+
+  @override
+  Future<void> setSpeed(double speed) => _player.setSpeed(speed);
 
   @override
   Stream<Duration> get position => _player.positionStream;
@@ -115,16 +130,29 @@ class QuranAudioController extends Notifier<QuranAudioState> {
     _subscription?.cancel();
     _subscription = player.completed.listen((_) => _completed());
     ref.onDispose(() => _subscription?.cancel());
+    ref.listen(
+      settingsProvider.select((s) => s.quranSpeedTenths),
+      (_, tenths) => _setSpeed(tenths),
+    );
     return const QuranAudioState();
   }
 
   AyahPlayer get _player => ref.read(ayahPlayerProvider);
+
+  Future<void> _setSpeed(int tenths) async {
+    try {
+      await _player.setSpeed(tenths / 10);
+    } on Object {
+      // The speed is applied again when the next ayah starts.
+    }
+  }
 
   Future<void> play(Verse verse) async {
     final request = ++_request;
     state = QuranAudioState(verse: verse, loading: true);
     final reciter = reciterById(ref.read(settingsProvider).quranReciter);
     try {
+      await _player.setSpeed(ref.read(settingsProvider).quranSpeedTenths / 10);
       await _player.play(reciter.url(verse));
       if (request != _request) return;
       state = QuranAudioState(verse: verse, playing: true);
@@ -137,7 +165,10 @@ class QuranAudioController extends Notifier<QuranAudioState> {
   void _completed() {
     final verse = state.verse;
     if (verse == null || !state.playing) return;
-    if (ref.read(settingsProvider).quranAutoNext) {
+    final settings = ref.read(settingsProvider);
+    if (settings.quranRepeat) {
+      _player.replay();
+    } else if (settings.quranAutoNext) {
       next();
     } else {
       state = QuranAudioState(verse: verse, ended: true);

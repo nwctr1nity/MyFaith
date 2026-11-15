@@ -137,7 +137,8 @@ class _DhikrList extends ConsumerWidget {
                             scheme.onSurface,
                           ).copyWith(height: 1.7),
                         ),
-                        if (language != 'ar') ...[
+                        if (language != 'ar' &&
+                            settings.dhikrShowTransliteration) ...[
                           const SizedBox(height: 4),
                           Text(
                             d.transliteration(language),
@@ -240,8 +241,11 @@ class _DhikrCounterScreenState extends ConsumerState<DhikrCounterScreen> {
         actions: [
           PopupMenuButton<String>(
             onSelected: (value) {
-              if (value == 'reset') {
-                controller.resetDhikr(current.id, today);
+              if (value == 'translit') {
+                controller.setValue(
+                  'dhTranslit',
+                  !settings.dhikrShowTransliteration,
+                );
               } else {
                 pickOption<int>(
                   context,
@@ -272,6 +276,12 @@ class _DhikrCounterScreenState extends ConsumerState<DhikrCounterScreen> {
             },
             itemBuilder: (_) => [
               PopupMenuItem(value: 'goal', child: Text(l.dhikrGoal)),
+              if (language != 'ar')
+                CheckedPopupMenuItem(
+                  value: 'translit',
+                  checked: settings.dhikrShowTransliteration,
+                  child: Text(l.showTransliterationItem),
+                ),
             ],
           ),
         ],
@@ -294,20 +304,33 @@ class _DhikrCounterScreenState extends ConsumerState<DhikrCounterScreen> {
                     child: ListView(
                       padding: const EdgeInsets.all(20),
                       children: [
+                        // What the words are for comes first.
+                        if (note.isNotEmpty) ...[
+                          Text(
+                            note,
+                            textAlign: TextAlign.center,
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              height: 1.5,
+                              color: scheme.primary,
+                            ),
+                          ),
+                          const SizedBox(height: 12),
+                        ],
                         Text(
                           d.arabic,
                           textDirection: TextDirection.rtl,
                           textAlign: TextAlign.center,
                           style: quranTextStyle(24, scheme.onSurface),
                         ),
-                        if (language != 'ar') ...[
+                        if (language != 'ar' &&
+                            settings.dhikrShowTransliteration) ...[
                           const SizedBox(height: 12),
                           Text(
                             d.transliteration(language),
                             textAlign: TextAlign.center,
-                            style: theme.textTheme.bodyLarge?.copyWith(
+                            style: theme.textTheme.bodyMedium?.copyWith(
                               height: 1.5,
-                              fontWeight: FontWeight.w500,
+                              color: scheme.onSurfaceVariant,
                             ),
                           ),
                         ],
@@ -316,19 +339,18 @@ class _DhikrCounterScreenState extends ConsumerState<DhikrCounterScreen> {
                           Text(
                             translation,
                             textAlign: TextAlign.center,
-                            style: theme.textTheme.bodyMedium?.copyWith(
+                            style: theme.textTheme.bodyLarge?.copyWith(
                               height: 1.5,
-                              color: scheme.onSurfaceVariant,
+                              color: scheme.onSurface,
                             ),
                           ),
                         ],
                         const SizedBox(height: 14),
                         Text(
-                          [if (note.isNotEmpty) note, d.source].join('\n'),
+                          d.source,
                           textAlign: TextAlign.center,
                           style: theme.textTheme.bodySmall?.copyWith(
-                            height: 1.5,
-                            color: scheme.primary,
+                            color: scheme.onSurfaceVariant,
                           ),
                         ),
                       ],

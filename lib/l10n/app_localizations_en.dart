@@ -39,6 +39,24 @@ class AppLocalizationsEn extends AppLocalizations {
   String get nowLabel => 'Now';
 
   @override
+  String soonLabel(int minutes) {
+    return 'In $minutes min!';
+  }
+
+  @override
+  String get showTransliterationItem => 'Show transliteration';
+
+  @override
+  String get repeatAyah => 'Repeat for memorising';
+
+  @override
+  String get repeatAyahHint =>
+      'The ayah plays again and again until switched off';
+
+  @override
+  String get recitationSpeed => 'Recitation speed';
+
+  @override
   String get lastThirdOfNight => 'Last third of the night';
 
   @override

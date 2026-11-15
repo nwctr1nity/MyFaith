@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -243,6 +245,19 @@ class _Timetable extends ConsumerWidget {
                     // After Isha the next prayer is tomorrow's Fajr, not
                     // this row.
                     isNext: moment.next == slot && moment.nextTime == day[slot],
+                    soonLabel:
+                        moment.next == slot &&
+                            moment.nextTime == day[slot] &&
+                            moment.nextTime.difference(now) <
+                                const Duration(hours: 1)
+                        ? l.soonLabel(
+                            math.max(
+                              1,
+                              (moment.nextTime.difference(now).inSeconds / 60)
+                                  .ceil(),
+                            ),
+                          )
+                        : null,
                     muted: slot == PrayerSlot.sunrise,
                     nowLabel: l.nowLabel,
                     adhanOn: settings.adhanSlots.contains(slot),
@@ -281,6 +296,7 @@ class _PrayerRow extends StatelessWidget {
     required this.isNext,
     required this.muted,
     required this.nowLabel,
+    this.soonLabel,
     this.adhanOn,
     this.adhanTooltip,
     this.onToggleAdhan,
@@ -292,6 +308,9 @@ class _PrayerRow extends StatelessWidget {
   final bool isNext;
   final bool muted;
   final String nowLabel;
+
+  /// "In 12 min!" on the next prayer when it is less than an hour away.
+  final String? soonLabel;
   final bool? adhanOn;
   final String? adhanTooltip;
   final VoidCallback? onToggleAdhan;
@@ -338,6 +357,25 @@ class _PrayerRow extends StatelessWidget {
                       nowLabel,
                       style: theme.textTheme.labelSmall?.copyWith(
                         color: scheme.onPrimary,
+                      ),
+                    ),
+                  ),
+                ],
+                if (soonLabel != null) ...[
+                  const SizedBox(width: 10),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 2,
+                    ),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFE8730C),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text(
+                      soonLabel!,
+                      style: theme.textTheme.labelSmall?.copyWith(
+                        color: Colors.white,
                       ),
                     ),
                   ),

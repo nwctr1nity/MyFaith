@@ -154,6 +154,36 @@ abstract class AppLocalizations {
   /// **'Now'**
   String get nowLabel;
 
+  /// No description provided for @soonLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'In {minutes} min!'**
+  String soonLabel(int minutes);
+
+  /// No description provided for @showTransliterationItem.
+  ///
+  /// In en, this message translates to:
+  /// **'Show transliteration'**
+  String get showTransliterationItem;
+
+  /// No description provided for @repeatAyah.
+  ///
+  /// In en, this message translates to:
+  /// **'Repeat for memorising'**
+  String get repeatAyah;
+
+  /// No description provided for @repeatAyahHint.
+  ///
+  /// In en, this message translates to:
+  /// **'The ayah plays again and again until switched off'**
+  String get repeatAyahHint;
+
+  /// No description provided for @recitationSpeed.
+  ///
+  /// In en, this message translates to:
+  /// **'Recitation speed'**
+  String get recitationSpeed;
+
   /// No description provided for @lastThirdOfNight.
   ///
   /// In en, this message translates to:

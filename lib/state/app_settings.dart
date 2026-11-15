@@ -263,6 +263,17 @@ class AppSettings {
   /// Whether the recitation moves on to the next ayah by itself.
   bool get quranAutoNext => _bool('qAutoNext', true);
 
+  /// Repeats the ayah being recited, for memorising. While it is on, the
+  /// recitation does not move on, whatever [quranAutoNext] says.
+  bool get quranRepeat => _bool('qRepeat', false);
+
+  /// Recitation speed in tenths: 10 is the speed of the recording.
+  int get quranSpeedTenths => _int('qSpeed', 10, min: 2, max: 20);
+
+  /// Transliteration on the salawat cards and on the dhikr and dua cards.
+  bool get salawatShowTransliteration => _bool('salTranslit', true);
+  bool get dhikrShowTransliteration => _bool('dhTranslit', true);
+
   String get quranReciter {
     final v = _data['qReciter'];
     return v is String ? v : 'alafasy';

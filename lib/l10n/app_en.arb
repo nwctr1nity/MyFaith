@@ -16,6 +16,12 @@
     }
   },
   "nowLabel": "Now",
+  "soonLabel": "In {minutes} min!",
+  "@soonLabel": {"placeholders": {"minutes": {"type": "int"}}},
+  "showTransliterationItem": "Show transliteration",
+  "repeatAyah": "Repeat for memorising",
+  "repeatAyahHint": "The ayah plays again and again until switched off",
+  "recitationSpeed": "Recitation speed",
   "lastThirdOfNight": "Last third of the night",
   "settings": "Settings",
   "language": "Language",

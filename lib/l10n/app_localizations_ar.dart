@@ -39,6 +39,23 @@ class AppLocalizationsAr extends AppLocalizations {
   String get nowLabel => 'الآن';
 
   @override
+  String soonLabel(int minutes) {
+    return 'بعد $minutes د!';
+  }
+
+  @override
+  String get showTransliterationItem => 'إظهار النطق';
+
+  @override
+  String get repeatAyah => 'التكرار للحفظ';
+
+  @override
+  String get repeatAyahHint => 'تتكرر الآية حتى توقف التكرار';
+
+  @override
+  String get recitationSpeed => 'سرعة التلاوة';
+
+  @override
   String get lastThirdOfNight => 'الثلث الأخير من الليل';
 
   @override

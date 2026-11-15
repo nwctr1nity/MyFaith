@@ -39,6 +39,23 @@ class AppLocalizationsRu extends AppLocalizations {
   String get nowLabel => 'Сейчас';
 
   @override
+  String soonLabel(int minutes) {
+    return 'Через $minutes мин!';
+  }
+
+  @override
+  String get showTransliterationItem => 'Показать транскрипцию';
+
+  @override
+  String get repeatAyah => 'Повторение для заучивания';
+
+  @override
+  String get repeatAyahHint => 'Аят звучит снова и снова, пока не выключишь';
+
+  @override
+  String get recitationSpeed => 'Скорость чтения';
+
+  @override
   String get lastThirdOfNight => 'Последняя треть ночи';
 
   @override

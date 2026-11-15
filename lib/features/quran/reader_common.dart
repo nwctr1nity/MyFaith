@@ -648,11 +648,6 @@ class _ReaderOptions extends ConsumerWidget {
                   ],
                 ),
               ),
-            SwitchListTile(
-              title: Text(l.autoNextAyah),
-              value: settings.quranAutoNext,
-              onChanged: (v) => controller.setValue('qAutoNext', v),
-            ),
             ListTile(
               title: Text(l.textSize),
               subtitle: Slider(
@@ -660,6 +655,41 @@ class _ReaderOptions extends ConsumerWidget {
                 max: 4,
                 divisions: 4,
                 onChanged: (v) => controller.setValue('qFont', v.round()),
+              ),
+            ),
+            SwitchListTile(
+              title: Text(l.autoNextAyah),
+              // Kept as chosen while repeating, so that it is back as it
+              // was once repeating is switched off.
+              value: settings.quranAutoNext,
+              onChanged: settings.quranRepeat
+                  ? null
+                  : (v) => controller.setValue('qAutoNext', v),
+            ),
+            SwitchListTile(
+              title: Text(l.repeatAyah),
+              subtitle: Text(l.repeatAyahHint),
+              value: settings.quranRepeat,
+              onChanged: (v) => controller.setValue('qRepeat', v),
+            ),
+            ListTile(
+              title: Row(
+                children: [
+                  Expanded(child: Text(l.recitationSpeed)),
+                  Text(
+                    '${(settings.quranSpeedTenths / 10).toStringAsFixed(1)}×',
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: scheme.onSurfaceVariant,
+                    ),
+                  ),
+                ],
+              ),
+              subtitle: Slider(
+                value: settings.quranSpeedTenths.toDouble(),
+                min: 2,
+                max: 20,
+                divisions: 18,
+                onChanged: (v) => controller.setValue('qSpeed', v.round()),
               ),
             ),
             ListTile(

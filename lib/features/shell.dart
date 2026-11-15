@@ -3,9 +3,9 @@ import 'package:material_ui/material_ui.dart';
 
 import '../l10n/app_localizations.dart';
 import '../state/notification_sync.dart';
+import 'dhikr/dhikr_screen.dart';
 import 'home/home_screen.dart';
 import 'more/more_screen.dart';
-import 'qibla/qibla_screen.dart';
 import 'quran/quran_screen.dart';
 import 'salawat/salawat_screen.dart';
 
@@ -18,8 +18,11 @@ class AppShell extends ConsumerStatefulWidget {
 
 class _AppShellState extends ConsumerState<AppShell>
     with WidgetsBindingObserver {
-  int _index = 0;
-  final _visited = <int>{0};
+  /// The prayer times are the main tab and sit in the middle.
+  static const _home = 2;
+
+  int _index = _home;
+  final _visited = <int>{_home};
 
   @override
   void initState() {
@@ -68,13 +71,10 @@ class _AppShellState extends ConsumerState<AppShell>
         // A tab is built on its first visit and then kept, so it holds
         // its scroll position without slowing down the launch.
         children: [
+          _visited.contains(0) ? const SalawatScreen() : const SizedBox(),
+          _visited.contains(1) ? const DhikrScreen() : const SizedBox(),
           const HomeScreen(),
-          _visited.contains(1) ? const QuranScreen() : const SizedBox(),
-          // The compass is only read while its tab is open.
-          _visited.contains(2)
-              ? QiblaScreen(active: _index == 2)
-              : const SizedBox(),
-          _visited.contains(3) ? const SalawatScreen() : const SizedBox(),
+          _visited.contains(3) ? const QuranScreen() : const SizedBox(),
           _visited.contains(4) ? const MoreScreen() : const SizedBox(),
         ],
       ),
@@ -86,6 +86,16 @@ class _AppShellState extends ConsumerState<AppShell>
         }),
         destinations: [
           NavigationDestination(
+            icon: const Icon(Icons.favorite_border),
+            selectedIcon: const Icon(Icons.favorite),
+            label: l.navSalawat,
+          ),
+          NavigationDestination(
+            icon: const Icon(Icons.blur_circular_outlined),
+            selectedIcon: const Icon(Icons.blur_circular),
+            label: l.navDhikr,
+          ),
+          NavigationDestination(
             icon: const Icon(Icons.access_time),
             selectedIcon: const Icon(Icons.access_time_filled),
             label: l.navPrayer,
@@ -94,16 +104,6 @@ class _AppShellState extends ConsumerState<AppShell>
             icon: const Icon(Icons.menu_book_outlined),
             selectedIcon: const Icon(Icons.menu_book),
             label: l.navQuran,
-          ),
-          NavigationDestination(
-            icon: const Icon(Icons.explore_outlined),
-            selectedIcon: const Icon(Icons.explore),
-            label: l.navQibla,
-          ),
-          NavigationDestination(
-            icon: const Icon(Icons.favorite_border),
-            selectedIcon: const Icon(Icons.favorite),
-            label: l.navSalawat,
           ),
           NavigationDestination(
             icon: const Icon(Icons.more_horiz),

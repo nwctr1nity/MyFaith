@@ -13,6 +13,7 @@ import '../../state/content_providers.dart';
 import '../hadith/hadith_screen.dart';
 import '../labels.dart';
 import '../location/city_picker_screen.dart';
+import '../qibla/qibla_screen.dart';
 import '../theme.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
@@ -43,9 +44,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   void _openCityPicker() {
-    Navigator.of(context).push(
-      MaterialPageRoute<void>(builder: (_) => const CityPickerScreen()),
-    );
+    Navigator.of(
+      context,
+    ).push(MaterialPageRoute<void>(builder: (_) => const CityPickerScreen()));
   }
 
   @override
@@ -74,14 +75,28 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       ),
                       const SizedBox(width: 8),
                       Flexible(
-                        child:
-                            Text(place.name, overflow: TextOverflow.ellipsis),
+                        child: Text(
+                          place.name,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
                       const Icon(Icons.arrow_drop_down),
                     ],
                   ),
                 ),
               ),
+        actions: [
+          Padding(
+            padding: const EdgeInsetsDirectional.only(end: 8),
+            child: FilledButton.tonalIcon(
+              onPressed: () => Navigator.of(context).push(
+                MaterialPageRoute<void>(builder: (_) => const QiblaScreen()),
+              ),
+              icon: const Icon(Icons.explore_outlined, size: 20),
+              label: Text(l.navQibla),
+            ),
+          ),
+        ],
       ),
       body: place == null
           ? _EmptyState(onChoose: _openCityPicker)
@@ -202,10 +217,9 @@ class _Timetable extends ConsumerWidget {
                 textDirection: TextDirection.ltr,
                 child: Text(
                   _countdown(moment.nextTime.difference(now)),
-                  style: theme.textTheme.displayMedium?.merge(_numbers).copyWith(
-                        color: onHero,
-                        fontWeight: FontWeight.w300,
-                      ),
+                  style: theme.textTheme.displayMedium
+                      ?.merge(_numbers)
+                      .copyWith(color: onHero, fontWeight: FontWeight.w300),
                 ),
               ),
               Text(
@@ -303,23 +317,28 @@ class _PrayerRow extends StatelessWidget {
                 Flexible(
                   child: Text(
                     name,
-                    style: theme.textTheme.titleMedium
-                        ?.copyWith(color: color, fontWeight: weight),
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      color: color,
+                      fontWeight: weight,
+                    ),
                   ),
                 ),
                 if (isCurrent) ...[
                   const SizedBox(width: 10),
                   Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 2,
+                    ),
                     decoration: BoxDecoration(
                       color: scheme.primary,
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Text(
                       nowLabel,
-                      style: theme.textTheme.labelSmall
-                          ?.copyWith(color: scheme.onPrimary),
+                      style: theme.textTheme.labelSmall?.copyWith(
+                        color: scheme.onPrimary,
+                      ),
                     ),
                   ),
                 ],
@@ -355,7 +374,11 @@ class _PrayerRow extends StatelessWidget {
 }
 
 class _HadithCard extends ConsumerWidget {
-  const _HadithCard({required this.year, required this.month, required this.day});
+  const _HadithCard({
+    required this.year,
+    required this.month,
+    required this.day,
+  });
 
   final int year;
   final int month;
@@ -391,8 +414,9 @@ class _HadithCard extends ConsumerWidget {
                   const SizedBox(width: 8),
                   Text(
                     l.hadithOfDay,
-                    style: theme.textTheme.titleSmall
-                        ?.copyWith(color: scheme.primary),
+                    style: theme.textTheme.titleSmall?.copyWith(
+                      color: scheme.primary,
+                    ),
                   ),
                 ],
               ),
@@ -406,8 +430,9 @@ class _HadithCard extends ConsumerWidget {
               const SizedBox(height: 12),
               Text(
                 l.bukhariRef(hadith.number),
-                style: theme.textTheme.bodySmall
-                    ?.copyWith(color: scheme.onSurfaceVariant),
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: scheme.onSurfaceVariant,
+                ),
               ),
             ],
           ),

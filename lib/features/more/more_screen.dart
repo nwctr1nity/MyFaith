@@ -3,6 +3,7 @@ import 'package:material_ui/material_ui.dart';
 
 import '../../l10n/app_localizations.dart';
 import '../hadith/hadith_screen.dart';
+import '../names/names_screen.dart';
 import '../../core/content/hadith.dart';
 import '../quran/bookmarks_screen.dart';
 import '../settings/settings_screen.dart';
@@ -17,9 +18,9 @@ class MoreScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l = AppLocalizations.of(context)!;
 
-    void open(Widget screen) => Navigator.of(context).push(
-          MaterialPageRoute<void>(builder: (_) => screen),
-        );
+    void open(Widget screen) =>
+        Navigator.of(context)
+            .push(MaterialPageRoute<void>(builder: (_) => screen));
 
     return Scaffold(
       appBar: AppBar(title: Text(l.navMore)),
@@ -55,10 +56,18 @@ class MoreScreen extends ConsumerWidget {
                   title: l.hadithOfDay,
                   onTap: () {
                     final now = DateTime.now();
-                    open(HadithScreen(
-                      initialDay: dayNumber(now.year, now.month, now.day),
-                    ));
+                    open(
+                      HadithScreen(
+                        initialDay: dayNumber(now.year, now.month, now.day),
+                      ),
+                    );
                   },
+                ),
+                _Item(
+                  icon: Icons.auto_awesome_outlined,
+                  title: l.names99,
+                  subtitle: l.names99Hint,
+                  onTap: () => open(const NamesScreen()),
                 ),
                 _Item(
                   icon: Icons.bookmarks_outlined,

@@ -12,8 +12,9 @@ class SectionHeader extends StatelessWidget {
       padding: const EdgeInsetsDirectional.fromSTEB(20, 24, 20, 8),
       child: Text(
         text,
-        style: theme.textTheme.titleSmall
-            ?.copyWith(color: theme.colorScheme.primary),
+        style: theme.textTheme.titleSmall?.copyWith(
+          color: theme.colorScheme.primary,
+        ),
       ),
     );
   }
@@ -32,8 +33,10 @@ class HintText extends StatelessWidget {
       padding: const EdgeInsetsDirectional.fromSTEB(20, 8, 20, 8),
       child: Text(
         text,
-        style: theme.textTheme.bodySmall
-            ?.copyWith(color: theme.colorScheme.onSurfaceVariant, height: 1.4),
+        style: theme.textTheme.bodySmall?.copyWith(
+          color: theme.colorScheme.onSurfaceVariant,
+          height: 1.4,
+        ),
       ),
     );
   }
@@ -73,4 +76,51 @@ Future<void> pickOption<T>(
     ),
   );
   if (entry != null) onSelected(entry.key);
+}
+
+/// A ring that fills as a counter nears its goal.
+class RingPainter extends CustomPainter {
+  RingPainter(this.progress, this.scheme, {this.stroke = 12, this.fill = true});
+
+  final double progress;
+  final ColorScheme scheme;
+  final double stroke;
+
+  /// Whether the inside of the ring is tinted.
+  final bool fill;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final center = size.center(Offset.zero);
+    final radius = size.shortestSide / 2 - stroke / 2 - 2;
+    if (fill) {
+      canvas.drawCircle(
+        center,
+        radius - stroke / 2 - 2,
+        Paint()..color = scheme.surfaceContainerLow,
+      );
+    }
+    final ring = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = stroke
+      ..strokeCap = StrokeCap.round;
+    canvas.drawCircle(
+      center,
+      radius,
+      ring..color = scheme.surfaceContainerHighest,
+    );
+    if (progress > 0) {
+      canvas.drawArc(
+        Rect.fromCircle(center: center, radius: radius),
+        -1.5707963267948966,
+        6.283185307179586 * progress.clamp(0, 1),
+        false,
+        ring..color = scheme.primary,
+      );
+    }
+  }
+
+  @override
+  bool shouldRepaint(RingPainter old) =>
+      old.progress != progress || old.scheme != scheme;
 }

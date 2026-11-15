@@ -81,7 +81,8 @@ Future<void> _pump(
       sharedPreferencesProvider.overrideWithValue(prefs),
       notificationServiceProvider
           .overrideWithValue(notifications ?? FakeNotifications()),
-      compassProvider.overrideWithValue(() => Stream.value(40)),
+      compassProvider.overrideWithValue(
+          () => Stream.value((heading: 40.0, accuracy: 15.0))),
     ],
     child: const MuslimApp(),
   ));

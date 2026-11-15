@@ -70,6 +70,10 @@ Khan, Russian by Abdulla Nirsha. Data taken from the open
 [hadith-api](https://github.com/fawazahmed0/hadith-api) and
 [tafsir_api](https://github.com/spa5k/tafsir_api) projects. The translations
 belong to their authors and are bundled for personal, non-commercial reading.
+Transliteration: quran-api `ara-quran-la1`; the Cyrillic
+one is derived from it in `tool/build_content.py`. Tajweed colouring is derived
+from the marks of the Uthmani text in `tool/tajweed.py`. Recitations are
+streamed ayah by ayah from [everyayah.com](https://everyayah.com).
 Arabic font: [Amiri Quran](https://github.com/aliftype/amiri), SIL Open Font
 License.
 

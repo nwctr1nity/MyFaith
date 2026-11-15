@@ -31,18 +31,30 @@ class AlarmsScreen extends ConsumerWidget {
       for (final p in plan) {
         if (p.kind == kind) {
           final t = p.time;
-          final when = DateFormat('EEEE, d MMMM, HH:mm', language)
-              .format(DateTime(t.year, t.month, t.day, t.hour, t.minute));
+          final when = DateFormat(
+            'EEEE, d MMMM, HH:mm',
+            language,
+          ).format(DateTime(t.year, t.month, t.day, t.hour, t.minute));
           return l.nextSuhoor(when);
         }
       }
       return l.noUpcomingAlarm;
     }
 
-    Map<int, String> minuteOptions(List<int> values) =>
-        {for (final m in values) m: l.minutesBefore(m)};
+    Map<int, String> minuteOptions(List<int> values) => {
+      for (final m in values) m: l.minutesBefore(m),
+    };
 
-    final weekdayNames = DateFormat.E(language).dateSymbols.STANDALONESHORTWEEKDAYS;
+    final stopOptions = {
+      0: l.off,
+      10: l.minutesBefore(10),
+      30: l.minutesBefore(30),
+      60: l.oneHourBefore,
+    };
+
+    final weekdayNames = DateFormat.E(language)
+        .dateSymbols
+        .STANDALONESHORTWEEKDAYS;
 
     return Scaffold(
       appBar: AppBar(title: Text(l.alarmsTitle)),
@@ -96,18 +108,14 @@ class AlarmsScreen extends ConsumerWidget {
             ListTile(
               title: Text(l.suhoorStop),
               subtitle: Text(
-                settings.suhoorStopWarningMinutes == 0
-                    ? l.off
-                    : l.minutesBefore(settings.suhoorStopWarningMinutes),
+                stopOptions[settings.suhoorStopWarningMinutes] ??
+                    l.minutesBefore(settings.suhoorStopWarningMinutes),
               ),
               onTap: () => pickOption<int>(
                 context,
                 title: l.suhoorStop,
                 selected: settings.suhoorStopWarningMinutes,
-                options: {
-                  0: l.off,
-                  ...minuteOptions(const [5, 10, 15, 20]),
-                },
+                options: stopOptions,
                 onSelected: (m) => controller.setValue('suhoorStop', m),
               ),
             ),
@@ -148,8 +156,9 @@ class AlarmsScreen extends ConsumerWidget {
             if (!settings.tahajjudAtLastThird)
               ListTile(
                 title: Text(l.suhoorBefore),
-                subtitle:
-                    Text(l.minutesBefore(settings.tahajjudMinutesBeforeFajr)),
+                subtitle: Text(
+                  l.minutesBefore(settings.tahajjudMinutesBeforeFajr),
+                ),
                 onTap: () => pickOption<int>(
                   context,
                   title: l.suhoorBefore,

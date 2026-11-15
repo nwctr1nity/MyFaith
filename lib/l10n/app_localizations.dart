@@ -196,6 +196,24 @@ abstract class AppLocalizations {
   /// **'Settings'**
   String get settings;
 
+  /// No description provided for @supportProject.
+  ///
+  /// In en, this message translates to:
+  /// **'Support the project'**
+  String get supportProject;
+
+  /// No description provided for @supportText.
+  ///
+  /// In en, this message translates to:
+  /// **'All donations are voluntary. My project will always be completely free.'**
+  String get supportText;
+
+  /// No description provided for @tbank.
+  ///
+  /// In en, this message translates to:
+  /// **'T-Bank'**
+  String get tbank;
+
   /// No description provided for @language.
   ///
   /// In en, this message translates to:

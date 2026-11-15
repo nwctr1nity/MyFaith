@@ -62,6 +62,16 @@ class AppLocalizationsRu extends AppLocalizations {
   String get settings => 'Настройки';
 
   @override
+  String get supportProject => 'Поддержать проект';
+
+  @override
+  String get supportText =>
+      'Все пожертвования добровольны. Мой проект всегда будет полностью бесплатным.';
+
+  @override
+  String get tbank => 'Т-Банк';
+
+  @override
   String get language => 'Язык';
 
   @override

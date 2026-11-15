@@ -63,6 +63,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settings => 'Settings';
 
   @override
+  String get supportProject => 'Support the project';
+
+  @override
+  String get supportText =>
+      'All donations are voluntary. My project will always be completely free.';
+
+  @override
+  String get tbank => 'T-Bank';
+
+  @override
   String get language => 'Language';
 
   @override

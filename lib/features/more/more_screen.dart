@@ -10,6 +10,7 @@ import '../settings/settings_screen.dart';
 import 'alarms_screen.dart';
 import 'notifications_screen.dart';
 import 'sources_screen.dart';
+import 'support_dialog.dart';
 
 class MoreScreen extends ConsumerWidget {
   const MoreScreen({super.key});
@@ -87,6 +88,11 @@ class MoreScreen extends ConsumerWidget {
                   title: l.settings,
                   subtitle: l.prayerSettingsHint,
                   onTap: () => open(const SettingsScreen()),
+                ),
+                _Item(
+                  icon: Icons.volunteer_activism_outlined,
+                  title: l.supportProject,
+                  onTap: () => showSupportDialog(context),
                 ),
                 _Item(
                   icon: Icons.info_outline,

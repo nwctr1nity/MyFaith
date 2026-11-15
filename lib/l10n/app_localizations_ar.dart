@@ -62,6 +62,16 @@ class AppLocalizationsAr extends AppLocalizations {
   String get settings => 'الإعدادات';
 
   @override
+  String get supportProject => 'ادعم المشروع';
+
+  @override
+  String get supportText =>
+      'جميع التبرعات طوعية. سيبقى مشروعي مجانيًا بالكامل دائمًا.';
+
+  @override
+  String get tbank => 'T-Bank';
+
+  @override
   String get language => 'اللغة';
 
   @override

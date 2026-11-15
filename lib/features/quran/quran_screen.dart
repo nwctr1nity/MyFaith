@@ -428,7 +428,9 @@ class _NumberBadge extends StatelessWidget {
         '$number',
         style: TextStyle(
           color: scheme.onPrimaryContainer,
+          fontSize: 17,
           fontWeight: FontWeight.w600,
+          fontFeatures: const [FontFeature.tabularFigures()],
         ),
       ),
     );

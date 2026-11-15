@@ -513,8 +513,9 @@ class SurahBanner extends StatelessWidget {
                 color: onHero,
               ),
             ),
+            // Room for the vowel marks that hang under the Arabic name.
             if (language != 'ar') ...[
-              const SizedBox(height: 2),
+              const SizedBox(height: 14),
               Text(
                 l.surahNumberName(
                   surah.number,

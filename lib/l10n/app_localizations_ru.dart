@@ -360,7 +360,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get tafsir => 'Тафсир';
 
   @override
-  String get tafsirSource => 'Аль-Мухтасар фи тафсир аль-Куран';
+  String get tafsirSource => 'Аль-Мухтасар фи тафсир аль-Кур’ан';
 
   @override
   String get showTranslation => 'Перевод';

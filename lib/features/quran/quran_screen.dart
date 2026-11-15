@@ -295,8 +295,10 @@ class _MushafTabState extends ConsumerState<_MushafTab>
                               LengthLimitingTextInputFormatter(3),
                             ],
                             decoration: InputDecoration(
-                              hintText: l.enterPage,
-                              hintStyle: theme.textTheme.bodyMedium?.copyWith(
+                              // The label rides up onto the border while
+                              // a number is typed, so it stays in view.
+                              labelText: l.enterPage,
+                              labelStyle: theme.textTheme.bodyMedium?.copyWith(
                                 color: scheme.onSurfaceVariant,
                               ),
                               isDense: true,

@@ -18,39 +18,44 @@ const translationSizes = [14.0, 16.0, 17.0, 19.0, 21.0];
 Color tajweedColor(TajweedKind kind, Brightness brightness) {
   final dark = brightness == Brightness.dark;
   switch (kind) {
-    case TajweedKind.maddLazim:
-      return dark ? const Color(0xFFFF6E6E) : const Color(0xFFA31515);
-    case TajweedKind.maddMuttasil:
-      return dark ? const Color(0xFFFF80AB) : const Color(0xFFC2185B);
-    case TajweedKind.maddMunfasil:
-      return dark ? const Color(0xFFFFAB40) : const Color(0xFFD84315);
-    case TajweedKind.maddArid:
-      return dark ? const Color(0xFFE6C44D) : const Color(0xFF9A6B00);
     case TajweedKind.ghunnah:
-      return dark ? const Color(0xFF66D17A) : const Color(0xFF2E7D32);
+      return dark ? const Color(0xFF4CCB5A) : const Color(0xFF168A16);
     case TajweedKind.qalqalah:
-      return dark ? const Color(0xFF64B5F6) : const Color(0xFF1565C0);
+      return dark ? const Color(0xFF4FC3F7) : const Color(0xFF1689B5);
+    case TajweedKind.maddNatural:
+      return dark ? const Color(0xFFE0BE4A) : const Color(0xFFB08A12);
+    case TajweedKind.maddArid:
+      return dark ? const Color(0xFFFF9A3C) : const Color(0xFFE07A10);
+    case TajweedKind.maddWajib:
+      return dark ? const Color(0xFFFF5CC6) : const Color(0xFFE0149A);
+    case TajweedKind.maddLazim:
+      return dark ? const Color(0xFFF2545B) : const Color(0xFFB00010);
+    case TajweedKind.tafkhim:
+      return dark ? const Color(0xFF7C9BFF) : const Color(0xFF123A8C);
     case TajweedKind.silent:
-      return dark ? const Color(0xFF8A8F98) : const Color(0xFF9E9E9E);
+      return dark ? const Color(0xFF8A8F98) : const Color(0xFF8A8A8A);
   }
 }
 
-String tajweedLabel(TajweedKind kind, AppLocalizations l) {
+/// The name of a tajweed colour and the rules it stands for.
+(String, String) tajweedLabel(TajweedKind kind, AppLocalizations l) {
   switch (kind) {
-    case TajweedKind.maddLazim:
-      return l.tajweedMaddLazim;
-    case TajweedKind.maddMuttasil:
-      return l.tajweedMaddMuttasil;
-    case TajweedKind.maddMunfasil:
-      return l.tajweedMaddMunfasil;
-    case TajweedKind.maddArid:
-      return l.tajweedMaddArid;
     case TajweedKind.ghunnah:
-      return l.tajweedGhunnah;
+      return (l.tajweedGhunnah, l.tajweedGhunnahHint);
     case TajweedKind.qalqalah:
-      return l.tajweedQalqalah;
+      return (l.tajweedQalqalah, l.tajweedQalqalahHint);
+    case TajweedKind.maddNatural:
+      return (l.tajweedMaddNatural, l.tajweedMaddNaturalHint);
+    case TajweedKind.maddArid:
+      return (l.tajweedMaddArid, l.tajweedMaddAridHint);
+    case TajweedKind.maddWajib:
+      return (l.tajweedMaddWajib, l.tajweedMaddWajibHint);
+    case TajweedKind.maddLazim:
+      return (l.tajweedMaddLazim, l.tajweedMaddLazimHint);
+    case TajweedKind.tafkhim:
+      return (l.tajweedTafkhim, l.tajweedTafkhimHint);
     case TajweedKind.silent:
-      return l.tajweedSilent;
+      return (l.tajweedSilent, l.tajweedSilentHint);
   }
 }
 
@@ -92,6 +97,11 @@ class OpenTafsirs extends ChangeNotifier {
     notifyListeners();
   }
 }
+
+final _ayahButton = TextButton.styleFrom(
+  padding: const EdgeInsets.symmetric(horizontal: 8),
+  visualDensity: VisualDensity.compact,
+);
 
 /// One ayah: Arabic, transliteration, translation, and the tafsir that
 /// unfolds underneath. A tap anywhere opens the menu of the ayah.
@@ -186,8 +196,7 @@ class AyahView extends ConsumerWidget {
                   style: theme.textTheme.bodyLarge?.copyWith(
                     fontSize: translationSizes[step],
                     height: 1.5,
-                    fontWeight: FontWeight.w500,
-                    color: scheme.onSurface,
+                    color: scheme.onSurfaceVariant,
                   ),
                 ),
               ],
@@ -198,7 +207,7 @@ class AyahView extends ConsumerWidget {
                   style: theme.textTheme.bodyLarge?.copyWith(
                     fontSize: translationSizes[step],
                     height: 1.55,
-                    color: scheme.onSurfaceVariant,
+                    color: scheme.onSurface,
                   ),
                 ),
               ],
@@ -238,11 +247,20 @@ class AyahView extends ConsumerWidget {
                           const Spacer(),
                           TextButton.icon(
                             onPressed: () => open.toggle(verse),
+                            style: _ayahButton,
                             icon: Icon(
                               unfolded ? Icons.expand_less : Icons.expand_more,
                               size: 18,
                             ),
                             label: Text(l.tafsir),
+                          ),
+                          TextButton.icon(
+                            onPressed: () => ref
+                                .read(quranAudioProvider.notifier)
+                                .play(verse),
+                            style: _ayahButton,
+                            icon: const Icon(Icons.play_arrow, size: 18),
+                            label: Text(l.listen),
                           ),
                         ],
                       ),
@@ -587,14 +605,14 @@ class _ReaderOptions extends ConsumerWidget {
                   children: [
                     for (final kind in TajweedKind.values)
                       Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 3),
+                        padding: const EdgeInsets.symmetric(vertical: 5),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Container(
-                              margin: const EdgeInsets.only(top: 3),
-                              width: 14,
-                              height: 14,
+                              margin: const EdgeInsets.only(top: 2),
+                              width: 16,
+                              height: 16,
                               decoration: BoxDecoration(
                                 color: tajweedColor(kind, scheme.brightness),
                                 borderRadius: BorderRadius.circular(4),
@@ -602,11 +620,26 @@ class _ReaderOptions extends ConsumerWidget {
                             ),
                             const SizedBox(width: 10),
                             Expanded(
-                              child: Text(
-                                tajweedLabel(kind, l),
-                                style: theme.textTheme.bodySmall?.copyWith(
-                                  color: scheme.onSurfaceVariant,
-                                ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    tajweedLabel(kind, l).$1,
+                                    style: theme.textTheme.bodyMedium?.copyWith(
+                                      fontWeight: FontWeight.w600,
+                                      color: tajweedColor(
+                                        kind,
+                                        scheme.brightness,
+                                      ),
+                                    ),
+                                  ),
+                                  Text(
+                                    tajweedLabel(kind, l).$2,
+                                    style: theme.textTheme.bodySmall?.copyWith(
+                                      color: scheme.onSurfaceVariant,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ],
@@ -615,6 +648,11 @@ class _ReaderOptions extends ConsumerWidget {
                   ],
                 ),
               ),
+            SwitchListTile(
+              title: Text(l.autoNextAyah),
+              value: settings.quranAutoNext,
+              onChanged: (v) => controller.setValue('qAutoNext', v),
+            ),
             ListTile(
               title: Text(l.textSize),
               subtitle: Slider(
@@ -669,84 +707,173 @@ class QuranPlayerBar extends ConsumerWidget {
       color: scheme.surfaceContainerHigh,
       child: SafeArea(
         top: false,
-        child: Padding(
-          padding: const EdgeInsetsDirectional.fromSTEB(16, 6, 4, 6),
-          child: Row(
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      l.surahAyah(name, verse.$2),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: theme.textTheme.titleSmall,
-                    ),
-                    Text(
-                      audio.failed
-                          ? l.audioFailed
-                          : language == 'ar'
-                          ? reciter.arabicName
-                          : reciter.name,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        color: audio.failed
-                            ? scheme.error
-                            : scheme.onSurfaceVariant,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              // Playback controls keep their order in every language.
-              Directionality(
-                textDirection: TextDirection.ltr,
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    IconButton(
-                      tooltip: l.previousAyah,
-                      icon: const Icon(Icons.skip_previous),
-                      onPressed: controller.previous,
-                    ),
-                    audio.loading
-                        ? const SizedBox(
-                            width: 48,
-                            height: 48,
-                            child: Padding(
-                              padding: EdgeInsets.all(12),
-                              child: CircularProgressIndicator(strokeWidth: 3),
-                            ),
-                          )
-                        : IconButton.filled(
-                            tooltip: audio.playing ? l.pause : l.listen,
-                            icon: Icon(
-                              audio.failed
-                                  ? Icons.refresh
-                                  : audio.playing
-                                  ? Icons.pause
-                                  : Icons.play_arrow,
-                            ),
-                            onPressed: controller.toggle,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const _SeekBar(),
+            Padding(
+              padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 4, 6),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          l.surahAyah(name, verse.$2),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: theme.textTheme.titleSmall,
+                        ),
+                        Text(
+                          audio.failed
+                              ? l.audioFailed
+                              : language == 'ar'
+                              ? reciter.arabicName
+                              : reciter.name,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            color: audio.failed
+                                ? scheme.error
+                                : scheme.onSurfaceVariant,
                           ),
-                    IconButton(
-                      tooltip: l.nextAyah,
-                      icon: const Icon(Icons.skip_next),
-                      onPressed: controller.next,
+                        ),
+                      ],
                     ),
-                    IconButton(
-                      tooltip: l.closePlayer,
-                      icon: const Icon(Icons.close),
-                      onPressed: controller.stop,
+                  ),
+                  // Playback controls keep their order in every language.
+                  Directionality(
+                    textDirection: TextDirection.ltr,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          tooltip: l.previousAyah,
+                          icon: const Icon(Icons.skip_previous),
+                          onPressed: controller.previous,
+                        ),
+                        audio.loading
+                            ? const SizedBox(
+                                width: 48,
+                                height: 48,
+                                child: Padding(
+                                  padding: EdgeInsets.all(12),
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 3,
+                                  ),
+                                ),
+                              )
+                            : IconButton.filled(
+                                tooltip: audio.playing ? l.pause : l.listen,
+                                icon: Icon(
+                                  audio.failed
+                                      ? Icons.refresh
+                                      : audio.ended
+                                      ? Icons.replay
+                                      : audio.playing
+                                      ? Icons.pause
+                                      : Icons.play_arrow,
+                                ),
+                                onPressed: controller.toggle,
+                              ),
+                        IconButton(
+                          tooltip: l.nextAyah,
+                          icon: const Icon(Icons.skip_next),
+                          onPressed: controller.next,
+                        ),
+                        IconButton(
+                          tooltip: l.closePlayer,
+                          icon: const Icon(Icons.close),
+                          onPressed: controller.stop,
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+String _clock(Duration d) =>
+    '${d.inMinutes}:${(d.inSeconds % 60).toString().padLeft(2, '0')}';
+
+/// The timeline of the ayah being recited; drag it to move within the ayah.
+class _SeekBar extends ConsumerStatefulWidget {
+  const _SeekBar();
+
+  @override
+  ConsumerState<_SeekBar> createState() => _SeekBarState();
+}
+
+class _SeekBarState extends ConsumerState<_SeekBar> {
+  /// The place under the finger while the thumb is dragged, in ms.
+  double? _drag;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+    final audio = ref.watch(quranAudioProvider);
+    final ready = !audio.loading && !audio.failed;
+    final length = ready
+        ? (ref.watch(ayahDurationProvider).value ?? Duration.zero)
+        : Duration.zero;
+    final total = length.inMilliseconds.toDouble();
+    final played = audio.ended
+        ? total
+        : ready
+        ? (ref.watch(ayahPositionProvider).value ?? Duration.zero)
+              .inMilliseconds
+              .toDouble()
+        : 0.0;
+    final value = (_drag ?? played).clamp(0.0, total);
+    final small = theme.textTheme.labelSmall?.copyWith(
+      color: scheme.onSurfaceVariant,
+      fontFeatures: const [FontFeature.tabularFigures()],
+    );
+    // Time runs left to right in every language.
+    return Directionality(
+      textDirection: TextDirection.ltr,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 4, 16, 0),
+        child: Row(
+          children: [
+            Text(_clock(Duration(milliseconds: value.round())), style: small),
+            Expanded(
+              child: SliderTheme(
+                data: SliderTheme.of(context).copyWith(
+                  trackHeight: 3,
+                  overlayShape: const RoundSliderOverlayShape(
+                    overlayRadius: 14,
+                  ),
+                  thumbShape: const RoundSliderThumbShape(
+                    enabledThumbRadius: 6,
+                  ),
+                ),
+                child: Slider(
+                  value: value,
+                  max: total > 0 ? total : 1,
+                  onChanged: total > 0
+                      ? (v) => setState(() => _drag = v)
+                      : null,
+                  onChangeEnd: (v) async {
+                    await ref
+                        .read(quranAudioProvider.notifier)
+                        .seek(Duration(milliseconds: v.round()));
+                    if (mounted) setState(() => _drag = null);
+                  },
                 ),
               ),
-            ],
-          ),
+            ),
+            Text(_clock(length), style: small),
+          ],
         ),
       ),
     );

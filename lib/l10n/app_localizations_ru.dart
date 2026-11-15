@@ -691,28 +691,66 @@ class AppLocalizationsRu extends AppLocalizations {
   String get showTajweed => 'Подсказки таджвида';
 
   @override
-  String get tajweedMaddLazim => 'Обязательное удлинение, 6 счётов';
+  String get tajweedGhunnah => 'Гунна, ихфа, идгам';
 
   @override
-  String get tajweedMaddMuttasil => 'Слитное удлинение, 4 или 5 счётов';
+  String get tajweedGhunnahHint =>
+      'Идгам с гунной, ихфа, икляб, нун и мим с шаддой, ихфа шафавий';
 
   @override
-  String get tajweedMaddMunfasil => 'Раздельное удлинение, 2, 4 или 5 счётов';
+  String get tajweedQalqalah => 'Калькаля';
 
   @override
-  String get tajweedMaddArid =>
-      'Удлинение при остановке в конце аята, 2, 4 или 6 счётов';
+  String get tajweedQalqalahHint =>
+      'Отрывистый отзвук букв ق ط ب ج د с сукуном';
 
   @override
-  String get tajweedGhunnah =>
-      'Назализация, 2 счёта: гунна, ихфа, икляб, идгам с гунной';
+  String get tajweedMaddNatural => 'Мадд, 2 счёта';
 
   @override
-  String get tajweedQalqalah => 'Калькаля, отрывистый отзвук буквы';
+  String get tajweedMaddNaturalHint => 'Мадд сыля сугра, алиф ханджария';
 
   @override
-  String get tajweedSilent =>
-      'Не произносится или сливается со следующей буквой';
+  String get tajweedMaddArid => 'Мадд, 2, 4 или 6 счётов';
+
+  @override
+  String get tajweedMaddAridHint => 'Мадд ‘арид ли-с-сукун, мадд лин';
+
+  @override
+  String get tajweedMaddWajib => 'Мадд, 4 или 5 счётов';
+
+  @override
+  String get tajweedMaddWajibHint =>
+      'Мадд ваджиб муттасыль, мадд джаиз мунфасыль, мадд сыля кубра';
+
+  @override
+  String get tajweedMaddLazim => 'Мадд, 6 счётов';
+
+  @override
+  String get tajweedMaddLazimHint => 'Мадд лязим';
+
+  @override
+  String get tajweedTafkhim => 'Тафхим';
+
+  @override
+  String get tajweedTafkhimHint =>
+      'Твёрдое произношение: буквы خ ص ض غ ط ق ظ, твёрдая ра, лям в слове «Аллах»';
+
+  @override
+  String get tajweedSilent => 'Не читается';
+
+  @override
+  String get tajweedSilentHint =>
+      'Хамза васль, лям шамсия, полный идгам без гунны, непроизносимые буквы';
+
+  @override
+  String get autoNextAyah => 'Автопроигрывание следующего аята';
+
+  @override
+  String get enterPage => 'Введите номер страницы';
+
+  @override
+  String get openPage => 'Открыть';
 
   @override
   String get searchQuran => 'Поиск по Корану';

@@ -260,6 +260,9 @@ class AppSettings {
   /// Tajweed colouring of the Arabic text.
   bool get quranShowTajweed => _bool('qTajweed', true);
 
+  /// Whether the recitation moves on to the next ayah by itself.
+  bool get quranAutoNext => _bool('qAutoNext', true);
+
   String get quranReciter {
     final v = _data['qReciter'];
     return v is String ? v : 'alafasy';

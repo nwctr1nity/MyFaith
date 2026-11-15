@@ -13,7 +13,9 @@ never separates a mark from its letter.
 import collections
 import unicodedata
 
-MADD_LAZIM, MADD_MUTTASIL, MADD_MUNFASIL, MADD_ARID, GHUNNAH, QALQALAH, SILENT = range(7)
+# The order is the order of `TajweedKind` in lib/core/content/quran.dart.
+(GHUNNAH, QALQALAH, MADD_NATURAL, MADD_ARID, MADD_WAJIB, MADD_LAZIM,
+ TAFKHIM, SILENT) = range(8)
 
 FATHA, DAMMA, KASRA, SHADDA = "َ", "ُ", "ِ", "ّ"
 SUKUN = "ۡ"  # the Madinah mushaf sukun (a small head of khah)
@@ -64,6 +66,58 @@ def clusters(text):
     return out
 
 
+HEAVY = "خصضغطقظ"
+KASRA_LIKE = KASRA + "ٍࣲ"
+BACK = FATHA + DAMMA + "ًࣰٌࣱ"
+
+
+def heavy_ra(cs, i):
+    c = cs[i]
+    if c.has(KASRA_LIKE):
+        return False
+    if c.has(BACK):
+        return True
+    if not c.has(SUKUN) or i == 0:
+        return False
+    prev = cs[i - 1]
+    if prev.base == "ٱ" or prev.has(BACK):
+        return True
+    if prev.has(KASRA):
+        # After a kasra the ra is light, unless a heavy letter follows it
+        # in the same word, as in qirtas and mirsad.
+        nxt = cs[i + 1] if i + 1 < len(cs) else None
+        return (
+            nxt is not None
+            and nxt.word == c.word
+            and nxt.base in HEAVY
+            and not nxt.has(KASRA)
+        )
+    return False
+
+
+def heavy_lam(cs, i):
+    """The lam of the name of Allah after a fatha or a damma."""
+    c = cs[i]
+    if not c.has(SHADDA) or i < 2 or i + 1 >= len(cs):
+        return False
+    h, first = cs[i + 1], cs[i - 1]
+    if h.base != "ه" or h.word != c.word or first.base != "ل" or first.word != c.word:
+        return False
+    after = cs[i + 2] if i + 2 < len(cs) else None
+    if after is not None and after.word == c.word and not (
+        after.base == "م" and after.has(SHADDA)
+    ):
+        return False
+    if first.has(KASRA):  # lillah
+        return False
+    if not first.bare or cs[i - 2].base != "ٱ":
+        return False
+    j = i - 3
+    while j >= 0 and cs[j].bare and cs[j].base in "اىيو":
+        j -= 1
+    return j < 0 or not cs[j].has(KASRA_LIKE)
+
+
 def spans(text):
     cs = clusters(text)
     kinds = {}
@@ -82,17 +136,6 @@ def spans(text):
             j += 1
         return cs[j] if j < len(cs) else None
 
-    def vocative(i):
-        """The ya of address and the ha of attention are separate words
-        written joined to the next one, so their madd is munfasil."""
-        c = cs[i]
-        if c.base not in "يه" or not c.has(DAGGER_ALIF):
-            return False
-        if c.first:
-            return True
-        prev = cs[i - 1]
-        return prev.first and prev.base in "وفأا" and prev.word == c.word
-
     for i, c in enumerate(cs):
         nxt = cs[i + 1] if i + 1 < len(cs) else None
         after = following(i)
@@ -105,13 +148,18 @@ def spans(text):
                 same_word and nxt.bare and nxt.base not in "اٱءوي"
             ):
                 mark(i, MADD_LAZIM)
-            elif same_word and not vocative(i):
-                mark(i, MADD_MUTTASIL)
             else:
-                mark(i, MADD_MUNFASIL)
+                # Muttasil inside a word; munfasil and the long silah
+                # across two words. They share one colour.
+                mark(i, MADD_WAJIB)
             continue
 
         if c.has(SILENT_MARKS):
+            mark(i, SILENT)
+            continue
+
+        # The joining hamza is read only when the reciter starts on it.
+        if c.base == "ٱ" and i > 0:
             mark(i, SILENT)
             continue
 
@@ -126,7 +174,11 @@ def spans(text):
 
         if c.base == "ن" and c.bare and after is not None:
             if after.has(SHADDA):
-                mark(i, GHUNNAH if after.base in "يو" else SILENT)
+                # Merged: the noon itself is not read, and into ya and waw
+                # it leaves its nasal sound on the doubled letter.
+                mark(i, SILENT)
+                if after.base in "يو":
+                    mark(cs.index(after), GHUNNAH)
             else:
                 mark(i, GHUNNAH)  # ikhfa
             continue
@@ -177,6 +229,29 @@ def spans(text):
                 mark(last - 1, MADD_ARID)
             elif before.has(DAGGER_ALIF) and before.word == end.word and not before.has(MADDAH):
                 mark(last - 1, MADD_ARID)
+            elif (
+                before.base in "وي"
+                and before.has(SUKUN)
+                and prev is not None
+                and prev.has(FATHA)
+                and before.word == end.word
+            ):
+                mark(last - 1, MADD_ARID)  # madd lin
+
+    # The short lengthenings that the text writes small: the dagger alif
+    # and the small waw and ya after the pronoun ha.
+    for i, c in enumerate(cs):
+        if c.has(DAGGER_ALIF) or c.base in "ۥۦ":
+            mark(i, MADD_NATURAL)
+
+    # Heavy letters.
+    for i, c in enumerate(cs):
+        if c.base in HEAVY and not c.bare:
+            mark(i, TAFKHIM)
+        elif c.base == "ر" and heavy_ra(cs, i):
+            mark(i, TAFKHIM)
+        elif c.base == "ل" and heavy_lam(cs, i):
+            kinds[i] = TAFKHIM
 
     out = []
     for i in sorted(kinds):
@@ -190,6 +265,6 @@ def spans(text):
 
 
 def report():
-    names = ["madd lazim", "madd muttasil", "madd munfasil", "madd at stop",
-             "ghunnah", "qalqalah", "silent"]
+    names = ["ghunnah", "qalqalah", "short madd", "madd at stop",
+             "madd wajib", "madd lazim", "tafkhim", "silent"]
     print("tajweed:", ", ".join(f"{names[k]} {counts[k]}" for k in sorted(counts)))

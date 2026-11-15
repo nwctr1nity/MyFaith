@@ -684,25 +684,64 @@ class AppLocalizationsAr extends AppLocalizations {
   String get showTajweed => 'ألوان التجويد';
 
   @override
-  String get tajweedMaddLazim => 'مد لازم، 6 حركات';
+  String get tajweedGhunnah => 'غنة، إخفاء، إدغام';
 
   @override
-  String get tajweedMaddMuttasil => 'مد واجب متصل، 4 أو 5 حركات';
-
-  @override
-  String get tajweedMaddMunfasil => 'مد جائز منفصل، 2 أو 4 أو 5 حركات';
-
-  @override
-  String get tajweedMaddArid => 'مد عارض للسكون عند الوقف، 2 أو 4 أو 6 حركات';
-
-  @override
-  String get tajweedGhunnah => 'غنة، حركتان: إخفاء، إقلاب، إدغام بغنة';
+  String get tajweedGhunnahHint =>
+      'إدغام بغنة، إخفاء، إقلاب، النون والميم المشددتان، إخفاء شفوي';
 
   @override
   String get tajweedQalqalah => 'قلقلة';
 
   @override
-  String get tajweedSilent => 'لا يُنطق أو يُدغم في الحرف التالي';
+  String get tajweedQalqalahHint => 'حروف ق ط ب ج د الساكنة';
+
+  @override
+  String get tajweedMaddNatural => 'مد، حركتان';
+
+  @override
+  String get tajweedMaddNaturalHint => 'صلة صغرى، ألف خنجرية';
+
+  @override
+  String get tajweedMaddArid => 'مد، 2 أو 4 أو 6 حركات';
+
+  @override
+  String get tajweedMaddAridHint => 'مد عارض للسكون، مد لين';
+
+  @override
+  String get tajweedMaddWajib => 'مد، 4 أو 5 حركات';
+
+  @override
+  String get tajweedMaddWajibHint => 'مد واجب متصل، مد جائز منفصل، صلة كبرى';
+
+  @override
+  String get tajweedMaddLazim => 'مد، 6 حركات';
+
+  @override
+  String get tajweedMaddLazimHint => 'مد لازم';
+
+  @override
+  String get tajweedTafkhim => 'تفخيم';
+
+  @override
+  String get tajweedTafkhimHint =>
+      'حروف خ ص ض غ ط ق ظ، الراء المفخمة، لام لفظ الجلالة';
+
+  @override
+  String get tajweedSilent => 'لا يُقرأ';
+
+  @override
+  String get tajweedSilentHint =>
+      'همزة الوصل، اللام الشمسية، إدغام كامل بلا غنة، حروف لا تُنطق';
+
+  @override
+  String get autoNextAyah => 'تشغيل الآية التالية تلقائيًا';
+
+  @override
+  String get enterPage => 'أدخل رقم الصفحة';
+
+  @override
+  String get openPage => 'فتح';
 
   @override
   String get searchQuran => 'البحث في القرآن';

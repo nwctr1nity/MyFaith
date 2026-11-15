@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -182,7 +183,26 @@ class _MushafTab extends ConsumerStatefulWidget {
 
 class _MushafTabState extends ConsumerState<_MushafTab>
     with AutomaticKeepAliveClientMixin {
-  bool _byPage = false;
+  bool _byPage = true;
+  final _pageField = TextEditingController();
+  bool _badPage = false;
+
+  @override
+  void dispose() {
+    _pageField.dispose();
+    super.dispose();
+  }
+
+  void _openTyped(int pageCount) {
+    final n = int.tryParse(_pageField.text.trim());
+    if (n == null || n < 1 || n > pageCount) {
+      setState(() => _badPage = true);
+      return;
+    }
+    setState(() => _badPage = false);
+    FocusScope.of(context).unfocus();
+    openMushaf(context, n);
+  }
 
   @override
   bool get wantKeepAlive => true;
@@ -223,8 +243,8 @@ class _MushafTabState extends ConsumerState<_MushafTab>
                   SegmentedButton<bool>(
                     showSelectedIcon: false,
                     segments: [
-                      ButtonSegment(value: false, label: Text(l.byJuz)),
                       ButtonSegment(value: true, label: Text(l.byPage)),
+                      ButtonSegment(value: false, label: Text(l.byJuz)),
                     ],
                     selected: {_byPage},
                     onSelectionChanged: (v) =>
@@ -255,38 +275,51 @@ class _MushafTabState extends ConsumerState<_MushafTab>
               )
             else
               SliverPadding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                sliver: SliverGrid.builder(
-                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                    maxCrossAxisExtent: 72,
-                    mainAxisSpacing: 8,
-                    crossAxisSpacing: 8,
-                    childAspectRatio: 1.25,
-                  ),
-                  itemCount: layout.pageCount,
-                  itemBuilder: (context, i) {
-                    final current = i + 1 == page;
-                    return Material(
-                      color: current
-                          ? scheme.primary
-                          : scheme.surfaceContainerHigh,
-                      borderRadius: BorderRadius.circular(12),
-                      clipBehavior: Clip.antiAlias,
-                      child: InkWell(
-                        onTap: () => openMushaf(context, i + 1),
-                        child: Center(
-                          child: Text(
-                            '${i + 1}',
-                            style: theme.textTheme.titleSmall?.copyWith(
-                              color: current
-                                  ? scheme.onPrimary
-                                  : scheme.onSurface,
+                padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+                sliver: SliverToBoxAdapter(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          controller: _pageField,
+                          keyboardType: TextInputType.number,
+                          textInputAction: TextInputAction.go,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly,
+                            LengthLimitingTextInputFormatter(3),
+                          ],
+                          decoration: InputDecoration(
+                            labelText: l.enterPage,
+                            helperText: '1–${layout.pageCount}',
+                            errorText: _badPage
+                                ? '1–${layout.pageCount}'
+                                : null,
+                            border: const OutlineInputBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(16),
+                              ),
                             ),
                           ),
+                          onChanged: (_) {
+                            if (_badPage) setState(() => _badPage = false);
+                          },
+                          onSubmitted: (_) => _openTyped(layout.pageCount),
                         ),
                       ),
-                    );
-                  },
+                      const SizedBox(width: 12),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 4),
+                        child: FilledButton(
+                          style: FilledButton.styleFrom(
+                            minimumSize: const Size(0, 48),
+                          ),
+                          onPressed: () => _openTyped(layout.pageCount),
+                          child: Text(l.openPage),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             const SliverPadding(padding: EdgeInsets.only(bottom: 24)),

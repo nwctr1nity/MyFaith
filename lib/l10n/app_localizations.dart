@@ -1306,47 +1306,119 @@ abstract class AppLocalizations {
   /// **'Tajweed colours'**
   String get showTajweed;
 
-  /// No description provided for @tajweedMaddLazim.
-  ///
-  /// In en, this message translates to:
-  /// **'Necessary lengthening, 6 counts'**
-  String get tajweedMaddLazim;
-
-  /// No description provided for @tajweedMaddMuttasil.
-  ///
-  /// In en, this message translates to:
-  /// **'Connected lengthening, 4 or 5 counts'**
-  String get tajweedMaddMuttasil;
-
-  /// No description provided for @tajweedMaddMunfasil.
-  ///
-  /// In en, this message translates to:
-  /// **'Separated lengthening, 2, 4 or 5 counts'**
-  String get tajweedMaddMunfasil;
-
-  /// No description provided for @tajweedMaddArid.
-  ///
-  /// In en, this message translates to:
-  /// **'Lengthening when stopping at the end of the ayah, 2, 4 or 6 counts'**
-  String get tajweedMaddArid;
-
   /// No description provided for @tajweedGhunnah.
   ///
   /// In en, this message translates to:
-  /// **'Nasalisation, 2 counts: ghunnah, ikhfa, iqlab, idgham with ghunnah'**
+  /// **'Ghunnah, ikhfa, idgham'**
   String get tajweedGhunnah;
+
+  /// No description provided for @tajweedGhunnahHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Idgham with ghunnah, ikhfa, iqlab, noon and meem with shadda, ikhfa shafawi'**
+  String get tajweedGhunnahHint;
 
   /// No description provided for @tajweedQalqalah.
   ///
   /// In en, this message translates to:
-  /// **'Qalqalah, the echoing bounce of the letter'**
+  /// **'Qalqalah'**
   String get tajweedQalqalah;
+
+  /// No description provided for @tajweedQalqalahHint.
+  ///
+  /// In en, this message translates to:
+  /// **'The echoing bounce of ق ط ب ج د with sukun'**
+  String get tajweedQalqalahHint;
+
+  /// No description provided for @tajweedMaddNatural.
+  ///
+  /// In en, this message translates to:
+  /// **'Madd, 2 counts'**
+  String get tajweedMaddNatural;
+
+  /// No description provided for @tajweedMaddNaturalHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Short silah, dagger alif'**
+  String get tajweedMaddNaturalHint;
+
+  /// No description provided for @tajweedMaddArid.
+  ///
+  /// In en, this message translates to:
+  /// **'Madd, 2, 4 or 6 counts'**
+  String get tajweedMaddArid;
+
+  /// No description provided for @tajweedMaddAridHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Madd arid lis-sukun, madd leen'**
+  String get tajweedMaddAridHint;
+
+  /// No description provided for @tajweedMaddWajib.
+  ///
+  /// In en, this message translates to:
+  /// **'Madd, 4 or 5 counts'**
+  String get tajweedMaddWajib;
+
+  /// No description provided for @tajweedMaddWajibHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Madd wajib muttasil, madd jaiz munfasil, long silah'**
+  String get tajweedMaddWajibHint;
+
+  /// No description provided for @tajweedMaddLazim.
+  ///
+  /// In en, this message translates to:
+  /// **'Madd, 6 counts'**
+  String get tajweedMaddLazim;
+
+  /// No description provided for @tajweedMaddLazimHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Madd lazim'**
+  String get tajweedMaddLazimHint;
+
+  /// No description provided for @tajweedTafkhim.
+  ///
+  /// In en, this message translates to:
+  /// **'Tafkhim'**
+  String get tajweedTafkhim;
+
+  /// No description provided for @tajweedTafkhimHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Heavy pronunciation: the letters خ ص ض غ ط ق ظ, heavy ra, the lam of the name Allah'**
+  String get tajweedTafkhimHint;
 
   /// No description provided for @tajweedSilent.
   ///
   /// In en, this message translates to:
-  /// **'Not pronounced, or merged into the next letter'**
+  /// **'Not read'**
   String get tajweedSilent;
+
+  /// No description provided for @tajweedSilentHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Hamzat al-wasl, lam shamsiyyah, full idgham without ghunnah, silent letters'**
+  String get tajweedSilentHint;
+
+  /// No description provided for @autoNextAyah.
+  ///
+  /// In en, this message translates to:
+  /// **'Play the next ayah automatically'**
+  String get autoNextAyah;
+
+  /// No description provided for @enterPage.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a page number'**
+  String get enterPage;
+
+  /// No description provided for @openPage.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get openPage;
 
   /// No description provided for @searchQuran.
   ///

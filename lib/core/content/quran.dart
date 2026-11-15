@@ -113,12 +113,13 @@ String stripArabicMarks(String text) => text
 
 /// The kinds of tajweed colouring, in the order the data files number them.
 enum TajweedKind {
-  maddLazim,
-  maddMuttasil,
-  maddMunfasil,
-  maddArid,
   ghunnah,
   qalqalah,
+  maddNatural,
+  maddArid,
+  maddWajib,
+  maddLazim,
+  tafkhim,
   silent,
 }
 

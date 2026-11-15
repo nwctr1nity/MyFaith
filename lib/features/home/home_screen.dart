@@ -87,7 +87,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ),
         actions: [
           Padding(
-            padding: const EdgeInsetsDirectional.only(end: 8),
+            padding: const EdgeInsetsDirectional.only(end: 16),
             child: FilledButton.tonalIcon(
               onPressed: () => Navigator.of(context).push(
                 MaterialPageRoute<void>(builder: (_) => const QiblaScreen()),

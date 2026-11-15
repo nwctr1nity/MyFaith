@@ -113,11 +113,14 @@ class _QuizState extends ConsumerState<_Quiz>
                   color: onHero,
                 ),
               ),
-              if (language != 'ar')
+              // Room for the vowel marks that hang under the Arabic line.
+              if (language != 'ar') ...[
+                const SizedBox(height: 24),
                 Text(
                   question.name.transliteration(language),
                   style: theme.textTheme.titleMedium?.copyWith(color: onHero),
                 ),
+              ],
             ],
           ),
         ),

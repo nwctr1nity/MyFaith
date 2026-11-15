@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -28,6 +30,15 @@ class _MushafScreenState extends ConsumerState<MushafScreen> {
   final _open = OpenTafsirs();
   late int _page = widget.initialPage;
 
+  /// How far down each visited page has been scrolled, from 0 to 1.
+  final _scrolled = <int, double>{};
+  final _fraction = ValueNotifier<double>(0);
+
+  void _onScroll(int page, double fraction) {
+    _scrolled[page] = fraction;
+    if (page == _page) _fraction.value = fraction;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -38,6 +49,7 @@ class _MushafScreenState extends ConsumerState<MushafScreen> {
   void dispose() {
     _pages.dispose();
     _open.dispose();
+    _fraction.dispose();
     super.dispose();
   }
 
@@ -105,22 +117,36 @@ class _MushafScreenState extends ConsumerState<MushafScreen> {
               preferredSize: const Size.fromHeight(46),
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: _Progress(
-                        label: l.pageOf(_page, layout.pageCount),
-                        value: _page / layout.pageCount,
-                      ),
-                    ),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      child: _Progress(
-                        label: l.juzOf(juz, layout.juzCount),
-                        value: juz / layout.juzCount,
-                      ),
-                    ),
-                  ],
+                child: ValueListenableBuilder<double>(
+                  valueListenable: _fraction,
+                  builder: (context, fraction, _) {
+                    // The page bar fills as the page is read from its
+                    // first ayah to its last; the juz bar counts the
+                    // pages of the juz, this one included as far as read.
+                    final juzFirst = layout.pageOfJuz(juz);
+                    final juzEnd = juz < layout.juzCount
+                        ? layout.pageOfJuz(juz + 1)
+                        : layout.pageCount + 1;
+                    final juzPages = math.max(1, juzEnd - juzFirst);
+                    return Row(
+                      children: [
+                        Expanded(
+                          child: _Progress(
+                            label: l.pageOf(_page, layout.pageCount),
+                            value: fraction,
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: _Progress(
+                            label: l.juzOf(juz, layout.juzCount),
+                            value: ((_page - juzFirst + fraction) / juzPages)
+                                .clamp(0.0, 1.0),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
                 ),
               ),
             ),
@@ -134,6 +160,7 @@ class _MushafScreenState extends ConsumerState<MushafScreen> {
               itemCount: layout.pageCount,
               onPageChanged: (i) {
                 setState(() => _page = i + 1);
+                _fraction.value = _scrolled[i + 1] ?? 0;
                 _save();
               },
               itemBuilder: (context, i) => Directionality(
@@ -146,6 +173,7 @@ class _MushafScreenState extends ConsumerState<MushafScreen> {
                   open: _open,
                   focus: i + 1 == widget.initialPage ? widget.focus : null,
                   background: scheme.surface,
+                  onScroll: (f) => _onScroll(i + 1, f),
                 ),
               ),
             ),
@@ -195,8 +223,12 @@ class _MushafPage extends ConsumerStatefulWidget {
     required this.surahs,
     required this.open,
     required this.background,
+    required this.onScroll,
     this.focus,
   });
+
+  /// Reports how far down the page is scrolled, from 0 to 1.
+  final ValueChanged<double> onScroll;
 
   final int page;
   final MushafLayout layout;
@@ -244,6 +276,33 @@ class _MushafPageState extends ConsumerState<_MushafPage> {
 
     // A page is short, so it is built whole: that lets it scroll straight
     // to any of its ayahs.
+    return NotificationListener<ScrollMetricsNotification>(
+      onNotification: (n) => _report(n.metrics),
+      child: NotificationListener<ScrollUpdateNotification>(
+        onNotification: (n) => _report(n.metrics),
+        child: _content(l, theme, surahs, verses, texts),
+      ),
+    );
+  }
+
+  bool _report(ScrollMetrics m) {
+    if (m.axis != Axis.vertical) return false;
+    final max = m.maxScrollExtent;
+    // A page that fits on the screen is read as soon as it is open.
+    final f = max <= 0 ? 1.0 : (m.pixels / max).clamp(0.0, 1.0);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) widget.onScroll(f);
+    });
+    return false;
+  }
+
+  Widget _content(
+    AppLocalizations l,
+    ThemeData theme,
+    List<SurahInfo> surahs,
+    List<Verse> verses,
+    Map<int, SurahText> texts,
+  ) {
     return SingleChildScrollView(
       padding: const EdgeInsets.only(bottom: 24),
       child: Column(

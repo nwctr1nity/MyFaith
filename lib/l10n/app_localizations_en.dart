@@ -692,27 +692,66 @@ class AppLocalizationsEn extends AppLocalizations {
   String get showTajweed => 'Tajweed colours';
 
   @override
-  String get tajweedMaddLazim => 'Necessary lengthening, 6 counts';
+  String get tajweedGhunnah => 'Ghunnah, ikhfa, idgham';
 
   @override
-  String get tajweedMaddMuttasil => 'Connected lengthening, 4 or 5 counts';
+  String get tajweedGhunnahHint =>
+      'Idgham with ghunnah, ikhfa, iqlab, noon and meem with shadda, ikhfa shafawi';
 
   @override
-  String get tajweedMaddMunfasil => 'Separated lengthening, 2, 4 or 5 counts';
+  String get tajweedQalqalah => 'Qalqalah';
 
   @override
-  String get tajweedMaddArid =>
-      'Lengthening when stopping at the end of the ayah, 2, 4 or 6 counts';
+  String get tajweedQalqalahHint =>
+      'The echoing bounce of ق ط ب ج د with sukun';
 
   @override
-  String get tajweedGhunnah =>
-      'Nasalisation, 2 counts: ghunnah, ikhfa, iqlab, idgham with ghunnah';
+  String get tajweedMaddNatural => 'Madd, 2 counts';
 
   @override
-  String get tajweedQalqalah => 'Qalqalah, the echoing bounce of the letter';
+  String get tajweedMaddNaturalHint => 'Short silah, dagger alif';
 
   @override
-  String get tajweedSilent => 'Not pronounced, or merged into the next letter';
+  String get tajweedMaddArid => 'Madd, 2, 4 or 6 counts';
+
+  @override
+  String get tajweedMaddAridHint => 'Madd arid lis-sukun, madd leen';
+
+  @override
+  String get tajweedMaddWajib => 'Madd, 4 or 5 counts';
+
+  @override
+  String get tajweedMaddWajibHint =>
+      'Madd wajib muttasil, madd jaiz munfasil, long silah';
+
+  @override
+  String get tajweedMaddLazim => 'Madd, 6 counts';
+
+  @override
+  String get tajweedMaddLazimHint => 'Madd lazim';
+
+  @override
+  String get tajweedTafkhim => 'Tafkhim';
+
+  @override
+  String get tajweedTafkhimHint =>
+      'Heavy pronunciation: the letters خ ص ض غ ط ق ظ, heavy ra, the lam of the name Allah';
+
+  @override
+  String get tajweedSilent => 'Not read';
+
+  @override
+  String get tajweedSilentHint =>
+      'Hamzat al-wasl, lam shamsiyyah, full idgham without ghunnah, silent letters';
+
+  @override
+  String get autoNextAyah => 'Play the next ayah automatically';
+
+  @override
+  String get enterPage => 'Enter a page number';
+
+  @override
+  String get openPage => 'Open';
 
   @override
   String get searchQuran => 'Search the Quran';

@@ -129,13 +129,16 @@ void main() {
     expect(kindAt(baqara, 25, 'ن', TajweedKind.ghunnah), isNotEmpty);
     expect(kindAt(baqara, 20, 'ب', TajweedKind.qalqalah), isNotEmpty);
     expect(
-      kindAt(baqara, 20, '\u0627\u0653', TajweedKind.maddMuttasil),
+      kindAt(baqara, 20, '\u0627\u0653', TajweedKind.maddWajib),
       isNotEmpty,
     );
-    expect(
-      kindAt(baqara, 20, '\u0627\u0653', TajweedKind.maddMunfasil),
-      isNotEmpty,
-    );
+    // The heavy lam of the name of Allah, and the light one after a kasra.
+    expect(kindAt(ikhlas, 1, 'ل', TajweedKind.tafkhim), isNotEmpty);
+    expect(kindAt(fatiha, 1, 'ل', TajweedKind.tafkhim), isEmpty);
+    // Madd lin when stopping on "Quraysh", the dagger alif of "ilaf".
+    final quraysh = _surah(106);
+    expect(kindAt(quraysh, 1, 'ي', TajweedKind.maddArid), isNotEmpty);
+    expect(kindAt(quraysh, 1, 'ل', TajweedKind.maddNatural), isNotEmpty);
   });
 
   test('search finds a word in the translation and in the Arabic', () {

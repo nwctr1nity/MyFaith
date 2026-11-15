@@ -272,7 +272,6 @@ class _DhikrCounterScreenState extends ConsumerState<DhikrCounterScreen> {
             },
             itemBuilder: (_) => [
               PopupMenuItem(value: 'goal', child: Text(l.dhikrGoal)),
-              PopupMenuItem(value: 'reset', child: Text(l.salawatReset)),
             ],
           ),
         ],
@@ -341,58 +340,88 @@ class _DhikrCounterScreenState extends ConsumerState<DhikrCounterScreen> {
           ),
           Expanded(
             flex: 5,
-            child: Center(
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: AspectRatio(
-                  aspectRatio: 1,
-                  child: Semantics(
-                    button: true,
-                    label: l.salawatTap,
-                    child: GestureDetector(
-                      behavior: HitTestBehavior.opaque,
-                      onTap: () {
-                        // A longer buzz tells the hand the goal is reached.
-                        count + 1 == goal
-                            ? HapticFeedback.heavyImpact()
-                            : HapticFeedback.lightImpact();
-                        controller.addDhikr(current.id, today);
-                      },
-                      child: TweenAnimationBuilder<double>(
-                        tween: Tween(end: math.min(1, count / goal)),
-                        duration: const Duration(milliseconds: 250),
-                        builder: (context, progress, child) => CustomPaint(
-                          painter: RingPainter(progress, scheme),
-                          child: child,
-                        ),
-                        child: Center(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                '$count',
-                                style: theme.textTheme.displayLarge?.copyWith(
-                                  fontWeight: FontWeight.w300,
-                                  color: scheme.onSurface,
-                                  fontFeatures: const [
-                                    FontFeature.tabularFigures(),
-                                  ],
+            child: LayoutBuilder(
+              builder: (context, box) {
+                // The ring is the largest square that fits; the reset
+                // button sits level with its top, under the right edge
+                // of the card above.
+                final side = math.max(
+                  0.0,
+                  math.min(box.maxWidth, box.maxHeight) - 32,
+                );
+                return Stack(
+                  children: [
+                    PositionedDirectional(
+                      top: (box.maxHeight - side) / 2,
+                      end: box.maxWidth * 0.04 + 10,
+                      child: IconButton.filledTonal(
+                        tooltip: l.salawatReset,
+                        visualDensity: VisualDensity.compact,
+                        icon: const Icon(Icons.refresh, size: 20),
+                        onPressed: count == 0
+                            ? null
+                            : () => controller.resetDhikr(current.id, today),
+                      ),
+                    ),
+                    Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: AspectRatio(
+                          aspectRatio: 1,
+                          child: Semantics(
+                            button: true,
+                            label: l.salawatTap,
+                            child: GestureDetector(
+                              behavior: HitTestBehavior.opaque,
+                              onTap: () {
+                                // A longer buzz tells the hand the goal is reached.
+                                count + 1 == goal
+                                    ? HapticFeedback.heavyImpact()
+                                    : HapticFeedback.lightImpact();
+                                controller.addDhikr(current.id, today);
+                              },
+                              child: TweenAnimationBuilder<double>(
+                                tween: Tween(end: math.min(1, count / goal)),
+                                duration: const Duration(milliseconds: 250),
+                                builder: (context, progress, child) =>
+                                    CustomPaint(
+                                      painter: RingPainter(progress, scheme),
+                                      child: child,
+                                    ),
+                                child: Center(
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text(
+                                        '$count',
+                                        style: theme.textTheme.displayLarge
+                                            ?.copyWith(
+                                              fontWeight: FontWeight.w300,
+                                              color: scheme.onSurface,
+                                              fontFeatures: const [
+                                                FontFeature.tabularFigures(),
+                                              ],
+                                            ),
+                                      ),
+                                      Text(
+                                        l.ofGoal(goal),
+                                        style: theme.textTheme.bodyMedium
+                                            ?.copyWith(
+                                              color: scheme.onSurfaceVariant,
+                                            ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
-                              Text(
-                                l.ofGoal(goal),
-                                style: theme.textTheme.bodyMedium?.copyWith(
-                                  color: scheme.onSurfaceVariant,
-                                ),
-                              ),
-                            ],
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ),
-              ),
+                  ],
+                );
+              },
             ),
           ),
           Padding(

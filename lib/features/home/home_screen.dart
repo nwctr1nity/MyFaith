@@ -1,3 +1,4 @@
+import 'update_card.dart';
 import 'dart:math' as math;
 
 import 'dart:async';
@@ -193,6 +194,7 @@ class _Timetable extends ConsumerWidget {
     return ListView(
       padding: const EdgeInsets.fromLTRB(16, 4, 16, 24),
       children: [
+        const UpdateCard(),
         Container(
           decoration: BoxDecoration(
             gradient: heroGradient(scheme),

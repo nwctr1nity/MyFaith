@@ -1635,6 +1635,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'north,north-east,east,south-east,south,south-west,west,north-west'**
   String get compassPoints;
+
+  /// No description provided for @updateAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Version {version} is out'**
+  String updateAvailable(String version);
+
+  /// No description provided for @updateHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Download the file and install it over this one. Your settings stay.'**
+  String get updateHint;
+
+  /// No description provided for @updateDownload.
+  ///
+  /// In en, this message translates to:
+  /// **'Download'**
+  String get updateDownload;
+
+  /// No description provided for @updateLater.
+  ///
+  /// In en, this message translates to:
+  /// **'Not this one'**
+  String get updateLater;
+
+  /// No description provided for @checkUpdates.
+  ///
+  /// In en, this message translates to:
+  /// **'Check for updates'**
+  String get checkUpdates;
+
+  /// No description provided for @checkUpdatesHint.
+  ///
+  /// In en, this message translates to:
+  /// **'On start the app asks GitHub whether a newer version is out.'**
+  String get checkUpdatesHint;
+
+  /// No description provided for @versionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Installed: {version}.'**
+  String versionLabel(String version);
 }
 
 class _AppLocalizationsDelegate

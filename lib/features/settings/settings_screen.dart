@@ -1,6 +1,7 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../state/update_provider.dart';
 import '../../core/prayer/prayer_calculator.dart';
 import '../../l10n/app_localizations.dart';
 import '../../state/app_settings.dart';
@@ -21,6 +22,7 @@ class SettingsScreen extends ConsumerWidget {
     final l = AppLocalizations.of(context)!;
     final settings = ref.watch(settingsProvider);
     final controller = ref.read(settingsProvider.notifier);
+    final version = ref.watch(installedVersionProvider).value;
 
     String themeName(ThemeMode mode) {
       switch (mode) {
@@ -71,6 +73,17 @@ class SettingsScreen extends ConsumerWidget {
               options: {for (final m in ThemeMode.values) m: themeName(m)},
               onSelected: controller.setThemeMode,
             ),
+          ),
+          SwitchListTile(
+            secondary: const Icon(Icons.system_update_outlined),
+            title: Text(l.checkUpdates),
+            subtitle: Text(
+              version == null
+                  ? l.checkUpdatesHint
+                  : '${l.checkUpdatesHint} ${l.versionLabel(version)}',
+            ),
+            value: settings.checkUpdates,
+            onChanged: (v) => controller.setValue('updCheck', v),
           ),
           _SectionHeader(l.calculation),
           ListTile(

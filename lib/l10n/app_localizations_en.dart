@@ -873,4 +873,31 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get compassPoints =>
       'north,north-east,east,south-east,south,south-west,west,north-west';
+
+  @override
+  String updateAvailable(String version) {
+    return 'Version $version is out';
+  }
+
+  @override
+  String get updateHint =>
+      'Download the file and install it over this one. Your settings stay.';
+
+  @override
+  String get updateDownload => 'Download';
+
+  @override
+  String get updateLater => 'Not this one';
+
+  @override
+  String get checkUpdates => 'Check for updates';
+
+  @override
+  String get checkUpdatesHint =>
+      'On start the app asks GitHub whether a newer version is out.';
+
+  @override
+  String versionLabel(String version) {
+    return 'Installed: $version.';
+  }
 }

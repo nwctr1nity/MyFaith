@@ -862,4 +862,31 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get compassPoints =>
       'الشمال,الشمال الشرقي,الشرق,الجنوب الشرقي,الجنوب,الجنوب الغربي,الغرب,الشمال الغربي';
+
+  @override
+  String updateAvailable(String version) {
+    return 'صدر الإصدار $version';
+  }
+
+  @override
+  String get updateHint =>
+      'نزّل الملف وثبّته فوق هذا الإصدار. تبقى إعداداتك كما هي.';
+
+  @override
+  String get updateDownload => 'تنزيل';
+
+  @override
+  String get updateLater => 'تخطَّ هذا الإصدار';
+
+  @override
+  String get checkUpdates => 'التحقق من التحديثات';
+
+  @override
+  String get checkUpdatesHint =>
+      'عند التشغيل يسأل التطبيق GitHub عن صدور إصدار أحدث.';
+
+  @override
+  String versionLabel(String version) {
+    return 'المثبَّت: $version.';
+  }
 }

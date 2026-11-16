@@ -192,6 +192,12 @@ class AppSettings {
     return {for (final name in raw) ?_byName(PrayerSlot.values, name)};
   }
 
+  /// Whether the app asks GitHub for a newer release when it starts.
+  bool get checkUpdates => _bool('updCheck', true);
+
+  /// A version the user chose not to be offered again.
+  String? get skippedUpdate => _data['updSkip'] as String?;
+
   /// Whose adhan plays, an id from `muezzins`; null is the default one.
   String? get muezzinId => _data['muezzin'] as String?;
 

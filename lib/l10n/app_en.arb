@@ -524,5 +524,14 @@
       }
     }
   },
-  "compassPoints": "north,north-east,east,south-east,south,south-west,west,north-west"
+  "compassPoints": "north,north-east,east,south-east,south,south-west,west,north-west",
+  "updateAvailable": "Version {version} is out",
+  "@updateAvailable": {"placeholders": {"version": {"type": "String"}}},
+  "updateHint": "Download the file and install it over this one. Your settings stay.",
+  "updateDownload": "Download",
+  "updateLater": "Not this one",
+  "checkUpdates": "Check for updates",
+  "checkUpdatesHint": "On start the app asks GitHub whether a newer version is out.",
+  "versionLabel": "Installed: {version}.",
+  "@versionLabel": {"placeholders": {"version": {"type": "String"}}}
 }

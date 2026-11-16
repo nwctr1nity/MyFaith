@@ -8,7 +8,9 @@ import 'package:muslim_app/core/prayer/prayer_calculator.dart';
 import 'package:muslim_app/features/qibla/qibla_screen.dart';
 import 'package:muslim_app/services/notification_service.dart';
 import 'package:muslim_app/state/app_settings.dart';
+import 'package:muslim_app/services/update_service.dart';
 import 'package:muslim_app/state/notification_sync.dart';
+import 'package:muslim_app/state/update_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timezone/data/latest_all.dart' as tzdata;
 
@@ -64,6 +66,18 @@ class FakeNotifications implements NotificationService {
   int asked = 0;
 }
 
+class FakeUpdates implements UpdateService {
+  FakeUpdates(this.update);
+
+  final AppUpdate? update;
+
+  @override
+  Future<String> installedVersion() async => '1.1.0';
+
+  @override
+  Future<AppUpdate?> check() async => update;
+}
+
 Future<SharedPreferences> _prefs([AppSettings? settings]) async {
   SharedPreferences.setMockInitialValues({
     if (settings != null) 'settings.v1': jsonEncode(settings.toJson()),
@@ -75,6 +89,7 @@ Future<void> _pump(
   WidgetTester tester,
   SharedPreferences prefs, {
   FakeNotifications? notifications,
+  AppUpdate? update,
 }) async {
   await tester.pumpWidget(ProviderScope(
     overrides: [
@@ -83,6 +98,7 @@ Future<void> _pump(
           .overrideWithValue(notifications ?? FakeNotifications()),
       compassProvider.overrideWithValue(
           () => Stream.value((heading: 40.0, accuracy: 15.0))),
+      updateServiceProvider.overrideWithValue(FakeUpdates(update)),
     ],
     child: const MuslimApp(),
   ));
@@ -179,6 +195,39 @@ void main() {
       expect(find.text(name), findsOneWidget, reason: name);
     }
     expect(find.textContaining(RegExp(r'^\d\d:\d\d:\d\d$')), findsOneWidget);
+  });
+
+  testWidgets('a newer version is offered and can be skipped', (tester) async {
+    final prefs =
+        await _prefs(AppSettings.of(languageCode: 'ru', place: _almaty));
+    await _pump(
+      tester,
+      prefs,
+      update: const AppUpdate(version: '1.2.0', url: 'https://example.com/a'),
+    );
+    await tester.pumpAndSettle();
+    expect(find.text('Вышла версия 1.2.0'), findsOneWidget);
+
+    await tester.tap(find.text('Пропустить'));
+    await tester.pumpAndSettle();
+    expect(find.text('Вышла версия 1.2.0'), findsNothing);
+  });
+
+  test('versions compare by number, and a release yields its APK', () {
+    expect(compareVersions('v1.10.0', '1.9.3'), greaterThan(0));
+    expect(compareVersions('1.1.0', '1.1.0+2'), 0);
+    expect(compareVersions('v1.0.9', '1.1.0'), lessThan(0));
+    final release = {
+      'tag_name': 'v1.2.0',
+      'html_url': 'https://github.com/x/releases/tag/v1.2.0',
+      'assets': [
+        {'name': 'notes.txt', 'browser_download_url': 'https://x/notes.txt'},
+        {'name': 'myfaith.apk', 'browser_download_url': 'https://x/myfaith.apk'},
+      ],
+    };
+    expect(updateFromRelease(release, '1.1.0')!.url, 'https://x/myfaith.apk');
+    expect(updateFromRelease(release, '1.1.0')!.version, '1.2.0');
+    expect(updateFromRelease(release, '1.2.0'), isNull);
   });
 
   testWidgets('Arabic lays the screen out right to left', (tester) async {

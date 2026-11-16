@@ -873,4 +873,31 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get compassPoints =>
       'севере,северо-востоке,востоке,юго-востоке,юге,юго-западе,западе,северо-западе';
+
+  @override
+  String updateAvailable(String version) {
+    return 'Вышла версия $version';
+  }
+
+  @override
+  String get updateHint =>
+      'Скачайте файл и установите его поверх этой версии. Настройки сохранятся.';
+
+  @override
+  String get updateDownload => 'Скачать';
+
+  @override
+  String get updateLater => 'Пропустить';
+
+  @override
+  String get checkUpdates => 'Проверять обновления';
+
+  @override
+  String get checkUpdatesHint =>
+      'При запуске приложение спрашивает у GitHub, не вышла ли новая версия.';
+
+  @override
+  String versionLabel(String version) {
+    return 'Установлена $version.';
+  }
 }

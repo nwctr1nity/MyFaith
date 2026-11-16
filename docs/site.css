@@ -83,6 +83,8 @@ a { color: #7ee29a; text-underline-offset: 3px; }
 section + section { margin-top: 28px; }
 /* With scripts on, one language shows at a time. */
 .one-language section[hidden] { display: none; }
+/* A link to a language opens the page at its top, not at the section. */
+.one-language section { scroll-margin-top: 100000px; }
 [dir="rtl"] { font-family: "Noto Naskh Arabic", "Geeza Pro", "SF Arabic", Tahoma, sans-serif; }
 [dir="rtl"] h1 { letter-spacing: 0; }
 

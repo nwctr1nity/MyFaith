@@ -153,8 +153,6 @@
   document.documentElement.classList.add('one-language');
   window.addEventListener('hashchange', function () { pick(); window.scrollTo(0, 0); });
   pick();
-  // The address may name a language; the page still opens at its top.
-  window.addEventListener('load', function () { window.scrollTo(0, 0); });
 })();
 </script>
 </body>

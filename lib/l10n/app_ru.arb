@@ -262,5 +262,6 @@
   "updateLater": "Пропустить",
   "checkUpdates": "Проверять обновления",
   "checkUpdatesHint": "При запуске приложение спрашивает у GitHub, не вышла ли новая версия.",
-  "versionLabel": "Установлена {version}."
+  "versionLabel": "Установлена {version}.",
+  "channelQuran": "Чтение Корана"
 }

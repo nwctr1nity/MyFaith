@@ -889,4 +889,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String versionLabel(String version) {
     return 'المثبَّت: $version.';
   }
+
+  @override
+  String get channelQuran => 'تلاوة القرآن';
 }

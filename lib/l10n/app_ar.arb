@@ -262,5 +262,6 @@
   "updateLater": "تخطَّ هذا الإصدار",
   "checkUpdates": "التحقق من التحديثات",
   "checkUpdatesHint": "عند التشغيل يسأل التطبيق GitHub عن صدور إصدار أحدث.",
-  "versionLabel": "المثبَّت: {version}."
+  "versionLabel": "المثبَّت: {version}.",
+  "channelQuran": "تلاوة القرآن"
 }

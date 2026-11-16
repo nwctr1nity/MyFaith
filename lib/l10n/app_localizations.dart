@@ -1677,6 +1677,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Installed: {version}.'**
   String versionLabel(String version);
+
+  /// No description provided for @channelQuran.
+  ///
+  /// In en, this message translates to:
+  /// **'Quran recitation'**
+  String get channelQuran;
 }
 
 class _AppLocalizationsDelegate

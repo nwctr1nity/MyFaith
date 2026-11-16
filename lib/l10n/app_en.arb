@@ -533,5 +533,6 @@
   "checkUpdates": "Check for updates",
   "checkUpdatesHint": "On start the app asks GitHub whether a newer version is out.",
   "versionLabel": "Installed: {version}.",
-  "@versionLabel": {"placeholders": {"version": {"type": "String"}}}
+  "@versionLabel": {"placeholders": {"version": {"type": "String"}}},
+  "channelQuran": "Quran recitation"
 }

@@ -2,15 +2,18 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 
 import '../core/content/quran.dart';
 import 'app_settings.dart';
 import 'content_providers.dart';
+import 'notification_sync.dart' show notificationStrings;
 
 /// Plays one recording at a time. Tests replace it with a fake.
 abstract class AyahPlayer {
-  /// Starts [url] from the beginning.
-  Future<void> play(String url);
+  /// Starts [url] from the beginning. [title] and [artist] are what the
+  /// lock screen and the notification show.
+  Future<void> play(String url, {String title = '', String artist = ''});
   Future<void> pause();
   Future<void> resume();
   Future<void> stop();
@@ -48,8 +51,18 @@ class JustAudioAyahPlayer implements AyahPlayer {
   Stream<void> get completed => _completed.stream;
 
   @override
-  Future<void> play(String url) async {
-    await _player.setUrl(url);
+  Future<void> play(
+    String url, {
+    String title = '',
+    String artist = '',
+  }) async {
+    await _player.setAudioSource(
+      AudioSource.uri(
+        Uri.parse(url),
+        // The background service shows this while the screen is off.
+        tag: MediaItem(id: url, title: title, artist: artist, album: 'MyFaith'),
+      ),
+    );
     // `play` completes only when playback ends, so it is not awaited.
     unawaited(_player.play());
   }
@@ -153,7 +166,18 @@ class QuranAudioController extends Notifier<QuranAudioState> {
     final reciter = reciterById(ref.read(settingsProvider).quranReciter);
     try {
       await _player.setSpeed(ref.read(settingsProvider).quranSpeedTenths / 10);
-      await _player.play(reciter.url(verse));
+      final language =
+          notificationStrings(ref.read(settingsProvider).languageCode)
+              .localeName;
+      final surahs = await ref.read(surahIndexProvider.future);
+      if (request != _request) return;
+      await _player.play(
+        reciter.url(verse),
+        title:
+            '${surahs[verse.$1 - 1].localizedName(language)} '
+            '${verse.$1}:${verse.$2}',
+        artist: language == 'ar' ? reciter.arabicName : reciter.name,
+      );
       if (request != _request) return;
       state = QuranAudioState(verse: verse, playing: true);
     } on Object {

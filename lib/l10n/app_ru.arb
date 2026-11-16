@@ -281,5 +281,6 @@
   "backupNotOurs": "Это не файл резервной копии MyFaith",
   "backupRestoreConfirm": "Текущие настройки, закладки и счётчики будут заменены теми, что в файле.",
   "backupRestoreAction": "Восстановить",
-  "backupRestored": "Восстановлено из файла"
+  "backupRestored": "Восстановлено из файла",
+  "guideAdhan": "Азан и икама"
 }

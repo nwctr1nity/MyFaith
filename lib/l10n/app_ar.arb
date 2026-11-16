@@ -281,5 +281,6 @@
   "backupNotOurs": "هذا ليس ملف نسخة احتياطية من MyFaith",
   "backupRestoreConfirm": "ستُستبدل الإعدادات والعلامات والعدّادات الحالية بما في الملف.",
   "backupRestoreAction": "استعادة",
-  "backupRestored": "تمت الاستعادة من الملف"
+  "backupRestored": "تمت الاستعادة من الملف",
+  "guideAdhan": "الأذان والإقامة"
 }

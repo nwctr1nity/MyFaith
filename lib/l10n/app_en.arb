@@ -554,5 +554,6 @@
   "backupNotOurs": "This is not a MyFaith backup file",
   "backupRestoreConfirm": "The current settings, bookmarks and counters will be replaced with the ones from the file.",
   "backupRestoreAction": "Restore",
-  "backupRestored": "Restored from the file"
+  "backupRestored": "Restored from the file",
+  "guideAdhan": "The adhan and the iqamah"
 }

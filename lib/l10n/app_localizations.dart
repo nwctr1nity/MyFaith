@@ -1791,6 +1791,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Restored from the file'**
   String get backupRestored;
+
+  /// No description provided for @guideAdhan.
+  ///
+  /// In en, this message translates to:
+  /// **'The adhan and the iqamah'**
+  String get guideAdhan;
 }
 
 class _AppLocalizationsDelegate

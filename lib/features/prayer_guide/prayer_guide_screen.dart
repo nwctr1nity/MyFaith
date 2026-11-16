@@ -160,6 +160,10 @@ class PrayerGuideScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 20),
+          Text(l.guideAdhan, style: heading),
+          const SizedBox(height: 8),
+          for (final step in guideAdhan) _StepCard(step: step),
+          const SizedBox(height: 12),
           Text(l.guideSteps, style: heading),
           const SizedBox(height: 8),
           for (var i = 0; i < guideSteps.length; i++)

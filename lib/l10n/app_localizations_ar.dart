@@ -952,4 +952,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get backupRestored => 'تمت الاستعادة من الملف';
+
+  @override
+  String get guideAdhan => 'الأذان والإقامة';
 }

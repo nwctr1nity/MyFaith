@@ -963,4 +963,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get backupRestored => 'Restored from the file';
+
+  @override
+  String get guideAdhan => 'The adhan and the iqamah';
 }

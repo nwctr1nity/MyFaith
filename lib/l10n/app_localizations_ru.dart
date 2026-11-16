@@ -963,4 +963,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get backupRestored => 'Восстановлено из файла';
+
+  @override
+  String get guideAdhan => 'Азан и икама';
 }

@@ -61,6 +61,16 @@ const muezzins = <Muezzin>[
     fajr: 'azan_turki_fajr',
     other: 'azan_turki',
   ),
+  Muezzin(
+    id: 'baafif',
+    names: {
+      'ru': 'Шейх Абдулла Ба-Афиф',
+      'en': 'Sheikh Abdullah Ba-Afif',
+      'ar': 'الشيخ عبد الله باعفيف',
+    },
+    fajr: 'azan_baafif_fajr',
+    other: 'azan_baafif',
+  ),
 ];
 
 Muezzin muezzinById(String? id) =>

@@ -1201,7 +1201,7 @@ abstract class AppLocalizations {
   /// No description provided for @sourcesAdhan.
   ///
   /// In en, this message translates to:
-  /// **'Adhan: recordings from Doha, Qatar, made in 2013–2014. Source: Internet Archive, public domain.'**
+  /// **'Adhan: recordings from Doha, Qatar, made in 2013–2014 (Internet Archive, public domain), and the adhans of Sheikh Tawfiq Khoj and Sheikh Turki al-Hassani.'**
   String get sourcesAdhan;
 
   /// No description provided for @muezzin.

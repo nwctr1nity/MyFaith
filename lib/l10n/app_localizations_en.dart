@@ -620,7 +620,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get sourcesAdhan =>
-      'Adhan: recordings from Doha, Qatar, made in 2013–2014. Source: Internet Archive, public domain.';
+      'Adhan: recordings from Doha, Qatar, made in 2013–2014 (Internet Archive, public domain), and the adhans of Sheikh Tawfiq Khoj and Sheikh Turki al-Hassani.';
 
   @override
   String get muezzin => 'Muezzin';

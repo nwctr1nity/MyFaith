@@ -41,6 +41,26 @@ const muezzins = <Muezzin>[
       PrayerSlot.isha: 'azan_doha_isha',
     },
   ),
+  Muezzin(
+    id: 'khoj',
+    names: {
+      'ru': 'Шейх Тауфик Ходж',
+      'en': 'Sheikh Tawfiq Khoj',
+      'ar': 'الشيخ توفيق خوج',
+    },
+    fajr: 'azan_taufiq_fajr',
+    other: 'azan_taufiq',
+  ),
+  Muezzin(
+    id: 'hassani',
+    names: {
+      'ru': 'Шейх Турки аль-Хасани',
+      'en': 'Sheikh Turki al-Hassani',
+      'ar': 'الشيخ تركي الحسني',
+    },
+    fajr: 'azan_turki_fajr',
+    other: 'azan_turki',
+  ),
 ];
 
 Muezzin muezzinById(String? id) =>

@@ -612,7 +612,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get sourcesAdhan =>
-      'الأذان: تسجيلات من الدوحة (قطر) بين عامي 2013 و2014. المصدر: أرشيف الإنترنت، ملكية عامة.';
+      'الأذان: تسجيلات من الدوحة (قطر) بين عامي 2013 و2014 (أرشيف الإنترنت، ملكية عامة)، وأذان الشيخ توفيق خوج والشيخ تركي الحسني.';
 
   @override
   String get muezzin => 'المؤذن';

@@ -621,7 +621,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get sourcesAdhan =>
-      'Азан: записи из Дохи (Катар), сделанные в 2013–2014 годах. Источник: Internet Archive, общественное достояние.';
+      'Азан: записи из Дохи (Катар), сделанные в 2013–2014 годах (Internet Archive, общественное достояние), а также азаны шейха Тауфика Ходжа и шейха Турки аль-Хасани.';
 
   @override
   String get muezzin => 'Муэдзин';

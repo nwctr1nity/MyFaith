@@ -1,0 +1,99 @@
+/* MyFaith site. Dark, with green light behind glass cards. No external files. */
+:root {
+  --bg: #050806;
+  --fg: #f2f5f1;
+  --muted: #9aa89c;
+  --green: #34c759;
+  --green-deep: #37563b;
+  --line: rgba(255, 255, 255, .09);
+  --card: rgba(255, 255, 255, .035);
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0; min-height: 100vh; color: var(--fg); background: var(--bg);
+  font: 17px/1.6 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+/* The light: two soft green glows and faint rays from the top. */
+body::before {
+  content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(60% 45% at 50% -8%, rgba(52, 199, 89, .30), transparent 70%),
+    radial-gradient(45% 35% at 8% 38%, rgba(55, 86, 59, .55), transparent 70%),
+    radial-gradient(40% 30% at 96% 70%, rgba(52, 199, 89, .10), transparent 70%),
+    repeating-linear-gradient(100deg, transparent 0 46px, rgba(255, 255, 255, .018) 46px 47px);
+}
+main { max-width: 760px; margin: 0 auto; padding: 28px 16px 72px; }
+
+.top { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 56px; }
+.brand { display: inline-flex; align-items: center; gap: 10px; color: var(--fg); text-decoration: none; font-weight: 600; letter-spacing: -.01em; }
+.brand img { width: 32px; height: 32px; border-radius: 9px; box-shadow: 0 0 0 1px var(--line), 0 6px 18px rgba(52, 199, 89, .25); }
+
+.hero { text-align: center; margin-bottom: 40px; }
+.pill {
+  display: inline-block; padding: 5px 14px; border-radius: 999px; font-size: 13px; color: #cfe9d4;
+  border: 1px solid rgba(52, 199, 89, .35); background: rgba(52, 199, 89, .10);
+}
+h1 { font-size: clamp(30px, 6.4vw, 46px); line-height: 1.12; font-weight: 500; letter-spacing: -.025em; margin: 18px 0 12px; }
+h1 em { font-style: italic; font-weight: 400; color: #bfe8c8; }
+.lead { color: var(--muted); max-width: 520px; margin: 0 auto; }
+.hero .lead + .lead { margin-top: 4px; }
+
+.card {
+  position: relative; overflow: hidden; border-radius: 22px; padding: 26px 24px;
+  background: linear-gradient(160deg, rgba(52, 199, 89, .13), var(--card) 42%);
+  border: 1px solid var(--line);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .06), 0 24px 60px rgba(0, 0, 0, .45);
+  -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px);
+}
+.card > :first-child { margin-top: 0; }
+.card > :last-child { margin-bottom: 0; }
+.card h2 { font-size: 19px; font-weight: 600; letter-spacing: -.01em; margin: 26px 0 6px; padding-top: 22px; border-top: 1px solid var(--line); }
+.card p, .card li { color: #d5ddd4; }
+.card ul { padding-inline-start: 20px; margin: 8px 0; }
+.card li { margin: 6px 0; }
+.card li::marker { color: var(--green); }
+.date { color: var(--muted) !important; font-size: 15px; margin: 0 0 16px; }
+a { color: #7ee29a; text-underline-offset: 3px; }
+
+/* Buttons the way iOS draws them: a filled capsule and a grey tinted one. */
+.actions { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 26px; }
+.button {
+  display: inline-flex; align-items: center; justify-content: center; min-height: 50px; padding: 0 22px;
+  border-radius: 14px; font-size: 17px; font-weight: 600; text-decoration: none; color: #04130a;
+  background: var(--green); transition: transform .12s ease, opacity .12s ease;
+}
+.button.grey { color: var(--fg); background: rgba(120, 120, 128, .24); }
+.button:active { transform: scale(.97); opacity: .75; }
+.button:focus-visible, .segments a:focus-visible, .brand:focus-visible { outline: 2px solid #7ee29a; outline-offset: 3px; }
+
+/* The iOS segmented control. */
+.segments {
+  display: flex; padding: 2px; border-radius: 10px; background: rgba(118, 118, 128, .24);
+  max-width: 420px; margin: 0 auto 28px;
+}
+.segments a {
+  flex: 1; text-align: center; padding: 7px 8px; border-radius: 8px; font-size: 15px; font-weight: 500;
+  color: var(--fg); text-decoration: none; transition: background .15s ease;
+}
+.segments a[aria-current="true"] { background: rgba(99, 99, 102, .9); box-shadow: 0 3px 8px rgba(0, 0, 0, .25), 0 0 0 .5px rgba(255, 255, 255, .08); font-weight: 600; }
+
+section + section { margin-top: 28px; }
+/* With scripts on, one language shows at a time. */
+.one-language section[hidden] { display: none; }
+/* A link to a language opens the page at its top, not at the section. */
+.one-language section { scroll-margin-top: 100000px; }
+[dir="rtl"] { font-family: "Noto Naskh Arabic", "Geeza Pro", "SF Arabic", Tahoma, sans-serif; }
+[dir="rtl"] h1 { letter-spacing: 0; }
+
+footer { margin-top: 44px; text-align: center; color: var(--muted); font-size: 14px; }
+footer a { color: var(--muted); }
+
+@media (max-width: 480px) {
+  .top { margin-bottom: 36px; }
+  .card { padding: 22px 18px; border-radius: 20px; }
+  .actions .button { flex: 1 1 100%; }
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .button, .segments a { transition: none; } }

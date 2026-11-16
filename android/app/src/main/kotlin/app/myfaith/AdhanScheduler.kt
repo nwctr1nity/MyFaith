@@ -70,7 +70,7 @@ class AdhanReceiver : BroadcastReceiver() {
             System.currentTimeMillis() - adhan.time < AdhanScheduler.LATE_LIMIT_MS
         ) {
             try {
-                AdhanService.start(context, adhan.title, adhan.body, adhan.fajr)
+                AdhanService.start(context, adhan.title, adhan.body, adhan.fajr, adhan.sound)
             } catch (e: Exception) {
                 // Android refused to start playback from the background
                 // (an inexact alarm does not carry that right). The prayer

@@ -10,7 +10,7 @@ class AppLocalizationsRu extends AppLocalizations {
   AppLocalizationsRu([String locale = 'ru']) : super(locale);
 
   @override
-  String get appTitle => 'Время намаза';
+  String get appTitle => 'Время молитвы';
 
   @override
   String get prayerFajr => 'Фаджр';
@@ -39,10 +39,86 @@ class AppLocalizationsRu extends AppLocalizations {
   String get nowLabel => 'Сейчас';
 
   @override
+  String get rakaatsFajr => '2 ракаата сунны, 2 ракаата фарда';
+
+  @override
+  String get rakaatsDhuhr => '4 ракаата сунны, 4 фарда, 2 сунны';
+
+  @override
+  String get rakaatsAsr => '4 ракаата фарда';
+
+  @override
+  String get rakaatsMaghrib => '3 ракаата фарда, 2 сунны';
+
+  @override
+  String get rakaatsIsha => '4 ракаата фарда, 2 сунны, 3 витра';
+
+  @override
+  String get howToPray => 'Как совершать молитву?';
+
+  @override
+  String get howToPrayHint => 'Пошагово, по ханафитскому мазхабу';
+
+  @override
+  String get guideRakaats => 'Сколько ракаатов';
+
+  @override
+  String get guideSunnahBefore => 'Сунна до';
+
+  @override
+  String get guideFard => 'Фард';
+
+  @override
+  String get guideSunnahAfter => 'Сунна после';
+
+  @override
+  String get guideWitr => 'Витр';
+
+  @override
+  String get guideBefore => 'Перед молитвой';
+
+  @override
+  String get guideSteps => 'Молитва из двух ракаатов';
+
+  @override
+  String get guideMore => 'Что ещё нужно знать';
+
+  @override
+  String soonLabel(int minutes) {
+    return 'Через $minutes мин!';
+  }
+
+  @override
+  String get showTransliterationItem => 'Показать транскрипцию';
+
+  @override
+  String get repeatAyah => 'Повторение для заучивания';
+
+  @override
+  String get repeatAyahHint =>
+      'Аят звучит снова и снова, пока вы не выключите повтор';
+
+  @override
+  String get recitationSpeed => 'Скорость чтения';
+
+  @override
+  String get resetSpeed => 'Сбросить до 1×';
+
+  @override
   String get lastThirdOfNight => 'Последняя треть ночи';
 
   @override
   String get settings => 'Настройки';
+
+  @override
+  String get supportProject => 'Поддержать проект';
+
+  @override
+  String get supportText =>
+      'Все пожертвования добровольны. Мой проект всегда будет полностью бесплатным.';
+
+  @override
+  String get tbank => 'Т-Банк';
 
   @override
   String get language => 'Язык';
@@ -69,7 +145,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get noCitiesFound => 'Города не найдены';
 
   @override
-  String get locationNotSet => 'Выберите город, чтобы увидеть время намаза';
+  String get locationNotSet => 'Выберите город, чтобы увидеть время молитвы';
 
   @override
   String get locationDenied =>
@@ -103,7 +179,7 @@ class AppLocalizationsRu extends AppLocalizations {
   }
 
   @override
-  String get asrMadhab => 'Время аср';
+  String get asrMadhab => 'Время асра';
 
   @override
   String get madhabShafi => 'Шафиитский, маликитский, ханбалитский';
@@ -166,7 +242,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get methodKuwait => 'Кувейт';
 
   @override
-  String get methodGulfRegion => 'Страны Залива';
+  String get methodGulfRegion => 'Страны Персидского залива';
 
   @override
   String get methodSingapore => 'Сингапур, Малайзия';
@@ -199,10 +275,11 @@ class AppLocalizationsRu extends AppLocalizations {
   String get methodPortugal => 'Португалия';
 
   @override
-  String get methodMoonsightingCommittee => 'Moonsighting Committee';
+  String get methodMoonsightingCommittee =>
+      'Комитет наблюдения за луной (Moonsighting Committee)';
 
   @override
-  String get navPrayer => 'Намаз';
+  String get navPrayer => 'Молитва';
 
   @override
   String get navQuran => 'Коран';
@@ -283,7 +360,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get tafsir => 'Тафсир';
 
   @override
-  String get tafsirSource => 'Аль-Мухтасар фи тафсир аль-Куран';
+  String get tafsirSource => 'Аль-Мухтасар фи тафсир аль-Кур’ан';
 
   @override
   String get showTranslation => 'Перевод';
@@ -352,7 +429,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get notifications => 'Азан и уведомления';
 
   @override
-  String get notificationsHint => 'Для каких намазов звучит азан';
+  String get notificationsHint => 'Для каких молитв звучит азан';
 
   @override
   String get alarmsTitle => 'Будильники';
@@ -364,7 +441,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get alarmsHint => 'Привязаны к фаджру, время сдвигается каждый день';
 
   @override
-  String get prayerSettings => 'Настройки времени намаза';
+  String get prayerSettings => 'Настройки времени молитвы';
 
   @override
   String get prayerSettingsHint => 'Город, метод, поправки';
@@ -404,7 +481,7 @@ class AppLocalizationsRu extends AppLocalizations {
       'Азан должен зазвучать. Если тихо, проверьте громкость будильника.';
 
   @override
-  String get reminderBefore => 'Напоминание до намаза';
+  String get reminderBefore => 'Напоминание до молитвы';
 
   @override
   String get off => 'Выключено';
@@ -442,8 +519,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get suhoorDaily => 'Каждый день';
 
   @override
-  String get suhoorStop =>
-      'Предупредить перед фаджром, что пора заканчивать есть';
+  String get suhoorStop => 'Напомнить перед фаджром, что пора заканчивать есть';
 
   @override
   String nextSuhoor(String when) {
@@ -482,7 +558,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String notifAdhanTitle(String prayer) {
-    return 'Время намаза: $prayer';
+    return 'Время молитвы: $prayer';
   }
 
   @override
@@ -533,7 +609,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get sourcesQuran =>
-      'Текст Корана: Комплекс имени короля Фахда, усманское письмо, чтение Хафса. Переводы: Эльмир Кулиев (русский), Saheeh International (английский). Тафсир: «Аль-Мухтасар», Центр тафсира коранических исследований.';
+      'Текст Корана: Комплекс имени короля Фахда, усманское письмо, чтение Хафса. Переводы: Эльмир Кулиев (русский), Saheeh International (английский). Тафсир: «Аль-Мухтасар», Центр коранических исследований «Тафсир».';
 
   @override
   String get sourcesHadith =>
@@ -541,7 +617,14 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get sourcesOther =>
-      'Время намаза: adhan_dart. Города: GeoNames, CC BY 4.0. Арабский шрифт: Amiri Quran, SIL Open Font License. Данные собраны из открытых проектов quran-api, hadith-api и tafsir_api. Переводы принадлежат их авторам и используются здесь для личного некоммерческого чтения.';
+      'Время молитвы: adhan_dart. Города: GeoNames, CC BY 4.0. Арабский шрифт: Amiri Quran, SIL Open Font License. Данные собраны из открытых проектов quran-api, hadith-api и tafsir_api. Переводы принадлежат их авторам и используются здесь для личного некоммерческого чтения. Транскрипция: quran-api (латиница), кириллица получена из неё автоматически и служит только подсказкой для чтения. Цвета таджвида приложение выводит из знаков усманского письма, они не заменяют обучение с учителем. Записи чтецов загружаются с everyayah.com, для них нужен интернет. У зикров и дуа источник указан на каждой карточке.';
+
+  @override
+  String get sourcesAdhan =>
+      'Азан: записи из Дохи (Катар), сделанные в 2013–2014 годах (Internet Archive, общественное достояние), а также азаны шейха Тауфика Ходжа, шейха Турки аль-Хасани и шейха Абдуллы ибн Ахмада ибн Абдуррахмана Ба-Афифа.';
+
+  @override
+  String get muezzin => 'Муэдзин';
 
   @override
   String get channelAdhanFajr => 'Азан на фаджр';
@@ -564,4 +647,230 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get widgetOpenHint => 'Откройте MyFaith';
+
+  @override
+  String get navDhikr => 'Зикры';
+
+  @override
+  String get dhikrTab => 'Зикры';
+
+  @override
+  String get duaTab => 'Дуа';
+
+  @override
+  String get dhikrToday => 'Сегодня';
+
+  @override
+  String dhikrDone(int done, int total) {
+    return 'Выполнено $done из $total';
+  }
+
+  @override
+  String get dhikrGoal => 'Цель на день';
+
+  @override
+  String dhikrGoalDefault(int count) {
+    return '$count (рекомендуется)';
+  }
+
+  @override
+  String get dhikrGoalReached => 'Цель на сегодня выполнена';
+
+  @override
+  String get names99 => '99 имён Аллаха';
+
+  @override
+  String get names99Hint => 'Викторина и полный список';
+
+  @override
+  String get namesQuiz => 'Викторина';
+
+  @override
+  String get namesList => 'Список';
+
+  @override
+  String get namesQuestion => 'Что означает это имя?';
+
+  @override
+  String get namesNext => 'Дальше';
+
+  @override
+  String namesStreak(int current, int best) {
+    return 'Подряд: $current · рекорд: $best';
+  }
+
+  @override
+  String get surahs => 'Суры';
+
+  @override
+  String get mushaf => 'Мусхаф';
+
+  @override
+  String get byJuz => 'Джузы';
+
+  @override
+  String get byPage => 'Страницы';
+
+  @override
+  String pageNumber(int page) {
+    return 'Страница $page';
+  }
+
+  @override
+  String juzNumber(int juz) {
+    return 'Джуз $juz';
+  }
+
+  @override
+  String pageOf(int page, int total) {
+    return 'Страница $page из $total';
+  }
+
+  @override
+  String juzOf(int juz, int total) {
+    return 'Джуз $juz из $total';
+  }
+
+  @override
+  String ayahNumber(int ayah) {
+    return 'Аят $ayah';
+  }
+
+  @override
+  String surahNumberName(int number, String name) {
+    return 'Сура $number. $name';
+  }
+
+  @override
+  String get listen => 'Слушать';
+
+  @override
+  String get pause => 'Пауза';
+
+  @override
+  String get previousAyah => 'Предыдущий аят';
+
+  @override
+  String get nextAyah => 'Следующий аят';
+
+  @override
+  String get closePlayer => 'Закрыть плеер';
+
+  @override
+  String get audioFailed => 'Не удалось загрузить запись. Проверьте интернет.';
+
+  @override
+  String get reciter => 'Чтец';
+
+  @override
+  String get hideTafsir => 'Скрыть тафсир';
+
+  @override
+  String get readerOptions => 'Настройки чтения';
+
+  @override
+  String get showTransliteration => 'Транскрипция';
+
+  @override
+  String get showTajweed => 'Подсказки таджвида';
+
+  @override
+  String get tajweedGhunnah => 'Гунна, ихфа, идгам';
+
+  @override
+  String get tajweedGhunnahHint =>
+      'Идгам с гунной, ихфа, икляб, нун и мим с шаддой, ихфа шафавий';
+
+  @override
+  String get tajweedQalqalah => 'Калькаля';
+
+  @override
+  String get tajweedQalqalahHint =>
+      'Отрывистый отзвук букв ق ط ب ج د с сукуном';
+
+  @override
+  String get tajweedMaddNatural => 'Мадд, 2 счёта';
+
+  @override
+  String get tajweedMaddNaturalHint => 'Мадд сыля сугра, алиф ханджария';
+
+  @override
+  String get tajweedMaddArid => 'Мадд, 2, 4 или 6 счётов';
+
+  @override
+  String get tajweedMaddAridHint => 'Мадд ‘арид ли-с-сукун, мадд лин';
+
+  @override
+  String get tajweedMaddWajib => 'Мадд, 4 или 5 счётов';
+
+  @override
+  String get tajweedMaddWajibHint =>
+      'Мадд ваджиб муттасыль, мадд джаиз мунфасыль, мадд сыля кубра';
+
+  @override
+  String get tajweedMaddLazim => 'Мадд, 6 счётов';
+
+  @override
+  String get tajweedMaddLazimHint => 'Мадд лязим';
+
+  @override
+  String get tajweedTafkhim => 'Тафхим';
+
+  @override
+  String get tajweedTafkhimHint =>
+      'Твёрдое произношение: буквы خ ص ض غ ط ق ظ, твёрдая ра, лям в слове «Аллах»';
+
+  @override
+  String get tajweedSilent => 'Не читается';
+
+  @override
+  String get tajweedSilentHint =>
+      'Хамза васль, лям шамсия, полный идгам без гунны, непроизносимые буквы';
+
+  @override
+  String get autoNextAyah => 'Автопроигрывание следующего аята';
+
+  @override
+  String get enterPage => 'Введите номер страницы';
+
+  @override
+  String get openPage => 'Открыть';
+
+  @override
+  String get searchQuran => 'Поиск по Корану';
+
+  @override
+  String get searchQuranHint => 'Слово в переводе или на арабском';
+
+  @override
+  String get searchQuranPrompt => 'Введите слово хотя бы из двух букв';
+
+  @override
+  String get nothingFound => 'Ничего не найдено';
+
+  @override
+  String searchFound(int count) {
+    return 'Найдено аятов: $count';
+  }
+
+  @override
+  String searchManyFound(int count) {
+    return 'Показаны первые $count аятов. Уточните запрос.';
+  }
+
+  @override
+  String get oneHourBefore => 'За 1 час';
+
+  @override
+  String get qiblaPoorAccuracy =>
+      'Телефон сообщает, что его компас неточен. Поводите телефоном восьмёркой и снимите чехол с магнитом.';
+
+  @override
+  String qiblaCheck(String direction) {
+    return 'Проверьте себя: отсюда кибла находится на $direction. Если стрелка смотрит в противоположную сторону, компас телефона сбит.';
+  }
+
+  @override
+  String get compassPoints =>
+      'севере,северо-востоке,востоке,юго-востоке,юге,юго-западе,западе,северо-западе';
 }

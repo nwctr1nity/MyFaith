@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,6 +15,8 @@ import '../../state/content_providers.dart';
 import '../hadith/hadith_screen.dart';
 import '../labels.dart';
 import '../location/city_picker_screen.dart';
+import '../prayer_guide/prayer_guide_screen.dart';
+import '../qibla/qibla_screen.dart';
 import '../theme.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
@@ -43,9 +47,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   void _openCityPicker() {
-    Navigator.of(context).push(
-      MaterialPageRoute<void>(builder: (_) => const CityPickerScreen()),
-    );
+    Navigator.of(
+      context,
+    ).push(MaterialPageRoute<void>(builder: (_) => const CityPickerScreen()));
   }
 
   @override
@@ -74,14 +78,28 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       ),
                       const SizedBox(width: 8),
                       Flexible(
-                        child:
-                            Text(place.name, overflow: TextOverflow.ellipsis),
+                        child: Text(
+                          place.name,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
                       const Icon(Icons.arrow_drop_down),
                     ],
                   ),
                 ),
               ),
+        actions: [
+          Padding(
+            padding: const EdgeInsetsDirectional.only(end: 16),
+            child: FilledButton.tonalIcon(
+              onPressed: () => Navigator.of(context).push(
+                MaterialPageRoute<void>(builder: (_) => const QiblaScreen()),
+              ),
+              icon: const Icon(Icons.explore_outlined, size: 20),
+              label: Text(l.navQibla),
+            ),
+          ),
+        ],
       ),
       body: place == null
           ? _EmptyState(onChoose: _openCityPicker)
@@ -202,10 +220,9 @@ class _Timetable extends ConsumerWidget {
                 textDirection: TextDirection.ltr,
                 child: Text(
                   _countdown(moment.nextTime.difference(now)),
-                  style: theme.textTheme.displayMedium?.merge(_numbers).copyWith(
-                        color: onHero,
-                        fontWeight: FontWeight.w300,
-                      ),
+                  style: theme.textTheme.displayMedium
+                      ?.merge(_numbers)
+                      .copyWith(color: onHero, fontWeight: FontWeight.w300),
                 ),
               ),
               Text(
@@ -229,6 +246,19 @@ class _Timetable extends ConsumerWidget {
                     // After Isha the next prayer is tomorrow's Fajr, not
                     // this row.
                     isNext: moment.next == slot && moment.nextTime == day[slot],
+                    soonLabel:
+                        moment.next == slot &&
+                            moment.nextTime == day[slot] &&
+                            moment.nextTime.difference(now) <
+                                const Duration(hours: 1)
+                        ? l.soonLabel(
+                            math.max(
+                              1,
+                              (moment.nextTime.difference(now).inSeconds / 60)
+                                  .ceil(),
+                            ),
+                          )
+                        : null,
                     muted: slot == PrayerSlot.sunrise,
                     nowLabel: l.nowLabel,
                     adhanOn: settings.adhanSlots.contains(slot),
@@ -253,6 +283,26 @@ class _Timetable extends ConsumerWidget {
           ),
         ),
         const SizedBox(height: 16),
+        Card(
+          clipBehavior: Clip.antiAlias,
+          child: ListTile(
+            leading: Icon(Icons.school_outlined, color: scheme.primary),
+            title: Text(l.howToPray),
+            subtitle: Text(l.howToPrayHint),
+            trailing: Icon(
+              Directionality.of(context) == TextDirection.rtl
+                  ? Icons.chevron_left
+                  : Icons.chevron_right,
+              color: scheme.outline,
+            ),
+            onTap: () => Navigator.of(context).push(
+              MaterialPageRoute<void>(
+                builder: (_) => const PrayerGuideScreen(),
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 16),
         _HadithCard(year: day.year, month: day.month, day: day.day),
       ],
     );
@@ -267,6 +317,7 @@ class _PrayerRow extends StatelessWidget {
     required this.isNext,
     required this.muted,
     required this.nowLabel,
+    this.soonLabel,
     this.adhanOn,
     this.adhanTooltip,
     this.onToggleAdhan,
@@ -278,6 +329,9 @@ class _PrayerRow extends StatelessWidget {
   final bool isNext;
   final bool muted;
   final String nowLabel;
+
+  /// "In 12 min!" on the next prayer when it is less than an hour away.
+  final String? soonLabel;
   final bool? adhanOn;
   final String? adhanTooltip;
   final VoidCallback? onToggleAdhan;
@@ -303,23 +357,47 @@ class _PrayerRow extends StatelessWidget {
                 Flexible(
                   child: Text(
                     name,
-                    style: theme.textTheme.titleMedium
-                        ?.copyWith(color: color, fontWeight: weight),
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      color: color,
+                      fontWeight: weight,
+                    ),
                   ),
                 ),
                 if (isCurrent) ...[
                   const SizedBox(width: 10),
                   Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 2,
+                    ),
                     decoration: BoxDecoration(
                       color: scheme.primary,
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Text(
                       nowLabel,
-                      style: theme.textTheme.labelSmall
-                          ?.copyWith(color: scheme.onPrimary),
+                      style: theme.textTheme.labelSmall?.copyWith(
+                        color: scheme.onPrimary,
+                      ),
+                    ),
+                  ),
+                ],
+                if (soonLabel != null) ...[
+                  const SizedBox(width: 10),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 2,
+                    ),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFE8730C),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text(
+                      soonLabel!,
+                      style: theme.textTheme.labelSmall?.copyWith(
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ],
@@ -355,7 +433,11 @@ class _PrayerRow extends StatelessWidget {
 }
 
 class _HadithCard extends ConsumerWidget {
-  const _HadithCard({required this.year, required this.month, required this.day});
+  const _HadithCard({
+    required this.year,
+    required this.month,
+    required this.day,
+  });
 
   final int year;
   final int month;
@@ -391,8 +473,9 @@ class _HadithCard extends ConsumerWidget {
                   const SizedBox(width: 8),
                   Text(
                     l.hadithOfDay,
-                    style: theme.textTheme.titleSmall
-                        ?.copyWith(color: scheme.primary),
+                    style: theme.textTheme.titleSmall?.copyWith(
+                      color: scheme.primary,
+                    ),
                   ),
                 ],
               ),
@@ -406,8 +489,9 @@ class _HadithCard extends ConsumerWidget {
               const SizedBox(height: 12),
               Text(
                 l.bukhariRef(hadith.number),
-                style: theme.textTheme.bodySmall
-                    ?.copyWith(color: scheme.onSurfaceVariant),
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: scheme.onSurfaceVariant,
+                ),
               ),
             ],
           ),

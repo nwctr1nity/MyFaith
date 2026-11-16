@@ -41,6 +41,7 @@ class AdhanService : Service() {
         val title = intent.getStringExtra(EXTRA_TITLE).orEmpty()
         val body = intent.getStringExtra(EXTRA_BODY).orEmpty()
         val fajr = intent.getBooleanExtra(EXTRA_FAJR, false)
+        val sound = intent.getStringExtra(EXTRA_SOUND).orEmpty()
 
         val playing = notification(this, title, body, playing = true)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
@@ -50,14 +51,25 @@ class AdhanService : Service() {
         }
 
         try {
-            play(fajr, notification(this, title, body, playing = false))
+            play(recording(sound, fajr), notification(this, title, body, playing = false))
         } catch (e: Exception) {
             finish(notification(this, title, body, playing = false))
         }
         return START_NOT_STICKY
     }
 
-    private fun play(fajr: Boolean, whenDone: Notification) {
+    /**
+     * The recording chosen in the app, by its name in res/raw. An unknown
+     * name (a schedule saved by an older version) gives the default set.
+     */
+    private fun recording(sound: String, fajr: Boolean): Int {
+        fun find(name: String) =
+            if (name.isEmpty()) 0 else resources.getIdentifier(name, "raw", packageName)
+        val id = find(sound)
+        return if (id != 0) id else find(if (fajr) "azan_doha_fajr" else "azan_doha_dhuhr")
+    }
+
+    private fun play(recording: Int, whenDone: Notification) {
         releasePlayer()
         val attributes = AudioAttributes.Builder()
             .setUsage(AudioAttributes.USAGE_ALARM)
@@ -77,7 +89,7 @@ class AdhanService : Service() {
         val media = MediaPlayer()
         player = media
         media.setAudioAttributes(attributes)
-        val file = resources.openRawResourceFd(if (fajr) R.raw.azan_fajr else R.raw.azan_main)
+        val file = resources.openRawResourceFd(recording)
         try {
             media.setDataSource(file.fileDescriptor, file.startOffset, file.length)
         } finally {
@@ -179,15 +191,17 @@ class AdhanService : Service() {
         private const val EXTRA_TITLE = "title"
         private const val EXTRA_BODY = "body"
         private const val EXTRA_FAJR = "fajr"
+        private const val EXTRA_SOUND = "sound"
         private const val CHANNEL = "adhan_playing_v1"
         private const val PLAYING_ID = 7001
         private const val DONE_ID = 7002
 
-        fun start(context: Context, title: String, body: String, fajr: Boolean) {
+        fun start(context: Context, title: String, body: String, fajr: Boolean, sound: String) {
             val intent = Intent(context, AdhanService::class.java)
                 .putExtra(EXTRA_TITLE, title)
                 .putExtra(EXTRA_BODY, body)
                 .putExtra(EXTRA_FAJR, fajr)
+                .putExtra(EXTRA_SOUND, sound)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 context.startForegroundService(intent)
             } else {

@@ -39,10 +39,86 @@ class AppLocalizationsEn extends AppLocalizations {
   String get nowLabel => 'Now';
 
   @override
+  String get rakaatsFajr => '2 rakaats sunnah, 2 rakaats fard';
+
+  @override
+  String get rakaatsDhuhr => '4 rakaats sunnah, 4 fard, 2 sunnah';
+
+  @override
+  String get rakaatsAsr => '4 rakaats fard';
+
+  @override
+  String get rakaatsMaghrib => '3 rakaats fard, 2 sunnah';
+
+  @override
+  String get rakaatsIsha => '4 rakaats fard, 2 sunnah, 3 witr';
+
+  @override
+  String get howToPray => 'How to pray?';
+
+  @override
+  String get howToPrayHint => 'Step by step, in the Hanafi school';
+
+  @override
+  String get guideRakaats => 'How many rakaats';
+
+  @override
+  String get guideSunnahBefore => 'Sunnah before';
+
+  @override
+  String get guideFard => 'Fard';
+
+  @override
+  String get guideSunnahAfter => 'Sunnah after';
+
+  @override
+  String get guideWitr => 'Witr';
+
+  @override
+  String get guideBefore => 'Before the prayer';
+
+  @override
+  String get guideSteps => 'A prayer of two rakaats';
+
+  @override
+  String get guideMore => 'What else to know';
+
+  @override
+  String soonLabel(int minutes) {
+    return 'In $minutes min!';
+  }
+
+  @override
+  String get showTransliterationItem => 'Show transliteration';
+
+  @override
+  String get repeatAyah => 'Repeat for memorising';
+
+  @override
+  String get repeatAyahHint =>
+      'The ayah plays again and again until switched off';
+
+  @override
+  String get recitationSpeed => 'Recitation speed';
+
+  @override
+  String get resetSpeed => 'Reset to 1×';
+
+  @override
   String get lastThirdOfNight => 'Last third of the night';
 
   @override
   String get settings => 'Settings';
+
+  @override
+  String get supportProject => 'Support the project';
+
+  @override
+  String get supportText =>
+      'All donations are voluntary. My project will always be completely free.';
+
+  @override
+  String get tbank => 'T-Bank';
 
   @override
   String get language => 'Language';
@@ -540,7 +616,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get sourcesOther =>
-      'Prayer times: adhan_dart. Cities: GeoNames, CC BY 4.0. Arabic font: Amiri Quran, SIL Open Font License. Data collected from the open projects quran-api, hadith-api and tafsir_api. The translations belong to their authors and are used here for personal, non-commercial reading.';
+      'Prayer times: adhan_dart. Cities: GeoNames, CC BY 4.0. Arabic font: Amiri Quran, SIL Open Font License. Data collected from the open projects quran-api, hadith-api and tafsir_api. The translations belong to their authors and are used here for personal, non-commercial reading. Transliteration: quran-api (Latin); the Cyrillic one is derived from it automatically and is only a reading aid. Tajweed colours are derived by the app from the marks of the Uthmani text and do not replace learning with a teacher. Recitations are streamed from everyayah.com and need an internet connection. Dhikr, dua and the 99 names give their hadith sources on each card.';
+
+  @override
+  String get sourcesAdhan =>
+      'Adhan: recordings from Doha, Qatar, made in 2013–2014 (Internet Archive, public domain), and the adhans of Sheikh Tawfiq Khoj, Sheikh Turki al-Hassani and Sheikh Abdullah ibn Ahmad ibn Abdurrahman Ba-Afif.';
+
+  @override
+  String get muezzin => 'Muezzin';
 
   @override
   String get channelAdhanFajr => 'Fajr adhan';
@@ -563,4 +646,231 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get widgetOpenHint => 'Open MyFaith to refresh';
+
+  @override
+  String get navDhikr => 'Dhikr';
+
+  @override
+  String get dhikrTab => 'Dhikr';
+
+  @override
+  String get duaTab => 'Dua';
+
+  @override
+  String get dhikrToday => 'Today';
+
+  @override
+  String dhikrDone(int done, int total) {
+    return '$done of $total done';
+  }
+
+  @override
+  String get dhikrGoal => 'Daily goal';
+
+  @override
+  String dhikrGoalDefault(int count) {
+    return '$count (recommended)';
+  }
+
+  @override
+  String get dhikrGoalReached => 'Goal for today reached';
+
+  @override
+  String get names99 => '99 names of Allah';
+
+  @override
+  String get names99Hint => 'Quiz and full list';
+
+  @override
+  String get namesQuiz => 'Quiz';
+
+  @override
+  String get namesList => 'List';
+
+  @override
+  String get namesQuestion => 'What does this name mean?';
+
+  @override
+  String get namesNext => 'Next';
+
+  @override
+  String namesStreak(int current, int best) {
+    return 'In a row: $current · best: $best';
+  }
+
+  @override
+  String get surahs => 'Surahs';
+
+  @override
+  String get mushaf => 'Mushaf';
+
+  @override
+  String get byJuz => 'Juz';
+
+  @override
+  String get byPage => 'Pages';
+
+  @override
+  String pageNumber(int page) {
+    return 'Page $page';
+  }
+
+  @override
+  String juzNumber(int juz) {
+    return 'Juz $juz';
+  }
+
+  @override
+  String pageOf(int page, int total) {
+    return 'Page $page of $total';
+  }
+
+  @override
+  String juzOf(int juz, int total) {
+    return 'Juz $juz of $total';
+  }
+
+  @override
+  String ayahNumber(int ayah) {
+    return 'Ayah $ayah';
+  }
+
+  @override
+  String surahNumberName(int number, String name) {
+    return 'Surah $number. $name';
+  }
+
+  @override
+  String get listen => 'Listen';
+
+  @override
+  String get pause => 'Pause';
+
+  @override
+  String get previousAyah => 'Previous ayah';
+
+  @override
+  String get nextAyah => 'Next ayah';
+
+  @override
+  String get closePlayer => 'Close the player';
+
+  @override
+  String get audioFailed =>
+      'Could not load the recording. Check the internet connection.';
+
+  @override
+  String get reciter => 'Reciter';
+
+  @override
+  String get hideTafsir => 'Hide tafsir';
+
+  @override
+  String get readerOptions => 'Reading options';
+
+  @override
+  String get showTransliteration => 'Transliteration';
+
+  @override
+  String get showTajweed => 'Tajweed colours';
+
+  @override
+  String get tajweedGhunnah => 'Ghunnah, ikhfa, idgham';
+
+  @override
+  String get tajweedGhunnahHint =>
+      'Idgham with ghunnah, ikhfa, iqlab, noon and meem with shadda, ikhfa shafawi';
+
+  @override
+  String get tajweedQalqalah => 'Qalqalah';
+
+  @override
+  String get tajweedQalqalahHint =>
+      'The echoing bounce of ق ط ب ج د with sukun';
+
+  @override
+  String get tajweedMaddNatural => 'Madd, 2 counts';
+
+  @override
+  String get tajweedMaddNaturalHint => 'Short silah, dagger alif';
+
+  @override
+  String get tajweedMaddArid => 'Madd, 2, 4 or 6 counts';
+
+  @override
+  String get tajweedMaddAridHint => 'Madd arid lis-sukun, madd leen';
+
+  @override
+  String get tajweedMaddWajib => 'Madd, 4 or 5 counts';
+
+  @override
+  String get tajweedMaddWajibHint =>
+      'Madd wajib muttasil, madd jaiz munfasil, long silah';
+
+  @override
+  String get tajweedMaddLazim => 'Madd, 6 counts';
+
+  @override
+  String get tajweedMaddLazimHint => 'Madd lazim';
+
+  @override
+  String get tajweedTafkhim => 'Tafkhim';
+
+  @override
+  String get tajweedTafkhimHint =>
+      'Heavy pronunciation: the letters خ ص ض غ ط ق ظ, heavy ra, the lam of the name Allah';
+
+  @override
+  String get tajweedSilent => 'Not read';
+
+  @override
+  String get tajweedSilentHint =>
+      'Hamzat al-wasl, lam shamsiyyah, full idgham without ghunnah, silent letters';
+
+  @override
+  String get autoNextAyah => 'Play the next ayah automatically';
+
+  @override
+  String get enterPage => 'Enter a page number';
+
+  @override
+  String get openPage => 'Open';
+
+  @override
+  String get searchQuran => 'Search the Quran';
+
+  @override
+  String get searchQuranHint => 'Word in the translation or in Arabic';
+
+  @override
+  String get searchQuranPrompt => 'Type a word of at least two letters';
+
+  @override
+  String get nothingFound => 'Nothing found';
+
+  @override
+  String searchFound(int count) {
+    return 'Ayahs found: $count';
+  }
+
+  @override
+  String searchManyFound(int count) {
+    return 'The first $count ayahs are shown. Add a word to narrow the search.';
+  }
+
+  @override
+  String get oneHourBefore => '1 hour before';
+
+  @override
+  String get qiblaPoorAccuracy =>
+      'The phone reports that its compass is inaccurate. Move it in a figure of eight and take off a case with a magnet.';
+
+  @override
+  String qiblaCheck(String direction) {
+    return 'Check yourself: from here the qibla lies to the $direction. If the arrow points the opposite way, the compass of the phone is off.';
+  }
+
+  @override
+  String get compassPoints =>
+      'north,north-east,east,south-east,south,south-west,west,north-west';
 }

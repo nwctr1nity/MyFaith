@@ -14,6 +14,7 @@ class NotificationRequest {
     required this.channel,
     required this.title,
     this.body,
+    this.sound,
   });
 
   final int id;
@@ -21,6 +22,9 @@ class NotificationRequest {
   final NotificationChannel channel;
   final String title;
   final String? body;
+
+  /// For an adhan: the recording to play, a file name in `res/raw`.
+  final String? sound;
 }
 
 enum NotificationChannel { adhan, adhanFajr, reminder, alarm, hadith }
@@ -252,6 +256,7 @@ class LocalNotificationService implements NotificationService {
                   'title': r.title,
                   'body': r.body ?? '',
                   'fajr': r.channel == NotificationChannel.adhanFajr,
+                  'sound': r.sound ?? '',
                 },
           ]),
           'prayers': jsonEncode([for (final p in widget.prayers) p.toJson()]),
@@ -270,6 +275,7 @@ class LocalNotificationService implements NotificationService {
         'title': request.title,
         'body': request.body ?? '',
         'fajr': request.channel == NotificationChannel.adhanFajr,
+        'sound': request.sound ?? '',
       });
       return;
     }

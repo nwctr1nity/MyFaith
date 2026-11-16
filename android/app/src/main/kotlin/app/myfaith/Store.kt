@@ -12,6 +12,8 @@ data class Adhan(
     val title: String,
     val body: String,
     val fajr: Boolean,
+    /** The recording to play, a name in res/raw; empty for the default. */
+    val sound: String,
 )
 
 /** One prayer time for the widgets, with its texts already localized. */
@@ -70,6 +72,7 @@ object Store {
                         title = o.optString("title"),
                         body = o.optString("body"),
                         fajr = o.optBoolean("fajr"),
+                        sound = o.optString("sound"),
                     ),
                 )
             }

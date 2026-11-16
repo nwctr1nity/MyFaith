@@ -19,7 +19,7 @@ class AlarmSettings {
     this.suhoorMonThu = false,
     this.suhoorWhiteDays = false,
     this.suhoorEveryDay = false,
-    this.suhoorStopWarningMinutes = 10,
+    this.suhoorStopWarningMinutes = 30,
     this.tahajjudEnabled = false,
     this.tahajjudAtLastThird = true,
     this.tahajjudMinutesBeforeFajr = 45,

@@ -33,6 +33,7 @@ class MainActivity : FlutterActivity() {
                                 call.argument<String>("title") ?: "",
                                 call.argument<String>("body") ?: "",
                                 call.argument<Boolean>("fajr") ?: false,
+                                call.argument<String>("sound") ?: "",
                             )
                             result.success(null)
                         }

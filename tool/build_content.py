@@ -12,6 +12,12 @@ Sources, all fetched from GitHub and cached in cache_dir:
   English (Muhsin Khan) and Russian (Abdullah Nirsha)
 - Font: github.com/aliftype/amiri, Amiri Quran (SIL Open Font License)
 
+- Transliteration: quran-api edition ara-quran-la1 (Latin); the Cyrillic one is
+  derived from it letter by letter in this script
+- Pages and juz: quran-api info.json (Madinah mushaf, 604 pages)
+- Tajweed colouring: derived in tool/tajweed.py from the marks of the Uthmani
+  text itself
+
 The Quran text is written out exactly as received. The script refuses to
 build if the structure is not 114 surahs and 6236 ayahs in every edition.
 """
@@ -20,6 +26,9 @@ import re
 import os
 import sys
 import urllib.request
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import tajweed  # noqa: E402
 
 RAW = "https://raw.githubusercontent.com"
 QURAN = {
@@ -43,6 +52,40 @@ DAILY_RU_MAX = 600
 DAILY_AR_MAX = 900
 
 RU_NAMES = """Аль-Фатиха|Аль-Бакара|Аль Имран|Ан-Ниса|Аль-Маида|Аль-Анам|Аль-Араф|Аль-Анфаль|Ат-Тауба|Юнус|Худ|Юсуф|Ар-Рад|Ибрахим|Аль-Хиджр|Ан-Нахль|Аль-Исра|Аль-Кахф|Марьям|Та Ха|Аль-Анбия|Аль-Хаджж|Аль-Муминун|Ан-Нур|Аль-Фуркан|Аш-Шуара|Ан-Намль|Аль-Касас|Аль-Анкабут|Ар-Рум|Лукман|Ас-Саджда|Аль-Ахзаб|Саба|Фатыр|Йа Син|Ас-Саффат|Сад|Аз-Зумар|Гафир|Фуссылят|Аш-Шура|Аз-Зухруф|Ад-Духан|Аль-Джасия|Аль-Ахкаф|Мухаммад|Аль-Фатх|Аль-Худжурат|Каф|Аз-Зарият|Ат-Тур|Ан-Наджм|Аль-Камар|Ар-Рахман|Аль-Вакиа|Аль-Хадид|Аль-Муджадиля|Аль-Хашр|Аль-Мумтахана|Ас-Сафф|Аль-Джумуа|Аль-Мунафикун|Ат-Тагабун|Ат-Талак|Ат-Тахрим|Аль-Мульк|Аль-Калам|Аль-Хакка|Аль-Мааридж|Нух|Аль-Джинн|Аль-Муззаммиль|Аль-Муддассир|Аль-Кыяма|Аль-Инсан|Аль-Мурсалят|Ан-Наба|Ан-Назиат|Абаса|Ат-Таквир|Аль-Инфитар|Аль-Мутаффифин|Аль-Иншикак|Аль-Бурудж|Ат-Тарик|Аль-Аля|Аль-Гашия|Аль-Фаджр|Аль-Баляд|Аш-Шамс|Аль-Лейл|Ад-Духа|Аш-Шарх|Ат-Тин|Аль-Аляк|Аль-Кадр|Аль-Беййина|Аз-Зальзаля|Аль-Адият|Аль-Кариа|Ат-Такасур|Аль-Аср|Аль-Хумаза|Аль-Филь|Курейш|Аль-Маун|Аль-Каусар|Аль-Кафирун|Ан-Наср|Аль-Масад|Аль-Ихляс|Аль-Фаляк|Ан-Нас""".split("|")
+
+
+RU_MEANINGS = """Открывающая|Корова|Семейство Имрана|Женщины|Трапеза|Скот|Преграды|Трофеи|Покаяние|Юнус|Худ|Юсуф|Гром|Ибрахим|Хиджр|Пчёлы|Ночной перенос|Пещера|Марьям|Та Ха|Пророки|Паломничество|Верующие|Свет|Различение|Поэты|Муравьи|Рассказ|Паук|Римляне|Лукман|Земной поклон|Союзники|Сава|Творец|Йа Син|Выстроившиеся в ряды|Сад|Толпы|Прощающий|Разъяснены|Совет|Украшения|Дым|Коленопреклонённые|Барханы|Мухаммад|Победа|Комнаты|Каф|Рассеивающие|Гора|Звезда|Месяц|Милостивый|Событие|Железо|Препирающаяся|Сбор|Испытуемая|Ряды|Собрание|Лицемеры|Взаимное обделение|Развод|Запрещение|Власть|Письменная трость|Неминуемое|Ступени|Нух|Джинны|Закутавшийся|Завернувшийся|Воскресение|Человек|Посылаемые|Весть|Вырывающие|Нахмурился|Скручивание|Раскалывание|Обвешивающие|Разверзнется|Созвездия|Ночной путник|Всевышний|Покрывающее|Заря|Город|Солнце|Ночь|Утро|Раскрытие|Смоковница|Сгусток крови|Предопределение|Ясное знамение|Землетрясение|Скачущие|Великое бедствие|Страсть к приумножению|Предвечернее время|Хулитель|Слон|Курейшиты|Мелочь|Изобилие|Неверующие|Помощь|Пальмовые волокна|Очищение веры|Рассвет|Люди""".split("|")
+
+# Latin to Cyrillic for the transliteration, longest patterns first. The
+# result is a reading aid, not a scholarly transcription.
+_CYR = [
+    ("llaah", "ллях"), ("laah", "лях"), ("sh", "ш"), ("kh", "х"), ("gh", "г"),
+    ("th", "с"), ("dh", "з"), ("aaa", "а"), ("aa", "а"), ("eee", "и"),
+    ("ee", "и"), ("ooo", "у"), ("oo", "у"), ("ai", "ай"), ("ay", "ай"),
+    ("aw", "ау"), ("ya", "я"), ("yu", "ю"), ("iy", "ий"), ("y", "й"),
+    ("a", "а"), ("b", "б"), ("c", "к"), ("d", "д"), ("e", "е"), ("f", "ф"),
+    ("g", "г"), ("h", "х"), ("i", "и"), ("j", "дж"), ("k", "к"), ("l", "л"),
+    ("m", "м"), ("n", "н"), ("o", "о"), ("q", "к"), ("r", "р"), ("s", "с"),
+    ("t", "т"), ("u", "у"), ("w", "в"), ("x", "кс"), ("z", "з"), ("'", "’"),
+]
+
+
+def cyrillic(latin):
+    out = []
+    i = 0
+    low = latin.lower()
+    while i < len(latin):
+        for src, dst in _CYR:
+            if low.startswith(src, i):
+                if latin[i].isupper():
+                    dst = dst[0].upper() + dst[1:]
+                out.append(dst)
+                i += len(src)
+                break
+        else:
+            out.append(latin[i])
+            i += 1
+    return "".join(out)
 
 
 def fetch(cache, name, url):
@@ -96,6 +139,18 @@ def build_quran(cache):
             assert all(t.strip() for _, t in rows) or lang != "ar", (edition, i + 1)
         by_lang[lang] = [[fix(t) if lang == "ar" else t for _, t in rows] for rows in surahs]
 
+    assert len(RU_MEANINGS) == 114
+    latin_rows = load(
+        cache,
+        "q_ara-quran-la1.json",
+        f"{RAW}/fawazahmed0/quran-api/1/editions/ara-quran-la1.min.json",
+    )["quran"]
+    assert len(latin_rows) == TOTAL_AYAHS
+    latin = [[] for _ in range(114)]
+    for row in latin_rows:
+        latin[row["chapter"] - 1].append(row["text"].strip())
+    assert [len(x) for x in latin] == counts
+
     index = []
     for i, c in enumerate(chapters):
         arabic = c["arabicname"]
@@ -104,14 +159,28 @@ def build_quran(cache):
             "name": c["name"],
             "en": c["englishname"],
             "ru": RU_NAMES[i],
+            "ruM": RU_MEANINGS[i],
             "ar": arabic,
             "ayahs": counts[i],
             "makkan": c["revelation"].lower().startswith("mec")
             or c["revelation"].lower().startswith("mak"),
         })
-        dump(f"assets/quran/s/{i + 1:03d}.json",
-             {lang: by_lang[lang][i] for lang in QURAN})
+        surah = {lang: by_lang[lang][i] for lang in QURAN}
+        surah["tl"] = latin[i]
+        surah["tc"] = [cyrillic(t) for t in latin[i]]
+        surah["tj"] = [tajweed.spans(a) for a in surah["ar"]]
+        dump(f"assets/quran/s/{i + 1:03d}.json", surah)
     dump("assets/quran/surahs.json", index)
+
+    def starts(key):
+        refs = info[key]["references"]
+        return [[r["start"]["chapter"], r["start"]["verse"]] for r in refs]
+
+    pages, juzs = starts("pages"), starts("juzs")
+    assert len(pages) == 604 and len(juzs) == 30
+    assert pages == sorted(pages) and juzs == sorted(juzs)
+    dump("assets/quran/layout.json", {"pages": pages, "juz": juzs})
+    tajweed.report()
     print("quran: 114 surahs,", TOTAL_AYAHS, "ayahs,", len(QURAN), "editions")
     return counts
 

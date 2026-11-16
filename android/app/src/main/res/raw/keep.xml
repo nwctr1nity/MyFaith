@@ -2,4 +2,4 @@
 <!-- The notification plugin finds these by name at run time, so a build
      that shrinks resources must not drop or rename them. -->
 <resources xmlns:tools="http://schemas.android.com/tools"
-    tools:keep="@drawable/ic_notification,@raw/azan_main,@raw/azan_fajr" />
+    tools:keep="@drawable/ic_notification,@raw/azan_*" />

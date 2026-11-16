@@ -11,22 +11,31 @@ import '../../l10n/app_localizations.dart';
 import '../../state/app_settings.dart';
 import '../location/city_picker_screen.dart';
 
-/// Compass headings in degrees from north, or null values when the device
-/// has no sensor. Tests replace it.
-final compassProvider = Provider<Stream<double?> Function()>((ref) {
+/// A compass reading: the heading in degrees from north, null when the
+/// device has no sensor, and the error the sensor admits to in degrees,
+/// null when it does not say.
+typedef CompassReading = ({double? heading, double? accuracy});
+
+/// Compass readings. Tests replace it.
+final compassProvider = Provider<Stream<CompassReading> Function()>((ref) {
+  const none = (heading: null, accuracy: null);
   return () {
-    if (kIsWeb) return Stream<double?>.value(null);
+    if (kIsWeb) return Stream<CompassReading>.value(none);
     final events = FlutterCompass.events;
-    if (events == null) return Stream<double?>.value(null);
-    return events.map((e) => e.heading);
+    if (events == null) return Stream<CompassReading>.value(none);
+    return events.map((e) => (heading: e.heading, accuracy: e.accuracy));
   };
 });
+
+/// Above this many degrees of admitted error the screen warns that the
+/// compass needs calibrating.
+const _poorAccuracy = 30.0;
 
 /// Within this many degrees the phone counts as facing the qibla.
 const _alignedWithin = 3.0;
 
 class QiblaScreen extends ConsumerStatefulWidget {
-  const QiblaScreen({super.key, required this.active});
+  const QiblaScreen({super.key, this.active = true});
 
   /// The compass is only read while the tab is shown, to spare the battery.
   final bool active;
@@ -36,8 +45,9 @@ class QiblaScreen extends ConsumerStatefulWidget {
 }
 
 class _QiblaScreenState extends ConsumerState<QiblaScreen> {
-  StreamSubscription<double?>? _subscription;
+  StreamSubscription<CompassReading>? _subscription;
   double? _heading;
+  double? _accuracy;
   bool _noSensor = false;
 
   @override
@@ -60,18 +70,21 @@ class _QiblaScreenState extends ConsumerState<QiblaScreen> {
   }
 
   void _listen() {
-    _subscription = ref.read(compassProvider)().listen(
-      (heading) {
-        if (!mounted) return;
-        setState(() {
-          _heading = heading;
-          _noSensor = heading == null;
-        });
-      },
-      onError: (Object _) {
-        if (mounted) setState(() => _noSensor = true);
-      },
-    );
+    _subscription = ref
+        .read(compassProvider)()
+        .listen(
+          (reading) {
+            if (!mounted) return;
+            setState(() {
+              _heading = reading.heading;
+              _accuracy = reading.accuracy;
+              _noSensor = reading.heading == null;
+            });
+          },
+          onError: (Object _) {
+            if (mounted) setState(() => _noSensor = true);
+          },
+        );
   }
 
   void _stop() {
@@ -137,8 +150,9 @@ class _QiblaScreenState extends ConsumerState<QiblaScreen> {
           Text(
             place.name,
             textAlign: TextAlign.center,
-            style: theme.textTheme.bodyMedium
-                ?.copyWith(color: scheme.onSurfaceVariant),
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: scheme.onSurfaceVariant,
+            ),
           ),
           const SizedBox(height: 4),
           Text(
@@ -163,8 +177,8 @@ class _QiblaScreenState extends ConsumerState<QiblaScreen> {
                     north: l.localeName == 'ru'
                         ? 'С'
                         : l.localeName == 'ar'
-                            ? 'ش'
-                            : 'N',
+                        ? 'ش'
+                        : 'N',
                   ),
                 ),
               ),
@@ -186,10 +200,10 @@ class _QiblaScreenState extends ConsumerState<QiblaScreen> {
                   aligned
                       ? Icons.check_circle
                       : turn == null
-                          ? Icons.info_outline
-                          : turn > 0
-                              ? Icons.rotate_right
-                              : Icons.rotate_left,
+                      ? Icons.info_outline
+                      : turn > 0
+                      ? Icons.rotate_right
+                      : Icons.rotate_left,
                   color: aligned ? scheme.primary : scheme.onSurfaceVariant,
                 ),
                 const SizedBox(width: 12),
@@ -206,12 +220,48 @@ class _QiblaScreenState extends ConsumerState<QiblaScreen> {
               ],
             ),
           ),
-          if (turn != null) ...[
+          if (turn != null && (_accuracy ?? 0) > _poorAccuracy) ...[
             const SizedBox(height: 12),
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: scheme.errorContainer,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Row(
+                children: [
+                  Icon(Icons.warning_amber, color: scheme.onErrorContainer),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      l.qiblaPoorAccuracy,
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: scheme.onErrorContainer,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+          const SizedBox(height: 12),
+          Text(
+            l.qiblaCheck(
+              l.compassPoints.split(',')[((bearing + 22.5) % 360) ~/ 45],
+            ),
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: scheme.onSurfaceVariant,
+              height: 1.4,
+            ),
+          ),
+          if (turn != null) ...[
+            const SizedBox(height: 8),
             Text(
               l.qiblaCalibrate,
-              style: theme.textTheme.bodySmall
-                  ?.copyWith(color: scheme.onSurfaceVariant, height: 1.4),
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: scheme.onSurfaceVariant,
+                height: 1.4,
+              ),
             ),
           ],
         ],
@@ -273,7 +323,13 @@ class _DialPainter extends CustomPainter {
       final major = d % 90 == 0;
       final medium = d % 30 == 0;
       tick.strokeWidth = major ? 3 : 1.5;
-      final inner = radius - (major ? 30 : medium ? 24 : 18);
+      final inner =
+          radius -
+          (major
+              ? 30
+              : medium
+              ? 24
+              : 18);
       final a = _rad(d.toDouble()) - math.pi / 2;
       canvas.drawLine(
         Offset(math.cos(a) * inner, math.sin(a) * inner),
@@ -293,10 +349,7 @@ class _DialPainter extends CustomPainter {
       ),
       textDirection: TextDirection.ltr,
     )..layout();
-    label.paint(
-      canvas,
-      Offset(-label.width / 2, -radius + 34),
-    );
+    label.paint(canvas, Offset(-label.width / 2, -radius + 34));
 
     // Qibla arrow, fixed to the dial at the bearing.
     canvas.rotate(_rad(bearing));

@@ -1,0 +1,32 @@
+MyFaith shows prayer times and calls you to prayer with the adhan. No ads, no subscriptions, no sign-up. Everything except listening to reciters works offline.
+
+<b>Prayer times</b>
+• Calculated for your location or for a city from a list of 34,000
+• 22 calculation methods, Hanafi and Shafi Asr, per-prayer corrections in minutes
+• Hijri date and a countdown to the next prayer
+• Two home-screen widgets: the next prayer and the day's timetable
+
+<b>Adhan and alarms</b>
+• Adhan for each prayer, a separate adhan for Fajr, an optional early reminder
+• The volume buttons do not cut the adhan off; stop it with the button in the notification
+• Suhoor alarm for Ramadan, Mondays and Thursdays, the white days, or every day
+• A reminder before Fajr that it is time to finish eating
+• Tahajjud alarm at the start of the last third of the night or a set time before Fajr
+
+<b>Quran</b>
+• Uthmani Arabic text with a translation and the Al-Mukhtasar tafsir for every ayah
+• A 604-page mushaf that turns right to left
+• Color-coded tajweed and transliteration
+• Search, bookmarks, and continue reading where you stopped
+• Ayah-by-ayah recitation by well-known reciters, with repeat, auto-advance, and playback speed (needs internet)
+
+<b>Remembrance and learning</b>
+• Salawat, dhikr, and duas with a counter and a daily goal; every card names its source
+• The 99 Names of Allah: a list and a quiz
+• A step-by-step prayer guide following the Hanafi school
+• Hadith of the day from Sahih al-Bukhari
+• Qibla compass
+
+Languages: Russian, English, Arabic. Dark theme included.
+
+The app collects no data. Your location is used only to calculate prayer times and the qibla, and it never leaves your phone.

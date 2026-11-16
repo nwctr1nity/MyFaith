@@ -37,6 +37,8 @@ class MainActivity : FlutterActivity() {
                             )
                             result.success(null)
                         }
+                        "lastAdhan" ->
+                            result.success(Store.prefs(this).getString("lastAdhan", null))
                         "stop" -> {
                             stopService(android.content.Intent(this, AdhanService::class.java))
                             result.success(null)

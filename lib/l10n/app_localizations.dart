@@ -1222,6 +1222,12 @@ abstract class AppLocalizations {
   /// **'Play the Fajr adhan'**
   String get testAdhanFajr;
 
+  /// No description provided for @lastAdhan.
+  ///
+  /// In en, this message translates to:
+  /// **'Last adhan: {title}, {time}, recording {file}'**
+  String lastAdhan(String title, String time, String file);
+
   /// No description provided for @syncPending.
   ///
   /// In en, this message translates to:

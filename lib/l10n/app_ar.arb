@@ -187,6 +187,7 @@
   "muezzin": "المؤذن",
   "channelAdhanFajr": "أذان الفجر",
   "testAdhanFajr": "تشغيل أذان الفجر",
+  "lastAdhan": "آخر أذان: {title}، {time}، التسجيل {file}",
   "syncPending": "الإشعارات المجدولة: {count}",
   "syncError": "تعذرت الجدولة: {error}",
   "stopAdhan": "إيقاف",

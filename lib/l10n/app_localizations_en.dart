@@ -632,6 +632,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get testAdhanFajr => 'Play the Fajr adhan';
 
   @override
+  String lastAdhan(String title, String time, String file) {
+    return 'Last adhan: $title, $time, recording $file';
+  }
+
+  @override
   String syncPending(int count) {
     return 'Notifications scheduled: $count';
   }

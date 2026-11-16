@@ -633,6 +633,11 @@ class AppLocalizationsRu extends AppLocalizations {
   String get testAdhanFajr => 'Включить азан фаджра';
 
   @override
+  String lastAdhan(String title, String time, String file) {
+    return 'Последний азан: $title, $time, запись $file';
+  }
+
+  @override
   String syncPending(int count) {
     return 'Запланировано уведомлений: $count';
   }

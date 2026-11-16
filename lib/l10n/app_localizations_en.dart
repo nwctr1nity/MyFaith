@@ -903,4 +903,33 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get channelQuran => 'Quran recitation';
+
+  @override
+  String get offlineListening => 'Listen without the internet';
+
+  @override
+  String get offlineListeningHint => 'Download surahs to the phone';
+
+  @override
+  String offlineHint(String reciter) {
+    return 'Downloaded surahs play without the internet. They are saved for the chosen reciter: $reciter.';
+  }
+
+  @override
+  String offlineProgress(int done, int total) {
+    return '$done of $total ayahs';
+  }
+
+  @override
+  String get offlineFailed =>
+      'Download stopped. Check the internet and try again.';
+
+  @override
+  String get offlineSaved => 'On the phone';
+
+  @override
+  String get offlineDelete => 'Delete from the phone';
+
+  @override
+  String get offlineDownload => 'Download';
 }

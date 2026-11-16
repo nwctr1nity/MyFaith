@@ -263,5 +263,13 @@
   "checkUpdates": "Проверять обновления",
   "checkUpdatesHint": "При запуске приложение спрашивает у GitHub, не вышла ли новая версия.",
   "versionLabel": "Установлена {version}.",
-  "channelQuran": "Чтение Корана"
+  "channelQuran": "Чтение Корана",
+  "offlineListening": "Слушать без интернета",
+  "offlineListeningHint": "Скачать суры на телефон",
+  "offlineHint": "Скачанные суры звучат без интернета. Они сохраняются для выбранного чтеца: {reciter}.",
+  "offlineProgress": "{done} из {total} аятов",
+  "offlineFailed": "Загрузка прервалась. Проверьте интернет и попробуйте ещё раз.",
+  "offlineSaved": "На телефоне",
+  "offlineDelete": "Удалить с телефона",
+  "offlineDownload": "Скачать"
 }

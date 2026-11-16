@@ -263,5 +263,13 @@
   "checkUpdates": "التحقق من التحديثات",
   "checkUpdatesHint": "عند التشغيل يسأل التطبيق GitHub عن صدور إصدار أحدث.",
   "versionLabel": "المثبَّت: {version}.",
-  "channelQuran": "تلاوة القرآن"
+  "channelQuran": "تلاوة القرآن",
+  "offlineListening": "الاستماع دون إنترنت",
+  "offlineListeningHint": "تنزيل السور إلى الهاتف",
+  "offlineHint": "السور المنزَّلة تُسمع دون إنترنت. تُحفظ للقارئ المختار: {reciter}.",
+  "offlineProgress": "{done} من {total} آية",
+  "offlineFailed": "توقف التنزيل. تحقق من الإنترنت وحاول مرة أخرى.",
+  "offlineSaved": "على الهاتف",
+  "offlineDelete": "حذف من الهاتف",
+  "offlineDownload": "تنزيل"
 }

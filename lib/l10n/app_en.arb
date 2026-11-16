@@ -534,5 +534,15 @@
   "checkUpdatesHint": "On start the app asks GitHub whether a newer version is out.",
   "versionLabel": "Installed: {version}.",
   "@versionLabel": {"placeholders": {"version": {"type": "String"}}},
-  "channelQuran": "Quran recitation"
+  "channelQuran": "Quran recitation",
+  "offlineListening": "Listen without the internet",
+  "offlineListeningHint": "Download surahs to the phone",
+  "offlineHint": "Downloaded surahs play without the internet. They are saved for the chosen reciter: {reciter}.",
+  "@offlineHint": {"placeholders": {"reciter": {"type": "String"}}},
+  "offlineProgress": "{done} of {total} ayahs",
+  "@offlineProgress": {"placeholders": {"done": {"type": "int"}, "total": {"type": "int"}}},
+  "offlineFailed": "Download stopped. Check the internet and try again.",
+  "offlineSaved": "On the phone",
+  "offlineDelete": "Delete from the phone",
+  "offlineDownload": "Download"
 }

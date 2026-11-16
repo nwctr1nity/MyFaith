@@ -2,6 +2,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_ui/material_ui.dart';
 
+import 'downloads_screen.dart';
 import '../../core/content/quran.dart';
 import '../../l10n/app_localizations.dart';
 import '../../state/app_settings.dart';
@@ -752,6 +753,20 @@ class _ReaderOptions extends ConsumerWidget {
                       selected: reciter.id,
                       options: {for (final r in reciters) r.id: reciterName(r)},
                       onSelected: (id) => controller.setValue('qReciter', id),
+                    ),
+                  ),
+                  ListTile(
+                    title: Text(l.offlineListening),
+                    subtitle: Text(l.offlineListeningHint),
+                    trailing: Icon(
+                      Directionality.of(context) == TextDirection.rtl
+                          ? Icons.chevron_left
+                          : Icons.chevron_right,
+                    ),
+                    onTap: () => Navigator.of(context).push(
+                      MaterialPageRoute<void>(
+                        builder: (_) => const DownloadsScreen(),
+                      ),
                     ),
                   ),
                   const SizedBox(height: 8),

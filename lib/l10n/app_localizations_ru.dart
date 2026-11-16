@@ -903,4 +903,33 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get channelQuran => 'Чтение Корана';
+
+  @override
+  String get offlineListening => 'Слушать без интернета';
+
+  @override
+  String get offlineListeningHint => 'Скачать суры на телефон';
+
+  @override
+  String offlineHint(String reciter) {
+    return 'Скачанные суры звучат без интернета. Они сохраняются для выбранного чтеца: $reciter.';
+  }
+
+  @override
+  String offlineProgress(int done, int total) {
+    return '$done из $total аятов';
+  }
+
+  @override
+  String get offlineFailed =>
+      'Загрузка прервалась. Проверьте интернет и попробуйте ещё раз.';
+
+  @override
+  String get offlineSaved => 'На телефоне';
+
+  @override
+  String get offlineDelete => 'Удалить с телефона';
+
+  @override
+  String get offlineDownload => 'Скачать';
 }

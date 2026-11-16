@@ -1683,6 +1683,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Quran recitation'**
   String get channelQuran;
+
+  /// No description provided for @offlineListening.
+  ///
+  /// In en, this message translates to:
+  /// **'Listen without the internet'**
+  String get offlineListening;
+
+  /// No description provided for @offlineListeningHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Download surahs to the phone'**
+  String get offlineListeningHint;
+
+  /// No description provided for @offlineHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Downloaded surahs play without the internet. They are saved for the chosen reciter: {reciter}.'**
+  String offlineHint(String reciter);
+
+  /// No description provided for @offlineProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'{done} of {total} ayahs'**
+  String offlineProgress(int done, int total);
+
+  /// No description provided for @offlineFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Download stopped. Check the internet and try again.'**
+  String get offlineFailed;
+
+  /// No description provided for @offlineSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'On the phone'**
+  String get offlineSaved;
+
+  /// No description provided for @offlineDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete from the phone'**
+  String get offlineDelete;
+
+  /// No description provided for @offlineDownload.
+  ///
+  /// In en, this message translates to:
+  /// **'Download'**
+  String get offlineDownload;
 }
 
 class _AppLocalizationsDelegate

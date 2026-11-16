@@ -8,6 +8,7 @@ import '../core/content/quran.dart';
 import 'app_settings.dart';
 import 'content_providers.dart';
 import 'notification_sync.dart' show notificationStrings;
+import 'quran_downloads.dart';
 
 /// Plays one recording at a time. Tests replace it with a fake.
 abstract class AyahPlayer {
@@ -171,8 +172,14 @@ class QuranAudioController extends Notifier<QuranAudioState> {
               .localeName;
       final surahs = await ref.read(surahIndexProvider.future);
       if (request != _request) return;
+      // A downloaded ayah plays from the phone, without the internet.
+      final store = await ref.read(quranStoreProvider.future);
+      if (request != _request) return;
+      final saved = store?.file(reciter, verse);
       await _player.play(
-        reciter.url(verse),
+        saved != null && saved.existsSync()
+            ? Uri.file(saved.path).toString()
+            : reciter.url(verse),
         title:
             '${surahs[verse.$1 - 1].localizedName(language)} '
             '${verse.$1}:${verse.$2}',

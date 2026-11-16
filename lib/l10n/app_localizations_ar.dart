@@ -892,4 +892,32 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get channelQuran => 'تلاوة القرآن';
+
+  @override
+  String get offlineListening => 'الاستماع دون إنترنت';
+
+  @override
+  String get offlineListeningHint => 'تنزيل السور إلى الهاتف';
+
+  @override
+  String offlineHint(String reciter) {
+    return 'السور المنزَّلة تُسمع دون إنترنت. تُحفظ للقارئ المختار: $reciter.';
+  }
+
+  @override
+  String offlineProgress(int done, int total) {
+    return '$done من $total آية';
+  }
+
+  @override
+  String get offlineFailed => 'توقف التنزيل. تحقق من الإنترنت وحاول مرة أخرى.';
+
+  @override
+  String get offlineSaved => 'على الهاتف';
+
+  @override
+  String get offlineDelete => 'حذف من الهاتف';
+
+  @override
+  String get offlineDownload => 'تنزيل';
 }

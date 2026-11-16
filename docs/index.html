@@ -3,19 +3,28 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#050806">
 <title>MyFaith</title>
-<style>
-  body { margin: 0; background: #fbfaf6; color: #1d2d1f; font: 17px/1.6 system-ui, sans-serif; }
-  @media (prefers-color-scheme: dark) { body { background: #141a15; color: #e8ece6; } a { color: #8fbf94; } }
-  main { max-width: 720px; margin: 0 auto; padding: 32px 16px; }
-  a { color: #37563b; }
-</style>
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="site.css">
 </head>
 <body>
 <main>
-<h1>MyFaith</h1>
-<p>Время молитвы, азан и Коран. Prayer times, adhan, and the Quran. مواقيت الصلاة والأذان والقرآن.</p>
-<p><a href="privacy/">Политика конфиденциальности · Privacy Policy · سياسة الخصوصية</a></p>
+<header class="top">
+  <a class="brand" href="./"><img src="icon.svg" alt="" width="32" height="32">MyFaith</a>
+</header>
+
+<div class="hero">
+  <span class="pill">Android</span>
+  <h1>Время молитвы, азан <em>и Коран</em></h1>
+  <p class="lead" lang="en">Prayer times, adhan, and the Quran.</p>
+  <p class="lead" lang="ar" dir="rtl">مواقيت الصلاة والأذان والقرآن.</p>
+  <div class="actions">
+    <a class="button" href="privacy/#ru">Политика конфиденциальности</a>
+    <a class="button grey" href="privacy/#en" lang="en">Privacy Policy</a>
+    <a class="button grey" href="privacy/#ar" lang="ar" dir="rtl">سياسة الخصوصية</a>
+  </div>
+</div>
 </main>
 </body>
 </html>

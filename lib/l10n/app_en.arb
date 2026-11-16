@@ -555,5 +555,19 @@
   "backupRestoreConfirm": "The current settings, bookmarks and counters will be replaced with the ones from the file.",
   "backupRestoreAction": "Restore",
   "backupRestored": "Restored from the file",
-  "guideAdhan": "The adhan and the iqamah"
+  "guideAdhan": "The adhan and the iqamah",
+  "undo": "Undo",
+  "missedLabel": "Missed",
+  "missedMarked": "{prayer} is marked as missed",
+  "@missedMarked": {"placeholders": {"prayer": {"type": "String"}}},
+  "missedUnmarked": "The mark is removed from {prayer}",
+  "@missedUnmarked": {"placeholders": {"prayer": {"type": "String"}}},
+  "qadaTitle": "Missed prayers",
+  "qadaNone": "None to make up",
+  "qadaTotal": "To make up: {count}",
+  "@qadaTotal": {"placeholders": {"count": {"type": "int"}}},
+  "qadaHint": "Every prayer counts as prayed. If you missed one, press and hold it on the prayer screen: it is added here. When you make it up, press the minus.",
+  "qadaButtonsHint": "Plus adds a prayer missed earlier, minus takes away one you have made up.",
+  "qadaMadeUp": "Made up",
+  "qadaAdd": "Add a missed prayer"
 }

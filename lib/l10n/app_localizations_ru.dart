@@ -966,4 +966,45 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get guideAdhan => 'Азан и икама';
+
+  @override
+  String get undo => 'Отменить';
+
+  @override
+  String get missedLabel => 'Пропущена';
+
+  @override
+  String missedMarked(String prayer) {
+    return 'Молитва «$prayer» отмечена как пропущенная';
+  }
+
+  @override
+  String missedUnmarked(String prayer) {
+    return 'Отметка с молитвы «$prayer» снята';
+  }
+
+  @override
+  String get qadaTitle => 'Пропущенные молитвы';
+
+  @override
+  String get qadaNone => 'Восполнять нечего';
+
+  @override
+  String qadaTotal(int count) {
+    return 'К восполнению: $count';
+  }
+
+  @override
+  String get qadaHint =>
+      'Каждая молитва считается совершённой. Если вы её пропустили, нажмите на неё и удерживайте на экране «Молитва»: она добавится сюда. Когда восполните, нажмите минус.';
+
+  @override
+  String get qadaButtonsHint =>
+      'Плюс добавляет молитву, пропущенную раньше, минус убирает восполненную.';
+
+  @override
+  String get qadaMadeUp => 'Восполнена';
+
+  @override
+  String get qadaAdd => 'Добавить пропущенную';
 }

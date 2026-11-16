@@ -197,6 +197,36 @@ void main() {
     expect(find.textContaining(RegExp(r'^\d\d:\d\d:\d\d$')), findsOneWidget);
   });
 
+  test('a prayer counts as prayed until it is marked as missed', () async {
+    final container = ProviderContainer(overrides: [
+      sharedPreferencesProvider.overrideWithValue(await _prefs()),
+    ]);
+    addTearDown(container.dispose);
+    final controller = container.read(settingsProvider.notifier);
+    AppSettings settings() => container.read(settingsProvider);
+
+    expect(settings().qadaTotal, 0);
+    controller.toggleMissed('2026-11-16', PrayerSlot.fajr);
+    controller.toggleMissed('2026-11-16', PrayerSlot.asr);
+    expect(settings().isMissed('2026-11-16', PrayerSlot.fajr), isTrue);
+    expect(settings().qada[PrayerSlot.fajr], 1);
+    expect(settings().qadaTotal, 2);
+
+    // Taking the mark back takes the debt back too.
+    controller.toggleMissed('2026-11-16', PrayerSlot.fajr);
+    expect(settings().isMissed('2026-11-16', PrayerSlot.fajr), isFalse);
+    expect(settings().qadaTotal, 1);
+
+    // An old mark is forgotten, the prayer still has to be made up.
+    controller.toggleMissed('2026-12-25', PrayerSlot.isha);
+    expect(settings().isMissed('2026-11-16', PrayerSlot.asr), isFalse);
+    expect(settings().qada[PrayerSlot.asr], 1);
+
+    controller.changeQada(PrayerSlot.asr, -5);
+    expect(settings().qada[PrayerSlot.asr], 0);
+    expect(settings().qada.containsKey(PrayerSlot.sunrise), isFalse);
+  });
+
   testWidgets('a newer version is offered and can be skipped', (tester) async {
     final prefs =
         await _prefs(AppSettings.of(languageCode: 'ru', place: _almaty));

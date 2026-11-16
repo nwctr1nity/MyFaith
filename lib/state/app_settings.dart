@@ -337,6 +337,28 @@ class AppSettings {
     return v is int && v > 0 ? v : null;
   }
 
+  /// Prayers the user has marked as missed and not made up yet, per
+  /// prayer. Every prayer counts as prayed until it is marked.
+  Map<PrayerSlot, int> get qada {
+    final raw = _data['qada'];
+    return {
+      for (final slot in PrayerSlot.values)
+        if (slot != PrayerSlot.sunrise)
+          slot: raw is Map && raw[slot.name] is int && (raw[slot.name] as int) > 0
+              ? raw[slot.name] as int
+              : 0,
+    };
+  }
+
+  int get qadaTotal => qada.values.fold(0, (a, b) => a + b);
+
+  /// Whether the prayer [slot] of the day [day] (`2026-11-16`) is marked
+  /// as missed.
+  bool isMissed(String day, PrayerSlot slot) {
+    final raw = _data['missed'];
+    return raw is List && raw.contains('$day:${slot.name}');
+  }
+
   /// Correct answers in a row in the names quiz, best ever.
   int get namesBest => _int('namesBest', 0, min: 0);
 }
@@ -445,6 +467,40 @@ class SettingsController extends Notifier<AppSettings> {
           .withValue('salDay', today)
           .withValue('salToday', (sameDay ? state.salawatToday : 0) + 1)
           .withValue('salTotal', state.salawatTotal + 1),
+    );
+  }
+
+  Map<String, Object?> _qada(PrayerSlot slot, int delta) {
+    final next = {for (final e in state.qada.entries) e.key.name: e.value};
+    next[slot.name] = ((next[slot.name] ?? 0) + delta).clamp(0, 99999);
+    return next;
+  }
+
+  /// Adds to or takes from the prayers to make up.
+  void changeQada(PrayerSlot slot, int delta) =>
+      setValue('qada', _qada(slot, delta));
+
+  /// Marks the prayer [slot] of [day] as missed, or takes the mark back.
+  /// Marks older than two weeks are forgotten; the count stays.
+  void toggleMissed(String day, PrayerSlot slot) {
+    final key = '$day:${slot.name}';
+    final raw = state.toJson()['missed'];
+    final marks = <String>[
+      if (raw is List)
+        for (final m in raw)
+          if (m is String) m,
+    ];
+    final wasMissed = marks.remove(key);
+    if (!wasMissed) marks.add(key);
+    final cutoff = DateTime.parse(day).subtract(const Duration(days: 14));
+    marks.removeWhere((m) {
+      final date = DateTime.tryParse(m.split(':').first);
+      return date == null || date.isBefore(cutoff);
+    });
+    _set(
+      state
+          .withValue('missed', marks)
+          .withValue('qada', _qada(slot, wasMissed ? -1 : 1)),
     );
   }
 

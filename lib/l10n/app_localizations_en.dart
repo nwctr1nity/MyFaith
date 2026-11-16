@@ -966,4 +966,45 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get guideAdhan => 'The adhan and the iqamah';
+
+  @override
+  String get undo => 'Undo';
+
+  @override
+  String get missedLabel => 'Missed';
+
+  @override
+  String missedMarked(String prayer) {
+    return '$prayer is marked as missed';
+  }
+
+  @override
+  String missedUnmarked(String prayer) {
+    return 'The mark is removed from $prayer';
+  }
+
+  @override
+  String get qadaTitle => 'Missed prayers';
+
+  @override
+  String get qadaNone => 'None to make up';
+
+  @override
+  String qadaTotal(int count) {
+    return 'To make up: $count';
+  }
+
+  @override
+  String get qadaHint =>
+      'Every prayer counts as prayed. If you missed one, press and hold it on the prayer screen: it is added here. When you make it up, press the minus.';
+
+  @override
+  String get qadaButtonsHint =>
+      'Plus adds a prayer missed earlier, minus takes away one you have made up.';
+
+  @override
+  String get qadaMadeUp => 'Made up';
+
+  @override
+  String get qadaAdd => 'Add a missed prayer';
 }

@@ -1797,6 +1797,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'The adhan and the iqamah'**
   String get guideAdhan;
+
+  /// No description provided for @undo.
+  ///
+  /// In en, this message translates to:
+  /// **'Undo'**
+  String get undo;
+
+  /// No description provided for @missedLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Missed'**
+  String get missedLabel;
+
+  /// No description provided for @missedMarked.
+  ///
+  /// In en, this message translates to:
+  /// **'{prayer} is marked as missed'**
+  String missedMarked(String prayer);
+
+  /// No description provided for @missedUnmarked.
+  ///
+  /// In en, this message translates to:
+  /// **'The mark is removed from {prayer}'**
+  String missedUnmarked(String prayer);
+
+  /// No description provided for @qadaTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Missed prayers'**
+  String get qadaTitle;
+
+  /// No description provided for @qadaNone.
+  ///
+  /// In en, this message translates to:
+  /// **'None to make up'**
+  String get qadaNone;
+
+  /// No description provided for @qadaTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'To make up: {count}'**
+  String qadaTotal(int count);
+
+  /// No description provided for @qadaHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Every prayer counts as prayed. If you missed one, press and hold it on the prayer screen: it is added here. When you make it up, press the minus.'**
+  String get qadaHint;
+
+  /// No description provided for @qadaButtonsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Plus adds a prayer missed earlier, minus takes away one you have made up.'**
+  String get qadaButtonsHint;
+
+  /// No description provided for @qadaMadeUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Made up'**
+  String get qadaMadeUp;
+
+  /// No description provided for @qadaAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a missed prayer'**
+  String get qadaAdd;
 }
 
 class _AppLocalizationsDelegate

@@ -1,8 +1,7 @@
-import 'update_card.dart';
+import 'dart:async';
 import 'dart:math' as math;
 
-import 'dart:async';
-
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:material_ui/material_ui.dart';
@@ -19,6 +18,7 @@ import '../location/city_picker_screen.dart';
 import '../prayer_guide/prayer_guide_screen.dart';
 import '../qibla/qibla_screen.dart';
 import '../theme.dart';
+import 'update_card.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -191,6 +191,11 @@ class _Timetable extends ConsumerWidget {
     String clock(DateTime t) =>
         timeFormat.format(DateTime(t.year, t.month, t.day, t.hour, t.minute));
 
+    final noon = day[PrayerSlot.dhuhr];
+    final dayKey =
+        '${noon.year}-${noon.month.toString().padLeft(2, '0')}-'
+        '${noon.day.toString().padLeft(2, '0')}';
+
     return ListView(
       padding: const EdgeInsets.fromLTRB(16, 4, 16, 24),
       children: [
@@ -242,6 +247,42 @@ class _Timetable extends ConsumerWidget {
               children: [
                 for (final slot in PrayerSlot.values)
                   _PrayerRow(
+                    // A prayer whose time has come can be marked as missed
+                    // with a long press; nothing else is asked of the user.
+                    missedLabel: settings.isMissed(dayKey, slot)
+                        ? l.missedLabel
+                        : null,
+                    onLongPress:
+                        slot == PrayerSlot.sunrise || day[slot].isAfter(now)
+                        ? null
+                        : () {
+                            final controller =
+                                ref.read(settingsProvider.notifier);
+                            final wasMissed = settings.isMissed(dayKey, slot);
+                            controller.toggleMissed(dayKey, slot);
+                            HapticFeedback.mediumImpact();
+                            ScaffoldMessenger.of(context)
+                              ..hideCurrentSnackBar()
+                              ..showSnackBar(
+                                SnackBar(
+                                  // With an action a snack bar would stay
+                                  // until dismissed; this one is a passing
+                                  // note.
+                                  persist: false,
+                                  duration: const Duration(seconds: 4),
+                                  content: Text(
+                                    wasMissed
+                                        ? l.missedUnmarked(prayerName(l, slot))
+                                        : l.missedMarked(prayerName(l, slot)),
+                                  ),
+                                  action: SnackBarAction(
+                                    label: l.undo,
+                                    onPressed: () =>
+                                        controller.toggleMissed(dayKey, slot),
+                                  ),
+                                ),
+                              );
+                          },
                     name: prayerName(l, slot),
                     time: clock(day[slot]),
                     isCurrent: moment.current == slot,
@@ -320,6 +361,8 @@ class _PrayerRow extends StatelessWidget {
     required this.muted,
     required this.nowLabel,
     this.soonLabel,
+    this.missedLabel,
+    this.onLongPress,
     this.adhanOn,
     this.adhanTooltip,
     this.onToggleAdhan,
@@ -334,6 +377,10 @@ class _PrayerRow extends StatelessWidget {
 
   /// "In 12 min!" on the next prayer when it is less than an hour away.
   final String? soonLabel;
+
+  /// "Missed" on a prayer the user marked so.
+  final String? missedLabel;
+  final VoidCallback? onLongPress;
   final bool? adhanOn;
   final String? adhanTooltip;
   final VoidCallback? onToggleAdhan;
@@ -344,6 +391,19 @@ class _PrayerRow extends StatelessWidget {
     final scheme = theme.colorScheme;
     final color = muted ? scheme.onSurfaceVariant : scheme.onSurface;
     final weight = isNext ? FontWeight.w700 : FontWeight.w400;
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onLongPress: onLongPress,
+      child: _row(theme, scheme, color, weight),
+    );
+  }
+
+  Widget _row(
+    ThemeData theme,
+    ColorScheme scheme,
+    Color color,
+    FontWeight weight,
+  ) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 1),
       padding: const EdgeInsetsDirectional.only(start: 12),
@@ -380,6 +440,25 @@ class _PrayerRow extends StatelessWidget {
                       nowLabel,
                       style: theme.textTheme.labelSmall?.copyWith(
                         color: scheme.onPrimary,
+                      ),
+                    ),
+                  ),
+                ],
+                if (missedLabel != null) ...[
+                  const SizedBox(width: 10),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 2,
+                    ),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: scheme.error),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text(
+                      missedLabel!,
+                      style: theme.textTheme.labelSmall?.copyWith(
+                        color: scheme.error,
                       ),
                     ),
                   ),

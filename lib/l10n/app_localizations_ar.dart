@@ -955,4 +955,45 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get guideAdhan => 'الأذان والإقامة';
+
+  @override
+  String get undo => 'تراجع';
+
+  @override
+  String get missedLabel => 'فائتة';
+
+  @override
+  String missedMarked(String prayer) {
+    return 'عُلِّمت صلاة $prayer فائتةً';
+  }
+
+  @override
+  String missedUnmarked(String prayer) {
+    return 'أُزيلت العلامة عن صلاة $prayer';
+  }
+
+  @override
+  String get qadaTitle => 'الصلوات الفائتة';
+
+  @override
+  String get qadaNone => 'لا شيء للقضاء';
+
+  @override
+  String qadaTotal(int count) {
+    return 'للقضاء: $count';
+  }
+
+  @override
+  String get qadaHint =>
+      'كل صلاة تُعدّ مؤدّاة. إذا فاتتك صلاة فاضغط عليها مطوّلًا في شاشة الصلاة فتُضاف هنا. وإذا قضيتها فاضغط على علامة الناقص.';
+
+  @override
+  String get qadaButtonsHint =>
+      'علامة الزائد تضيف صلاة فاتت من قبل، وعلامة الناقص تحذف صلاة قضيتها.';
+
+  @override
+  String get qadaMadeUp => 'قُضيت';
+
+  @override
+  String get qadaAdd => 'إضافة صلاة فائتة';
 }

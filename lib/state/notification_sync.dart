@@ -9,6 +9,7 @@ import 'package:timezone/timezone.dart' as tz;
 
 import '../core/alarms/notification_planner.dart';
 import '../core/content/hadith.dart';
+import '../core/content/muezzins.dart';
 import '../core/prayer/prayer_calculator.dart';
 import '../features/labels.dart';
 import '../l10n/app_localizations.dart';
@@ -47,7 +48,9 @@ List<NotificationRequest> buildRequests({
   required AppLocalizations l,
   required String cityName,
   required List<Hadith> hadiths,
+  Muezzin? muezzin,
 }) {
+  final voice = muezzin ?? muezzins.first;
   final clock = DateFormat.Hm(l.localeName);
   String at(DateTime t) =>
       clock.format(DateTime(t.year, t.month, t.day, t.hour, t.minute));
@@ -70,6 +73,7 @@ List<NotificationRequest> buildRequests({
                 ? l.notifSunriseTitle
                 : l.notifAdhanTitle(prayerName(l, slot)),
             body: l.notifAdhanBody(at(p.time), cityName),
+            sound: voice.sound(slot),
           ),
         );
       case PlannedKind.prayerNotice:
@@ -245,6 +249,7 @@ class NotificationSync {
     final settings = _ref.read(settingsProvider);
     final l = notificationStrings(settings.languageCode);
     final now = DateTime.now();
+    final voice = muezzinById(settings.muezzinId);
     await _ref
         .read(notificationServiceProvider)
         .showNow(
@@ -259,6 +264,7 @@ class NotificationSync {
               DateFormat.Hm(l.localeName).format(now),
               settings.place?.name ?? l.appTitle,
             ),
+            sound: voice.sound(fajr ? PrayerSlot.fajr : PrayerSlot.dhuhr),
           ),
           _names(l),
         );
@@ -297,7 +303,13 @@ class NotificationSync {
         now: now ?? DateTime.now(),
       );
       await service.replaceAll(
-        buildRequests(plan: plan, l: l, cityName: place.name, hadiths: hadiths),
+        buildRequests(
+          plan: plan,
+          l: l,
+          cityName: place.name,
+          hadiths: hadiths,
+          muezzin: muezzinById(settings.muezzinId),
+        ),
         names,
         widget: WidgetData(
           city: place.name,

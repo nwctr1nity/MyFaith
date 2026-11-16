@@ -620,7 +620,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get sourcesAdhan =>
-      'The adhan is recited by Sheikh Abdullah ibn Ahmad ibn Abdurrahman Ba-Afif.';
+      'Adhan: recordings from Doha, Qatar, made in 2013–2014. Source: Internet Archive, public domain.';
+
+  @override
+  String get muezzin => 'Muezzin';
 
   @override
   String get channelAdhanFajr => 'Fajr adhan';

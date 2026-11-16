@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_ui/material_ui.dart';
 
+import '../../core/content/muezzins.dart';
 import '../../core/prayer/prayer_calculator.dart';
 import '../../l10n/app_localizations.dart';
 import '../../services/notification_service.dart';
@@ -117,6 +118,20 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen>
               onChanged: (v) => controller.toggleAdhan(slot, v),
             ),
           const Divider(),
+          ListTile(
+            leading: const Icon(Icons.record_voice_over_outlined),
+            title: Text(l.muezzin),
+            subtitle: Text(
+              muezzinById(settings.muezzinId).name(l.localeName),
+            ),
+            onTap: () => pickOption<String>(
+              context,
+              title: l.muezzin,
+              selected: muezzinById(settings.muezzinId).id,
+              options: {for (final m in muezzins) m.id: m.name(l.localeName)},
+              onSelected: (id) => controller.setValue('muezzin', id),
+            ),
+          ),
           ListTile(
             leading: const Icon(Icons.schedule),
             title: Text(l.reminderBefore),

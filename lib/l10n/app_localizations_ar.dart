@@ -612,7 +612,10 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get sourcesAdhan =>
-      'الأذان بصوت الشيخ عبد الله بن أحمد بن عبد الرحمن باعفيف.';
+      'الأذان: تسجيلات من الدوحة (قطر) بين عامي 2013 و2014. المصدر: أرشيف الإنترنت، ملكية عامة.';
+
+  @override
+  String get muezzin => 'المؤذن';
 
   @override
   String get channelAdhanFajr => 'أذان الفجر';

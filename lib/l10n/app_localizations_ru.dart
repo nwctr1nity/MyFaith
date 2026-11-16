@@ -621,7 +621,10 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get sourcesAdhan =>
-      'Азан читает шейх Абдулла ибн Ахмад ибн Абдуррахман Ба-Афиф.';
+      'Азан: записи из Дохи (Катар), сделанные в 2013–2014 годах. Источник: Internet Archive, общественное достояние.';
+
+  @override
+  String get muezzin => 'Муэдзин';
 
   @override
   String get channelAdhanFajr => 'Азан на фаджр';

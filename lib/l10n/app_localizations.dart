@@ -1201,8 +1201,14 @@ abstract class AppLocalizations {
   /// No description provided for @sourcesAdhan.
   ///
   /// In en, this message translates to:
-  /// **'The adhan is recited by Sheikh Abdullah ibn Ahmad ibn Abdurrahman Ba-Afif.'**
+  /// **'Adhan: recordings from Doha, Qatar, made in 2013–2014. Source: Internet Archive, public domain.'**
   String get sourcesAdhan;
+
+  /// No description provided for @muezzin.
+  ///
+  /// In en, this message translates to:
+  /// **'Muezzin'**
+  String get muezzin;
 
   /// No description provided for @channelAdhanFajr.
   ///

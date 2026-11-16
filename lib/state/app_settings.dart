@@ -192,6 +192,9 @@ class AppSettings {
     return {for (final name in raw) ?_byName(PrayerSlot.values, name)};
   }
 
+  /// Whose adhan plays, an id from `muezzins`; null is the default one.
+  String? get muezzinId => _data['muezzin'] as String?;
+
   /// Minutes before each prayer for an extra reminder; 0 turns it off.
   int get reminderMinutes => _int('remind', 0, min: 0, max: 60);
 

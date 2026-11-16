@@ -920,4 +920,36 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get offlineDownload => 'تنزيل';
+
+  @override
+  String get backup => 'النسخة الاحتياطية';
+
+  @override
+  String get backupSave => 'حفظ في ملف';
+
+  @override
+  String get backupSaveHint =>
+      'الإعدادات والمدينة والعلامات والعدّادات والأهداف';
+
+  @override
+  String get backupRestore => 'استعادة من ملف';
+
+  @override
+  String get backupRestoreHint => 'اختر ملفًا حُفظ سابقًا';
+
+  @override
+  String get backupSaved => 'حُفظت النسخة';
+
+  @override
+  String get backupNotOurs => 'هذا ليس ملف نسخة احتياطية من MyFaith';
+
+  @override
+  String get backupRestoreConfirm =>
+      'ستُستبدل الإعدادات والعلامات والعدّادات الحالية بما في الملف.';
+
+  @override
+  String get backupRestoreAction => 'استعادة';
+
+  @override
+  String get backupRestored => 'تمت الاستعادة من الملف';
 }

@@ -544,5 +544,15 @@
   "offlineFailed": "Download stopped. Check the internet and try again.",
   "offlineSaved": "On the phone",
   "offlineDelete": "Delete from the phone",
-  "offlineDownload": "Download"
+  "offlineDownload": "Download",
+  "backup": "Backup",
+  "backupSave": "Save to a file",
+  "backupSaveHint": "Settings, city, bookmarks, counters and goals",
+  "backupRestore": "Restore from a file",
+  "backupRestoreHint": "Choose a file saved earlier",
+  "backupSaved": "The backup is saved",
+  "backupNotOurs": "This is not a MyFaith backup file",
+  "backupRestoreConfirm": "The current settings, bookmarks and counters will be replaced with the ones from the file.",
+  "backupRestoreAction": "Restore",
+  "backupRestored": "Restored from the file"
 }

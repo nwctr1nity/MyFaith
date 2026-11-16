@@ -271,5 +271,15 @@
   "offlineFailed": "توقف التنزيل. تحقق من الإنترنت وحاول مرة أخرى.",
   "offlineSaved": "على الهاتف",
   "offlineDelete": "حذف من الهاتف",
-  "offlineDownload": "تنزيل"
+  "offlineDownload": "تنزيل",
+  "backup": "النسخة الاحتياطية",
+  "backupSave": "حفظ في ملف",
+  "backupSaveHint": "الإعدادات والمدينة والعلامات والعدّادات والأهداف",
+  "backupRestore": "استعادة من ملف",
+  "backupRestoreHint": "اختر ملفًا حُفظ سابقًا",
+  "backupSaved": "حُفظت النسخة",
+  "backupNotOurs": "هذا ليس ملف نسخة احتياطية من MyFaith",
+  "backupRestoreConfirm": "ستُستبدل الإعدادات والعلامات والعدّادات الحالية بما في الملف.",
+  "backupRestoreAction": "استعادة",
+  "backupRestored": "تمت الاستعادة من الملف"
 }

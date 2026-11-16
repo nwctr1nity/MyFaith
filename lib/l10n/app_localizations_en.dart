@@ -932,4 +932,35 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get offlineDownload => 'Download';
+
+  @override
+  String get backup => 'Backup';
+
+  @override
+  String get backupSave => 'Save to a file';
+
+  @override
+  String get backupSaveHint => 'Settings, city, bookmarks, counters and goals';
+
+  @override
+  String get backupRestore => 'Restore from a file';
+
+  @override
+  String get backupRestoreHint => 'Choose a file saved earlier';
+
+  @override
+  String get backupSaved => 'The backup is saved';
+
+  @override
+  String get backupNotOurs => 'This is not a MyFaith backup file';
+
+  @override
+  String get backupRestoreConfirm =>
+      'The current settings, bookmarks and counters will be replaced with the ones from the file.';
+
+  @override
+  String get backupRestoreAction => 'Restore';
+
+  @override
+  String get backupRestored => 'Restored from the file';
 }

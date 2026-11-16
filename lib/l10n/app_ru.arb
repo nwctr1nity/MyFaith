@@ -271,5 +271,15 @@
   "offlineFailed": "Загрузка прервалась. Проверьте интернет и попробуйте ещё раз.",
   "offlineSaved": "На телефоне",
   "offlineDelete": "Удалить с телефона",
-  "offlineDownload": "Скачать"
+  "offlineDownload": "Скачать",
+  "backup": "Резервная копия",
+  "backupSave": "Сохранить в файл",
+  "backupSaveHint": "Настройки, город, закладки, счётчики и цели",
+  "backupRestore": "Восстановить из файла",
+  "backupRestoreHint": "Выберите файл, сохранённый раньше",
+  "backupSaved": "Копия сохранена",
+  "backupNotOurs": "Это не файл резервной копии MyFaith",
+  "backupRestoreConfirm": "Текущие настройки, закладки и счётчики будут заменены теми, что в файле.",
+  "backupRestoreAction": "Восстановить",
+  "backupRestored": "Восстановлено из файла"
 }

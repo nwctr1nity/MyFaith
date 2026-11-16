@@ -1,6 +1,9 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:file_picker/file_picker.dart';
+
+import '../../services/backup.dart';
 import '../../state/update_provider.dart';
 import '../../core/prayer/prayer_calculator.dart';
 import '../../l10n/app_localizations.dart';
@@ -156,10 +159,86 @@ class SettingsScreen extends ConsumerWidget {
               label: (v) => l.minutesShort(v),
               onChange: (delta) => controller.changeAdjustment(slot, delta),
             ),
+          _SectionHeader(l.backup),
+          ListTile(
+            leading: const Icon(Icons.save_alt),
+            title: Text(l.backupSave),
+            subtitle: Text(l.backupSaveHint),
+            onTap: () => _saveBackup(context, settings),
+          ),
+          ListTile(
+            leading: const Icon(Icons.settings_backup_restore),
+            title: Text(l.backupRestore),
+            subtitle: Text(l.backupRestoreHint),
+            onTap: () => _restoreBackup(context, controller),
+          ),
           const SizedBox(height: 24),
         ],
       ),
     );
+  }
+
+  static Future<void> _saveBackup(
+    BuildContext context,
+    AppSettings settings,
+  ) async {
+    final l = AppLocalizations.of(context)!;
+    final messenger = ScaffoldMessenger.of(context);
+    final now = DateTime.now();
+    String two(int n) => n.toString().padLeft(2, '0');
+    try {
+      final saved = await FilePicker.saveFile(
+        fileName:
+            'myfaith-${now.year}-${two(now.month)}-${two(now.day)}.json',
+        bytes: encodeBackup(settings.toJson(), now: now),
+        mimeType: 'application/json',
+      );
+      if (saved != null) {
+        messenger.showSnackBar(SnackBar(content: Text(l.backupSaved)));
+      }
+    } on Exception catch (error) {
+      messenger.showSnackBar(SnackBar(content: Text('$error')));
+    }
+  }
+
+  static Future<void> _restoreBackup(
+    BuildContext context,
+    SettingsController controller,
+  ) async {
+    final l = AppLocalizations.of(context)!;
+    final messenger = ScaffoldMessenger.of(context);
+    try {
+      final files = await FilePicker.pickFiles();
+      if (files.isEmpty) return;
+      final settings = decodeBackup(await files.first.readAsBytes());
+      if (settings == null) {
+        messenger.showSnackBar(SnackBar(content: Text(l.backupNotOurs)));
+        return;
+      }
+      if (!context.mounted) return;
+      final confirmed = await showDialog<bool>(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text(l.backupRestore),
+          content: Text(l.backupRestoreConfirm),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
+            ),
+            FilledButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              child: Text(l.backupRestoreAction),
+            ),
+          ],
+        ),
+      );
+      if (confirmed != true) return;
+      controller.restore(settings);
+      messenger.showSnackBar(SnackBar(content: Text(l.backupRestored)));
+    } on Exception catch (error) {
+      messenger.showSnackBar(SnackBar(content: Text('$error')));
+    }
   }
 
   static String _signed(int n) => n > 0 ? '+$n' : '$n';

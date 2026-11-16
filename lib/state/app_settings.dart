@@ -376,6 +376,10 @@ class SettingsController extends Notifier<AppSettings> {
         .setString(_key, jsonEncode(next.toJson()));
   }
 
+  /// Replaces everything with the settings from a backup.
+  void restore(Map<String, Object?> settings) =>
+      _set(AppSettings.fromJson(settings));
+
   /// Sets one raw value. Keys are the ones the [AppSettings] getters read.
   void setValue(String key, Object? value) => _set(state.withValue(key, value));
 

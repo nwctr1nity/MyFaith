@@ -932,4 +932,35 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get offlineDownload => 'Скачать';
+
+  @override
+  String get backup => 'Резервная копия';
+
+  @override
+  String get backupSave => 'Сохранить в файл';
+
+  @override
+  String get backupSaveHint => 'Настройки, город, закладки, счётчики и цели';
+
+  @override
+  String get backupRestore => 'Восстановить из файла';
+
+  @override
+  String get backupRestoreHint => 'Выберите файл, сохранённый раньше';
+
+  @override
+  String get backupSaved => 'Копия сохранена';
+
+  @override
+  String get backupNotOurs => 'Это не файл резервной копии MyFaith';
+
+  @override
+  String get backupRestoreConfirm =>
+      'Текущие настройки, закладки и счётчики будут заменены теми, что в файле.';
+
+  @override
+  String get backupRestoreAction => 'Восстановить';
+
+  @override
+  String get backupRestored => 'Восстановлено из файла';
 }

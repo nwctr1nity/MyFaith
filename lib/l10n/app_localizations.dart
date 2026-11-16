@@ -1731,6 +1731,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Download'**
   String get offlineDownload;
+
+  /// No description provided for @backup.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup'**
+  String get backup;
+
+  /// No description provided for @backupSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save to a file'**
+  String get backupSave;
+
+  /// No description provided for @backupSaveHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings, city, bookmarks, counters and goals'**
+  String get backupSaveHint;
+
+  /// No description provided for @backupRestore.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore from a file'**
+  String get backupRestore;
+
+  /// No description provided for @backupRestoreHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a file saved earlier'**
+  String get backupRestoreHint;
+
+  /// No description provided for @backupSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'The backup is saved'**
+  String get backupSaved;
+
+  /// No description provided for @backupNotOurs.
+  ///
+  /// In en, this message translates to:
+  /// **'This is not a MyFaith backup file'**
+  String get backupNotOurs;
+
+  /// No description provided for @backupRestoreConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'The current settings, bookmarks and counters will be replaced with the ones from the file.'**
+  String get backupRestoreConfirm;
+
+  /// No description provided for @backupRestoreAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore'**
+  String get backupRestoreAction;
+
+  /// No description provided for @backupRestored.
+  ///
+  /// In en, this message translates to:
+  /// **'Restored from the file'**
+  String get backupRestored;
 }
 
 class _AppLocalizationsDelegate

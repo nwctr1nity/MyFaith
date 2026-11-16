@@ -187,7 +187,6 @@
   "muezzin": "Муэдзин",
   "channelAdhanFajr": "Азан на фаджр",
   "testAdhanFajr": "Включить азан фаджра",
-  "lastAdhan": "Последний азан: {title}, {time}, запись {file}",
   "syncPending": "Запланировано уведомлений: {count}",
   "syncError": "Не удалось запланировать: {error}",
   "stopAdhan": "Остановить",

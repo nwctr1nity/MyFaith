@@ -624,11 +624,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get testAdhanFajr => 'تشغيل أذان الفجر';
 
   @override
-  String lastAdhan(String title, String time, String file) {
-    return 'آخر أذان: $title، $time، التسجيل $file';
-  }
-
-  @override
   String syncPending(int count) {
     return 'الإشعارات المجدولة: $count';
   }

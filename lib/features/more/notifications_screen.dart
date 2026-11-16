@@ -1,5 +1,4 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart' show DateFormat;
 import 'package:material_ui/material_ui.dart';
 
 import '../../core/content/muezzins.dart';
@@ -197,20 +196,6 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen>
                 error != null
                     ? l.syncError(error)
                     : l.syncPending(status.pending ?? 0),
-              );
-            },
-          ),
-          FutureBuilder<LastAdhan?>(
-            future: service.lastAdhan(),
-            builder: (context, snapshot) {
-              final last = snapshot.data;
-              if (last == null) return const SizedBox.shrink();
-              return HintText(
-                l.lastAdhan(
-                  last.title,
-                  DateFormat.MMMd(l.localeName).add_Hm().format(last.time),
-                  last.file,
-                ),
               );
             },
           ),

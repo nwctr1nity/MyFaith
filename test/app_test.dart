@@ -60,9 +60,6 @@ class FakeNotifications implements NotificationService {
   @override
   Future<int> pendingCount() async => scheduled.length;
 
-  @override
-  Future<LastAdhan?> lastAdhan() async => null;
-
   bool granted = true;
   int asked = 0;
 }

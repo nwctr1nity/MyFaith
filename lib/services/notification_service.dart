@@ -56,17 +56,6 @@ class NotificationPermissions {
   final bool exactAlarms;
 }
 
-/// What the adhan service played last.
-class LastAdhan {
-  const LastAdhan({required this.time, required this.title, required this.file});
-
-  final DateTime time;
-  final String title;
-
-  /// The recording, a file name in `res/raw`.
-  final String file;
-}
-
 /// One prayer time as the home-screen widgets show it.
 class WidgetPrayer {
   const WidgetPrayer({
@@ -132,9 +121,6 @@ abstract class NotificationService {
 
   /// How many notifications are waiting to fire.
   Future<int> pendingCount();
-
-  /// The adhan that played last: its title, time and recording.
-  Future<LastAdhan?> lastAdhan();
 }
 
 bool _isAdhan(NotificationRequest r) =>
@@ -302,22 +288,6 @@ class LocalNotificationService implements NotificationService {
         android: _details(request.channel, names, request.body),
       ),
     );
-  }
-
-  @override
-  Future<LastAdhan?> lastAdhan() async {
-    try {
-      final raw = await _native.invokeMethod<String>('lastAdhan');
-      if (raw == null) return null;
-      final data = jsonDecode(raw) as Map<String, dynamic>;
-      return LastAdhan(
-        time: DateTime.fromMillisecondsSinceEpoch(data['t'] as int),
-        title: data['title'] as String? ?? '',
-        file: data['file'] as String? ?? '',
-      );
-    } on Exception {
-      return null;
-    }
   }
 
   @override

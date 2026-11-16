@@ -51,19 +51,7 @@ class AdhanService : Service() {
         }
 
         try {
-            val recording = recording(sound, fajr)
-            // A record of what played, shown on the notifications screen.
-            Store.prefs(this).edit()
-                .putString(
-                    "lastAdhan",
-                    org.json.JSONObject()
-                        .put("t", System.currentTimeMillis())
-                        .put("title", title)
-                        .put("file", resources.getResourceEntryName(recording))
-                        .toString(),
-                )
-                .apply()
-            play(recording, notification(this, title, body, playing = false))
+            play(recording(sound, fajr), notification(this, title, body, playing = false))
         } catch (e: Exception) {
             finish(notification(this, title, body, playing = false))
         }

@@ -343,8 +343,6 @@
   "muezzin": "Muezzin",
   "channelAdhanFajr": "Fajr adhan",
   "testAdhanFajr": "Play the Fajr adhan",
-  "lastAdhan": "Last adhan: {title}, {time}, recording {file}",
-  "@lastAdhan": {"placeholders": {"title": {"type": "String"}, "time": {"type": "String"}, "file": {"type": "String"}}},
   "syncPending": "Notifications scheduled: {count}",
   "syncError": "Scheduling failed: {error}",
   "@syncPending": {

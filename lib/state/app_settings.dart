@@ -317,6 +317,16 @@ class AppSettings {
     return [for (final v in raw) ?AyahRef.parse(v)];
   }
 
+  /// Numbers of the hadiths marked with the star, the latest first.
+  List<int> get hadithFavorites {
+    final raw = _data['hFav'];
+    if (raw is! List) return const [];
+    return [
+      for (final v in raw)
+        if (v is int) v,
+    ];
+  }
+
   // Salawat.
 
   /// Lifetime count of salawat.
@@ -469,6 +479,12 @@ class SettingsController extends Notifier<AppSettings> {
   }
 
   void setLastRead(AyahRef ref) => setValue('qLast', ref.key);
+
+  void toggleHadithFavorite(int number) {
+    final list = [...state.hadithFavorites];
+    list.contains(number) ? list.remove(number) : list.insert(0, number);
+    setValue('hFav', list);
+  }
 
   void toggleBookmark(AyahRef ref) {
     final marks = [...state.bookmarks];

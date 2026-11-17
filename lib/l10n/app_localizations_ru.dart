@@ -1163,4 +1163,20 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get notifKahfBody =>
       'В пятницу желательно прочитать суру «аль-Кахф». Нажмите, чтобы открыть её.';
+
+  @override
+  String get share => 'Поделиться';
+
+  @override
+  String get favoriteAdd => 'В избранное';
+
+  @override
+  String get favoriteRemove => 'Убрать из избранного';
+
+  @override
+  String get favoriteHadiths => 'Избранные хадисы';
+
+  @override
+  String get noFavoriteHadiths =>
+      'Пока пусто. Нажмите на звёздочку у хадиса, чтобы сохранить его здесь.';
 }

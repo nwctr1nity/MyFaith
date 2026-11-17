@@ -615,5 +615,10 @@
   "notifAdhkarMorningBody": "Tap to open the morning adhkar.",
   "notifAdhkarEveningBody": "Tap to open the evening adhkar.",
   "notifKahfTitle": "Friday: Surah al-Kahf",
-  "notifKahfBody": "It is recommended to read Surah al-Kahf on Friday. Tap to open it."
+  "notifKahfBody": "It is recommended to read Surah al-Kahf on Friday. Tap to open it.",
+  "share": "Share",
+  "favoriteAdd": "Add to favourites",
+  "favoriteRemove": "Remove from favourites",
+  "favoriteHadiths": "Favourite hadiths",
+  "noFavoriteHadiths": "No favourites yet. Press the star on a hadith to keep it here."
 }

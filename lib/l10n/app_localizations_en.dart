@@ -1157,4 +1157,20 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get notifKahfBody =>
       'It is recommended to read Surah al-Kahf on Friday. Tap to open it.';
+
+  @override
+  String get share => 'Share';
+
+  @override
+  String get favoriteAdd => 'Add to favourites';
+
+  @override
+  String get favoriteRemove => 'Remove from favourites';
+
+  @override
+  String get favoriteHadiths => 'Favourite hadiths';
+
+  @override
+  String get noFavoriteHadiths =>
+      'No favourites yet. Press the star on a hadith to keep it here.';
 }

@@ -2133,6 +2133,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'It is recommended to read Surah al-Kahf on Friday. Tap to open it.'**
   String get notifKahfBody;
+
+  /// No description provided for @share.
+  ///
+  /// In en, this message translates to:
+  /// **'Share'**
+  String get share;
+
+  /// No description provided for @favoriteAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to favourites'**
+  String get favoriteAdd;
+
+  /// No description provided for @favoriteRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove from favourites'**
+  String get favoriteRemove;
+
+  /// No description provided for @favoriteHadiths.
+  ///
+  /// In en, this message translates to:
+  /// **'Favourite hadiths'**
+  String get favoriteHadiths;
+
+  /// No description provided for @noFavoriteHadiths.
+  ///
+  /// In en, this message translates to:
+  /// **'No favourites yet. Press the star on a hadith to keep it here.'**
+  String get noFavoriteHadiths;
 }
 
 class _AppLocalizationsDelegate

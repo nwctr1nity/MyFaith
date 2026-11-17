@@ -5,6 +5,7 @@ import 'package:material_ui/material_ui.dart';
 import 'downloads_screen.dart';
 import '../../core/content/quran.dart';
 import '../../l10n/app_localizations.dart';
+import '../../services/share.dart';
 import '../../state/app_settings.dart';
 import '../../state/content_providers.dart';
 import '../../state/quran_audio.dart';
@@ -471,6 +472,21 @@ class _AyahMenu extends ConsumerWidget {
                   ),
                 );
                 messenger.showSnackBar(SnackBar(content: Text(l.copied)));
+              },
+            ),
+            ListTile(
+              leading: const ShareIcon(),
+              title: Text(l.share),
+              onTap: () {
+                close();
+                shareOut(
+                  shareText([
+                    content.arabic[ayah - 1],
+                    translated,
+                    '${l.surahAyah(surah.localizedName(language), ayah)} '
+                        '(${surah.number}:$ayah)',
+                  ]),
+                );
               },
             ),
             const SizedBox(height: 8),

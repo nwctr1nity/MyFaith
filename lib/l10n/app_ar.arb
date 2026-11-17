@@ -338,5 +338,10 @@
   "notifAdhkarMorningBody": "اضغط لفتح أذكار الصباح.",
   "notifAdhkarEveningBody": "اضغط لفتح أذكار المساء.",
   "notifKahfTitle": "الجمعة: سورة الكهف",
-  "notifKahfBody": "يُستحب قراءة سورة الكهف يوم الجمعة. اضغط لفتحها."
+  "notifKahfBody": "يُستحب قراءة سورة الكهف يوم الجمعة. اضغط لفتحها.",
+  "share": "مشاركة",
+  "favoriteAdd": "إضافة إلى المفضلة",
+  "favoriteRemove": "إزالة من المفضلة",
+  "favoriteHadiths": "الأحاديث المفضلة",
+  "noFavoriteHadiths": "لا توجد أحاديث مفضلة بعد. اضغط على النجمة عند الحديث لحفظه هنا."
 }

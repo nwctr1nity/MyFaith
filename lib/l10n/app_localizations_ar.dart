@@ -1147,4 +1147,20 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get notifKahfBody =>
       'يُستحب قراءة سورة الكهف يوم الجمعة. اضغط لفتحها.';
+
+  @override
+  String get share => 'مشاركة';
+
+  @override
+  String get favoriteAdd => 'إضافة إلى المفضلة';
+
+  @override
+  String get favoriteRemove => 'إزالة من المفضلة';
+
+  @override
+  String get favoriteHadiths => 'الأحاديث المفضلة';
+
+  @override
+  String get noFavoriteHadiths =>
+      'لا توجد أحاديث مفضلة بعد. اضغط على النجمة عند الحديث لحفظه هنا.';
 }

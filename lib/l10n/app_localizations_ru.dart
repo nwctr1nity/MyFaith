@@ -1119,4 +1119,48 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get suhoorOfferDone =>
       'Будильник на сухур включён. Время можно изменить в разделе «Будильники» на вкладке «Ещё».';
+
+  @override
+  String get morningTab => 'Утро';
+
+  @override
+  String get eveningTab => 'Вечер';
+
+  @override
+  String get adhkarSection => 'Азкары и пятница';
+
+  @override
+  String get adhkarMorningReminder => 'Утренние азкары';
+
+  @override
+  String get adhkarMorningReminderHint =>
+      'Напоминание через 30 минут после фаджра';
+
+  @override
+  String get adhkarEveningReminder => 'Вечерние азкары';
+
+  @override
+  String get adhkarEveningReminderHint =>
+      'Напоминание через 15 минут после асра';
+
+  @override
+  String get kahfReminder => 'Сура «аль-Кахф» в пятницу';
+
+  @override
+  String get kahfReminderHint => 'Напоминание в пятницу в 9:00';
+
+  @override
+  String get notifAdhkarMorningBody =>
+      'Нажмите, чтобы открыть утренние азкары.';
+
+  @override
+  String get notifAdhkarEveningBody =>
+      'Нажмите, чтобы открыть вечерние азкары.';
+
+  @override
+  String get notifKahfTitle => 'Пятница: сура «аль-Кахф»';
+
+  @override
+  String get notifKahfBody =>
+      'В пятницу желательно прочитать суру «аль-Кахф». Нажмите, чтобы открыть её.';
 }

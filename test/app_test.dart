@@ -58,6 +58,12 @@ class FakeNotifications implements NotificationService {
   Future<String> journal() async => '';
 
   @override
+  Stream<String> get taps => const Stream.empty();
+
+  @override
+  Future<String?> launchPayload() async => null;
+
+  @override
   Future<void> showNow(NotificationRequest request, ChannelNames names) async {
     extra.add(request);
   }

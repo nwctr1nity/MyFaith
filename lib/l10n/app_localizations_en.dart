@@ -1117,4 +1117,44 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get suhoorOfferDone =>
       'The suhoor alarm is on. Its time can be changed under Alarms on the More tab.';
+
+  @override
+  String get morningTab => 'Morning';
+
+  @override
+  String get eveningTab => 'Evening';
+
+  @override
+  String get adhkarSection => 'Adhkar and Friday';
+
+  @override
+  String get adhkarMorningReminder => 'Morning adhkar';
+
+  @override
+  String get adhkarMorningReminderHint => 'A reminder 30 minutes after Fajr';
+
+  @override
+  String get adhkarEveningReminder => 'Evening adhkar';
+
+  @override
+  String get adhkarEveningReminderHint => 'A reminder 15 minutes after Asr';
+
+  @override
+  String get kahfReminder => 'Surah al-Kahf on Friday';
+
+  @override
+  String get kahfReminderHint => 'A reminder on Friday at 9:00';
+
+  @override
+  String get notifAdhkarMorningBody => 'Tap to open the morning adhkar.';
+
+  @override
+  String get notifAdhkarEveningBody => 'Tap to open the evening adhkar.';
+
+  @override
+  String get notifKahfTitle => 'Friday: Surah al-Kahf';
+
+  @override
+  String get notifKahfBody =>
+      'It is recommended to read Surah al-Kahf on Friday. Tap to open it.';
 }

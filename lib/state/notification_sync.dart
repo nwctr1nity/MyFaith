@@ -143,6 +143,39 @@ List<NotificationRequest> buildRequests({
             body: l.notifSuhoorBody(at(p.prayerTime!)),
           ),
         );
+      case PlannedKind.adhkarMorning:
+        requests.add(
+          NotificationRequest(
+            id: p.id,
+            time: p.time,
+            channel: NotificationChannel.reminder,
+            title: l.adhkarMorningReminder,
+            body: l.notifAdhkarMorningBody,
+            payload: tapAdhkarMorning,
+          ),
+        );
+      case PlannedKind.adhkarEvening:
+        requests.add(
+          NotificationRequest(
+            id: p.id,
+            time: p.time,
+            channel: NotificationChannel.reminder,
+            title: l.adhkarEveningReminder,
+            body: l.notifAdhkarEveningBody,
+            payload: tapAdhkarEvening,
+          ),
+        );
+      case PlannedKind.kahf:
+        requests.add(
+          NotificationRequest(
+            id: p.id,
+            time: p.time,
+            channel: NotificationChannel.reminder,
+            title: l.notifKahfTitle,
+            body: l.notifKahfBody,
+            payload: tapKahf,
+          ),
+        );
       case PlannedKind.refresh:
         requests.add(
           NotificationRequest(

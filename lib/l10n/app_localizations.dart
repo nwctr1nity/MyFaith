@@ -2055,6 +2055,84 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'The suhoor alarm is on. Its time can be changed under Alarms on the More tab.'**
   String get suhoorOfferDone;
+
+  /// No description provided for @morningTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Morning'**
+  String get morningTab;
+
+  /// No description provided for @eveningTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Evening'**
+  String get eveningTab;
+
+  /// No description provided for @adhkarSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Adhkar and Friday'**
+  String get adhkarSection;
+
+  /// No description provided for @adhkarMorningReminder.
+  ///
+  /// In en, this message translates to:
+  /// **'Morning adhkar'**
+  String get adhkarMorningReminder;
+
+  /// No description provided for @adhkarMorningReminderHint.
+  ///
+  /// In en, this message translates to:
+  /// **'A reminder 30 minutes after Fajr'**
+  String get adhkarMorningReminderHint;
+
+  /// No description provided for @adhkarEveningReminder.
+  ///
+  /// In en, this message translates to:
+  /// **'Evening adhkar'**
+  String get adhkarEveningReminder;
+
+  /// No description provided for @adhkarEveningReminderHint.
+  ///
+  /// In en, this message translates to:
+  /// **'A reminder 15 minutes after Asr'**
+  String get adhkarEveningReminderHint;
+
+  /// No description provided for @kahfReminder.
+  ///
+  /// In en, this message translates to:
+  /// **'Surah al-Kahf on Friday'**
+  String get kahfReminder;
+
+  /// No description provided for @kahfReminderHint.
+  ///
+  /// In en, this message translates to:
+  /// **'A reminder on Friday at 9:00'**
+  String get kahfReminderHint;
+
+  /// No description provided for @notifAdhkarMorningBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to open the morning adhkar.'**
+  String get notifAdhkarMorningBody;
+
+  /// No description provided for @notifAdhkarEveningBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to open the evening adhkar.'**
+  String get notifAdhkarEveningBody;
+
+  /// No description provided for @notifKahfTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Friday: Surah al-Kahf'**
+  String get notifKahfTitle;
+
+  /// No description provided for @notifKahfBody.
+  ///
+  /// In en, this message translates to:
+  /// **'It is recommended to read Surah al-Kahf on Friday. Tap to open it.'**
+  String get notifKahfBody;
 }
 
 class _AppLocalizationsDelegate

@@ -602,5 +602,18 @@
   "suhoorOffer": "Wake you for suhoor during Ramadan?",
   "suhoorOfferYes": "Wake me",
   "suhoorOfferNo": "No, thanks",
-  "suhoorOfferDone": "The suhoor alarm is on. Its time can be changed under Alarms on the More tab."
+  "suhoorOfferDone": "The suhoor alarm is on. Its time can be changed under Alarms on the More tab.",
+  "morningTab": "Morning",
+  "eveningTab": "Evening",
+  "adhkarSection": "Adhkar and Friday",
+  "adhkarMorningReminder": "Morning adhkar",
+  "adhkarMorningReminderHint": "A reminder 30 minutes after Fajr",
+  "adhkarEveningReminder": "Evening adhkar",
+  "adhkarEveningReminderHint": "A reminder 15 minutes after Asr",
+  "kahfReminder": "Surah al-Kahf on Friday",
+  "kahfReminderHint": "A reminder on Friday at 9:00",
+  "notifAdhkarMorningBody": "Tap to open the morning adhkar.",
+  "notifAdhkarEveningBody": "Tap to open the evening adhkar.",
+  "notifKahfTitle": "Friday: Surah al-Kahf",
+  "notifKahfBody": "It is recommended to read Surah al-Kahf on Friday. Tap to open it."
 }

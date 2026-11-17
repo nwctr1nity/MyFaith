@@ -1107,4 +1107,44 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get suhoorOfferDone =>
       'تم تفعيل منبه السحور. يمكن تغيير وقته من «المنبهات» في تبويب «المزيد».';
+
+  @override
+  String get morningTab => 'الصباح';
+
+  @override
+  String get eveningTab => 'المساء';
+
+  @override
+  String get adhkarSection => 'الأذكار والجمعة';
+
+  @override
+  String get adhkarMorningReminder => 'أذكار الصباح';
+
+  @override
+  String get adhkarMorningReminderHint => 'تذكير بعد الفجر بثلاثين دقيقة';
+
+  @override
+  String get adhkarEveningReminder => 'أذكار المساء';
+
+  @override
+  String get adhkarEveningReminderHint => 'تذكير بعد العصر بخمس عشرة دقيقة';
+
+  @override
+  String get kahfReminder => 'سورة الكهف يوم الجمعة';
+
+  @override
+  String get kahfReminderHint => 'تذكير يوم الجمعة الساعة 9:00';
+
+  @override
+  String get notifAdhkarMorningBody => 'اضغط لفتح أذكار الصباح.';
+
+  @override
+  String get notifAdhkarEveningBody => 'اضغط لفتح أذكار المساء.';
+
+  @override
+  String get notifKahfTitle => 'الجمعة: سورة الكهف';
+
+  @override
+  String get notifKahfBody =>
+      'يُستحب قراءة سورة الكهف يوم الجمعة. اضغط لفتحها.';
 }

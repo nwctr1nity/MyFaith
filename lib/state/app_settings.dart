@@ -230,6 +230,10 @@ class AppSettings {
   /// Minutes before Fajr for the "stop eating" warning; 0 turns it off.
   int get suhoorStopWarningMinutes => _int('suhoorStop', 30, min: 0, max: 60);
 
+  bool get adhkarMorningReminder => _bool('azkarM', false);
+  bool get adhkarEveningReminder => _bool('azkarE', false);
+  bool get kahfReminder => _bool('kahf', false);
+
   bool get tahajjudEnabled => _bool('tahajjud', false);
 
   /// True wakes at the start of the last third of the night; false wakes a
@@ -264,6 +268,9 @@ class AppSettings {
     tahajjudAtLastThird: tahajjudAtLastThird,
     tahajjudMinutesBeforeFajr: tahajjudMinutesBeforeFajr,
     tahajjudWeekdays: tahajjudWeekdays,
+    adhkarMorning: adhkarMorningReminder,
+    adhkarEvening: adhkarEveningReminder,
+    kahfFriday: kahfReminder,
     hijriAdjustment: hijriAdjustment,
   );
 

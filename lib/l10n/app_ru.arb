@@ -325,5 +325,18 @@
   "suhoorOffer": "Будить на сухур в Рамадан?",
   "suhoorOfferYes": "Будить",
   "suhoorOfferNo": "Не нужно",
-  "suhoorOfferDone": "Будильник на сухур включён. Время можно изменить в разделе «Будильники» на вкладке «Ещё»."
+  "suhoorOfferDone": "Будильник на сухур включён. Время можно изменить в разделе «Будильники» на вкладке «Ещё».",
+  "morningTab": "Утро",
+  "eveningTab": "Вечер",
+  "adhkarSection": "Азкары и пятница",
+  "adhkarMorningReminder": "Утренние азкары",
+  "adhkarMorningReminderHint": "Напоминание через 30 минут после фаджра",
+  "adhkarEveningReminder": "Вечерние азкары",
+  "adhkarEveningReminderHint": "Напоминание через 15 минут после асра",
+  "kahfReminder": "Сура «аль-Кахф» в пятницу",
+  "kahfReminderHint": "Напоминание в пятницу в 9:00",
+  "notifAdhkarMorningBody": "Нажмите, чтобы открыть утренние азкары.",
+  "notifAdhkarEveningBody": "Нажмите, чтобы открыть вечерние азкары.",
+  "notifKahfTitle": "Пятница: сура «аль-Кахф»",
+  "notifKahfBody": "В пятницу желательно прочитать суру «аль-Кахф». Нажмите, чтобы открыть её."
 }

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
 
@@ -16,6 +17,7 @@ class NotificationRequest {
     this.body,
     this.sound,
     this.dua = false,
+    this.payload,
   });
 
   final int id;
@@ -29,7 +31,15 @@ class NotificationRequest {
 
   /// For an adhan: whether the dua after the adhan follows it.
   final bool dua;
+
+  /// What a tap on the notification opens, one of the `tap*` constants.
+  final String? payload;
 }
+
+/// Payloads of the notifications that open a screen.
+const tapAdhkarMorning = 'adhkar:morning';
+const tapAdhkarEvening = 'adhkar:evening';
+const tapKahf = 'kahf';
 
 enum NotificationChannel { adhan, adhanFajr, reminder, alarm, hadith }
 
@@ -123,6 +133,12 @@ abstract class NotificationService {
   /// Shows one notification right away, without touching the others.
   Future<void> showNow(NotificationRequest request, ChannelNames names);
 
+  /// The payloads of notifications the user taps while the app runs.
+  Stream<String> get taps;
+
+  /// The payload of the notification that started the app, if one did.
+  Future<String?> launchPayload();
+
   /// What the adhan code did lately, for finding out why a phone played
   /// something unexpected.
   Future<String> journal();
@@ -142,6 +158,18 @@ class LocalNotificationService implements NotificationService {
   /// and draws the widgets. The plugin handles every other notification.
   static const _native = MethodChannel('app.myfaith/native');
   bool _ready = false;
+  final _taps = StreamController<String>.broadcast();
+
+  @override
+  Stream<String> get taps => _taps.stream;
+
+  @override
+  Future<String?> launchPayload() async {
+    await init();
+    final details = await _plugin.getNotificationAppLaunchDetails();
+    if (details == null || !details.didNotificationLaunchApp) return null;
+    return details.notificationResponse?.payload;
+  }
   int _nativeScheduled = 0;
 
   AndroidFlutterLocalNotificationsPlugin? get _android =>
@@ -155,6 +183,10 @@ class LocalNotificationService implements NotificationService {
       settings: const InitializationSettings(
         android: AndroidInitializationSettings('ic_notification'),
       ),
+      onDidReceiveNotificationResponse: (response) {
+        final payload = response.payload;
+        if (payload != null && payload.isNotEmpty) _taps.add(payload);
+      },
     );
     _ready = true;
   }
@@ -329,6 +361,7 @@ class LocalNotificationService implements NotificationService {
       title: r.title,
       body: r.body,
       scheduledDate: r.time,
+      payload: r.payload,
       notificationDetails:
           NotificationDetails(android: _details(r.channel, names, r.body)),
       androidScheduleMode: mode,

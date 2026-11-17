@@ -173,6 +173,25 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen>
               onSelected: (h) => controller.setValue('hadithHour', h),
             ),
           ),
+          SectionHeader(l.adhkarSection),
+          SwitchListTile(
+            title: Text(l.adhkarMorningReminder),
+            subtitle: Text(l.adhkarMorningReminderHint),
+            value: settings.adhkarMorningReminder,
+            onChanged: (v) => controller.setValue('azkarM', v),
+          ),
+          SwitchListTile(
+            title: Text(l.adhkarEveningReminder),
+            subtitle: Text(l.adhkarEveningReminderHint),
+            value: settings.adhkarEveningReminder,
+            onChanged: (v) => controller.setValue('azkarE', v),
+          ),
+          SwitchListTile(
+            title: Text(l.kahfReminder),
+            subtitle: Text(l.kahfReminderHint),
+            value: settings.kahfReminder,
+            onChanged: (v) => controller.setValue('kahf', v),
+          ),
           const Divider(),
           for (final fajr in const [false, true])
             Padding(

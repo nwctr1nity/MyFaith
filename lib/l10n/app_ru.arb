@@ -310,5 +310,20 @@
   "eventFirstTen": "Первые десять дней зуль-хиджа",
   "eventArafah": "День Арафа",
   "eventEidAdha": "Ид аль-Адха (Курбан-байрам)",
-  "eventTashriq": "Дни ташрика"
+  "eventTashriq": "Дни ташрика",
+  "ramadan": "Рамадан",
+  "untilIftar": "До ифтара",
+  "untilSuhoorEnd": "До конца сухура",
+  "iftarDua": "Дуа при разговении",
+  "ramadanMode": "Отсчёт до ифтара и сухура",
+  "ramadanModeHint": "Карточка на экране «Молитва».",
+  "ramadanAuto": "В Рамадан",
+  "ramadanAutoHint": "Появляется с магриба накануне первого поста и исчезает в канун праздника",
+  "ramadanAlways": "Всегда",
+  "ramadanAlwaysHint": "И для добровольных постов",
+  "ramadanNever": "Никогда",
+  "suhoorOffer": "Будить на сухур в Рамадан?",
+  "suhoorOfferYes": "Будить",
+  "suhoorOfferNo": "Не нужно",
+  "suhoorOfferDone": "Будильник на сухур включён. Время можно изменить в разделе «Будильники» на вкладке «Ещё»."
 }

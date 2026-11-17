@@ -19,6 +19,7 @@ import '../location/city_picker_screen.dart';
 import '../prayer_guide/prayer_guide_screen.dart';
 import '../qibla/qibla_screen.dart';
 import '../theme.dart';
+import 'ramadan_card.dart';
 import 'update_card.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
@@ -201,6 +202,7 @@ class _Timetable extends ConsumerWidget {
       padding: const EdgeInsets.fromLTRB(16, 4, 16, 24),
       children: [
         const UpdateCard(),
+        RamadanCard(day: day, now: now),
         Container(
           decoration: BoxDecoration(
             gradient: heroGradient(scheme),

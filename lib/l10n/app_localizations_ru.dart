@@ -1072,4 +1072,51 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get eventTashriq => 'Дни ташрика';
+
+  @override
+  String get ramadan => 'Рамадан';
+
+  @override
+  String get untilIftar => 'До ифтара';
+
+  @override
+  String get untilSuhoorEnd => 'До конца сухура';
+
+  @override
+  String get iftarDua => 'Дуа при разговении';
+
+  @override
+  String get ramadanMode => 'Отсчёт до ифтара и сухура';
+
+  @override
+  String get ramadanModeHint => 'Карточка на экране «Молитва».';
+
+  @override
+  String get ramadanAuto => 'В Рамадан';
+
+  @override
+  String get ramadanAutoHint =>
+      'Появляется с магриба накануне первого поста и исчезает в канун праздника';
+
+  @override
+  String get ramadanAlways => 'Всегда';
+
+  @override
+  String get ramadanAlwaysHint => 'И для добровольных постов';
+
+  @override
+  String get ramadanNever => 'Никогда';
+
+  @override
+  String get suhoorOffer => 'Будить на сухур в Рамадан?';
+
+  @override
+  String get suhoorOfferYes => 'Будить';
+
+  @override
+  String get suhoorOfferNo => 'Не нужно';
+
+  @override
+  String get suhoorOfferDone =>
+      'Будильник на сухур включён. Время можно изменить в разделе «Будильники» на вкладке «Ещё».';
 }

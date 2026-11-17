@@ -587,5 +587,20 @@
   "eventFirstTen": "The first ten days of Dhu al-Hijjah",
   "eventArafah": "Day of Arafah",
   "eventEidAdha": "Eid al-Adha",
-  "eventTashriq": "Days of Tashriq"
+  "eventTashriq": "Days of Tashriq",
+  "ramadan": "Ramadan",
+  "untilIftar": "Until iftar",
+  "untilSuhoorEnd": "Until the end of suhoor",
+  "iftarDua": "Dua when breaking the fast",
+  "ramadanMode": "Fasting countdown",
+  "ramadanModeHint": "A card on the prayer screen.",
+  "ramadanAuto": "In Ramadan",
+  "ramadanAutoHint": "Appears with the Maghrib before the first fast and goes away on the eve of Eid",
+  "ramadanAlways": "Always",
+  "ramadanAlwaysHint": "For voluntary fasts too",
+  "ramadanNever": "Never",
+  "suhoorOffer": "Wake you for suhoor during Ramadan?",
+  "suhoorOfferYes": "Wake me",
+  "suhoorOfferNo": "No, thanks",
+  "suhoorOfferDone": "The suhoor alarm is on. Its time can be changed under Alarms on the More tab."
 }

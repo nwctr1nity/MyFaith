@@ -1061,4 +1061,50 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get eventTashriq => 'أيام التشريق';
+
+  @override
+  String get ramadan => 'رمضان';
+
+  @override
+  String get untilIftar => 'حتى الإفطار';
+
+  @override
+  String get untilSuhoorEnd => 'حتى نهاية السحور';
+
+  @override
+  String get iftarDua => 'دعاء الإفطار';
+
+  @override
+  String get ramadanMode => 'العد التنازلي للإفطار والسحور';
+
+  @override
+  String get ramadanModeHint => 'بطاقة في شاشة الصلاة.';
+
+  @override
+  String get ramadanAuto => 'في رمضان';
+
+  @override
+  String get ramadanAutoHint => 'تظهر مع مغرب ليلة أول صيام وتختفي ليلة العيد';
+
+  @override
+  String get ramadanAlways => 'دائمًا';
+
+  @override
+  String get ramadanAlwaysHint => 'لصيام التطوع أيضًا';
+
+  @override
+  String get ramadanNever => 'أبدًا';
+
+  @override
+  String get suhoorOffer => 'هل نوقظك للسحور في رمضان؟';
+
+  @override
+  String get suhoorOfferYes => 'نعم';
+
+  @override
+  String get suhoorOfferNo => 'لا، شكرًا';
+
+  @override
+  String get suhoorOfferDone =>
+      'تم تفعيل منبه السحور. يمكن تغيير وقته من «المنبهات» في تبويب «المزيد».';
 }

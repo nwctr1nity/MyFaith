@@ -1965,6 +1965,96 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Days of Tashriq'**
   String get eventTashriq;
+
+  /// No description provided for @ramadan.
+  ///
+  /// In en, this message translates to:
+  /// **'Ramadan'**
+  String get ramadan;
+
+  /// No description provided for @untilIftar.
+  ///
+  /// In en, this message translates to:
+  /// **'Until iftar'**
+  String get untilIftar;
+
+  /// No description provided for @untilSuhoorEnd.
+  ///
+  /// In en, this message translates to:
+  /// **'Until the end of suhoor'**
+  String get untilSuhoorEnd;
+
+  /// No description provided for @iftarDua.
+  ///
+  /// In en, this message translates to:
+  /// **'Dua when breaking the fast'**
+  String get iftarDua;
+
+  /// No description provided for @ramadanMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Fasting countdown'**
+  String get ramadanMode;
+
+  /// No description provided for @ramadanModeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'A card on the prayer screen.'**
+  String get ramadanModeHint;
+
+  /// No description provided for @ramadanAuto.
+  ///
+  /// In en, this message translates to:
+  /// **'In Ramadan'**
+  String get ramadanAuto;
+
+  /// No description provided for @ramadanAutoHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Appears with the Maghrib before the first fast and goes away on the eve of Eid'**
+  String get ramadanAutoHint;
+
+  /// No description provided for @ramadanAlways.
+  ///
+  /// In en, this message translates to:
+  /// **'Always'**
+  String get ramadanAlways;
+
+  /// No description provided for @ramadanAlwaysHint.
+  ///
+  /// In en, this message translates to:
+  /// **'For voluntary fasts too'**
+  String get ramadanAlwaysHint;
+
+  /// No description provided for @ramadanNever.
+  ///
+  /// In en, this message translates to:
+  /// **'Never'**
+  String get ramadanNever;
+
+  /// No description provided for @suhoorOffer.
+  ///
+  /// In en, this message translates to:
+  /// **'Wake you for suhoor during Ramadan?'**
+  String get suhoorOffer;
+
+  /// No description provided for @suhoorOfferYes.
+  ///
+  /// In en, this message translates to:
+  /// **'Wake me'**
+  String get suhoorOfferYes;
+
+  /// No description provided for @suhoorOfferNo.
+  ///
+  /// In en, this message translates to:
+  /// **'No, thanks'**
+  String get suhoorOfferNo;
+
+  /// No description provided for @suhoorOfferDone.
+  ///
+  /// In en, this message translates to:
+  /// **'The suhoor alarm is on. Its time can be changed under Alarms on the More tab.'**
+  String get suhoorOfferDone;
 }
 
 class _AppLocalizationsDelegate

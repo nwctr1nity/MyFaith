@@ -6,6 +6,7 @@ import 'package:file_picker/file_picker.dart';
 import '../../services/backup.dart';
 import '../../state/update_provider.dart';
 import '../../core/prayer/prayer_calculator.dart';
+import '../../core/ramadan.dart';
 import '../../l10n/app_localizations.dart';
 import '../../state/app_settings.dart';
 import '../labels.dart';
@@ -26,6 +27,12 @@ class SettingsScreen extends ConsumerWidget {
     final settings = ref.watch(settingsProvider);
     final controller = ref.read(settingsProvider.notifier);
     final version = ref.watch(installedVersionProvider).value;
+
+    String ramadanModeName(RamadanMode mode) => switch (mode) {
+      RamadanMode.auto => l.ramadanAuto,
+      RamadanMode.always => l.ramadanAlways,
+      RamadanMode.never => l.ramadanNever,
+    };
 
     String themeName(ThemeMode mode) {
       switch (mode) {
@@ -87,6 +94,26 @@ class SettingsScreen extends ConsumerWidget {
             ),
             value: settings.checkUpdates,
             onChanged: (v) => controller.setValue('updCheck', v),
+          ),
+          ListTile(
+            leading: const Icon(Icons.nightlight_outlined),
+            title: Text(l.ramadanMode),
+            subtitle: Text(
+              '${ramadanModeName(settings.ramadanMode)}. ${l.ramadanModeHint}',
+            ),
+            onTap: () => _pick<RamadanMode>(
+              context,
+              title: l.ramadanMode,
+              selected: settings.ramadanMode,
+              options: {
+                for (final m in RamadanMode.values) m: ramadanModeName(m),
+              },
+              subtitles: {
+                RamadanMode.auto: l.ramadanAutoHint,
+                RamadanMode.always: l.ramadanAlwaysHint,
+              },
+              onSelected: (m) => controller.setValue('ramadan', m.name),
+            ),
           ),
           _SectionHeader(l.calculation),
           ListTile(

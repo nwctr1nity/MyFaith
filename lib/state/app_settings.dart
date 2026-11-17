@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../core/alarms/alarm_settings.dart';
 import '../core/prayer/prayer_calculator.dart';
+import '../core/ramadan.dart';
 
 /// The place prayer times are shown for.
 class SavedPlace {
@@ -211,6 +212,13 @@ class AppSettings {
 
   /// Local hour of the daily hadith notification.
   int get hadithHour => _int('hadithHour', 9, min: 0, max: 23);
+
+  /// When the fasting countdown is on the prayer screen.
+  RamadanMode get ramadanMode =>
+      _byName(RamadanMode.values, _data['ramadan']) ?? RamadanMode.auto;
+
+  /// Whether the offer to switch on the suhoor alarm was answered.
+  bool get suhoorOffered => _bool('suhoorAsked', false);
 
   bool get suhoorEnabled => _bool('suhoor', false);
   int get suhoorMinutesBeforeFajr => _int('suhoorMin', 60, min: 10, max: 180);

@@ -310,5 +310,20 @@
   "eventFirstTen": "عشر ذي الحجة",
   "eventArafah": "يوم عرفة",
   "eventEidAdha": "عيد الأضحى",
-  "eventTashriq": "أيام التشريق"
+  "eventTashriq": "أيام التشريق",
+  "ramadan": "رمضان",
+  "untilIftar": "حتى الإفطار",
+  "untilSuhoorEnd": "حتى نهاية السحور",
+  "iftarDua": "دعاء الإفطار",
+  "ramadanMode": "العد التنازلي للإفطار والسحور",
+  "ramadanModeHint": "بطاقة في شاشة الصلاة.",
+  "ramadanAuto": "في رمضان",
+  "ramadanAutoHint": "تظهر مع مغرب ليلة أول صيام وتختفي ليلة العيد",
+  "ramadanAlways": "دائمًا",
+  "ramadanAlwaysHint": "لصيام التطوع أيضًا",
+  "ramadanNever": "أبدًا",
+  "suhoorOffer": "هل نوقظك للسحور في رمضان؟",
+  "suhoorOfferYes": "نعم",
+  "suhoorOfferNo": "لا، شكرًا",
+  "suhoorOfferDone": "تم تفعيل منبه السحور. يمكن تغيير وقته من «المنبهات» في تبويب «المزيد»."
 }

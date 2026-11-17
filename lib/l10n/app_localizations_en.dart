@@ -1070,4 +1070,51 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get eventTashriq => 'Days of Tashriq';
+
+  @override
+  String get ramadan => 'Ramadan';
+
+  @override
+  String get untilIftar => 'Until iftar';
+
+  @override
+  String get untilSuhoorEnd => 'Until the end of suhoor';
+
+  @override
+  String get iftarDua => 'Dua when breaking the fast';
+
+  @override
+  String get ramadanMode => 'Fasting countdown';
+
+  @override
+  String get ramadanModeHint => 'A card on the prayer screen.';
+
+  @override
+  String get ramadanAuto => 'In Ramadan';
+
+  @override
+  String get ramadanAutoHint =>
+      'Appears with the Maghrib before the first fast and goes away on the eve of Eid';
+
+  @override
+  String get ramadanAlways => 'Always';
+
+  @override
+  String get ramadanAlwaysHint => 'For voluntary fasts too';
+
+  @override
+  String get ramadanNever => 'Never';
+
+  @override
+  String get suhoorOffer => 'Wake you for suhoor during Ramadan?';
+
+  @override
+  String get suhoorOfferYes => 'Wake me';
+
+  @override
+  String get suhoorOfferNo => 'No, thanks';
+
+  @override
+  String get suhoorOfferDone =>
+      'The suhoor alarm is on. Its time can be changed under Alarms on the More tab.';
 }

@@ -161,7 +161,7 @@ class _HijriCalendarScreenState extends ConsumerState<HijriCalendarScreen> {
       today.day,
       adjustment: adjustment,
     );
-    final dayFormat = DateFormat.yMMMMd(language);
+    final dayFormat = DateFormat.yMMMd(language);
 
     return Scaffold(
       appBar: AppBar(
@@ -259,7 +259,7 @@ class _HijriCalendarScreenState extends ConsumerState<HijriCalendarScreen> {
                       height: 14,
                       decoration: BoxDecoration(
                         color: scheme.primaryContainer,
-                        borderRadius: BorderRadius.circular(4),
+                        shape: BoxShape.circle,
                       ),
                     ),
                     const SizedBox(width: 12),
@@ -282,13 +282,13 @@ class _HijriCalendarScreenState extends ConsumerState<HijriCalendarScreen> {
                   height: 14,
                   decoration: BoxDecoration(
                     border: Border.all(color: scheme.outline),
-                    borderRadius: BorderRadius.circular(4),
+                    shape: BoxShape.circle,
                   ),
                 ),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Text(
-                    l.hijriWhiteDays,
+                    arabicDigits(language, l.hijriWhiteDays),
                     style: theme.textTheme.bodyMedium,
                   ),
                 ),
@@ -309,7 +309,7 @@ class _HijriCalendarScreenState extends ConsumerState<HijriCalendarScreen> {
                       ' · ${dayFormat.format(u.date)}',
                     ),
                     trailing: Text(
-                      l.inDays(u.daysLeft),
+                      arabicDigits(language, l.inDays(u.daysLeft)),
                       style: theme.textTheme.labelLarge?.copyWith(
                         color: scheme.primary,
                       ),

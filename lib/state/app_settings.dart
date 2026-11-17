@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../core/alarms/alarm_settings.dart';
 import '../core/prayer/prayer_calculator.dart';
+import '../core/ramadan.dart';
 
 /// The place prayer times are shown for.
 class SavedPlace {
@@ -192,8 +193,17 @@ class AppSettings {
     return {for (final name in raw) ?_byName(PrayerSlot.values, name)};
   }
 
+  /// Whether the app asks GitHub for a newer release when it starts.
+  bool get checkUpdates => _bool('updCheck', true);
+
+  /// A version the user chose not to be offered again.
+  String? get skippedUpdate => _data['updSkip'] as String?;
+
   /// Whose adhan plays, an id from `muezzins`; null is the default one.
   String? get muezzinId => _data['muezzin'] as String?;
+
+  /// Whether the dua after the adhan is played once the adhan ends.
+  bool get duaAfterAdhan => _bool('adhanDua', false);
 
   /// Minutes before each prayer for an extra reminder; 0 turns it off.
   int get reminderMinutes => _int('remind', 0, min: 0, max: 60);
@@ -202,6 +212,13 @@ class AppSettings {
 
   /// Local hour of the daily hadith notification.
   int get hadithHour => _int('hadithHour', 9, min: 0, max: 23);
+
+  /// When the fasting countdown is on the prayer screen.
+  RamadanMode get ramadanMode =>
+      _byName(RamadanMode.values, _data['ramadan']) ?? RamadanMode.auto;
+
+  /// Whether the offer to switch on the suhoor alarm was answered.
+  bool get suhoorOffered => _bool('suhoorAsked', false);
 
   bool get suhoorEnabled => _bool('suhoor', false);
   int get suhoorMinutesBeforeFajr => _int('suhoorMin', 60, min: 10, max: 180);
@@ -212,6 +229,10 @@ class AppSettings {
 
   /// Minutes before Fajr for the "stop eating" warning; 0 turns it off.
   int get suhoorStopWarningMinutes => _int('suhoorStop', 30, min: 0, max: 60);
+
+  bool get adhkarMorningReminder => _bool('azkarM', false);
+  bool get adhkarEveningReminder => _bool('azkarE', false);
+  bool get kahfReminder => _bool('kahf', false);
 
   bool get tahajjudEnabled => _bool('tahajjud', false);
 
@@ -247,6 +268,9 @@ class AppSettings {
     tahajjudAtLastThird: tahajjudAtLastThird,
     tahajjudMinutesBeforeFajr: tahajjudMinutesBeforeFajr,
     tahajjudWeekdays: tahajjudWeekdays,
+    adhkarMorning: adhkarMorningReminder,
+    adhkarEvening: adhkarEveningReminder,
+    kahfFriday: kahfReminder,
     hijriAdjustment: hijriAdjustment,
   );
 
@@ -293,6 +317,16 @@ class AppSettings {
     return [for (final v in raw) ?AyahRef.parse(v)];
   }
 
+  /// Numbers of the hadiths marked with the star, the latest first.
+  List<int> get hadithFavorites {
+    final raw = _data['hFav'];
+    if (raw is! List) return const [];
+    return [
+      for (final v in raw)
+        if (v is int) v,
+    ];
+  }
+
   // Salawat.
 
   /// Lifetime count of salawat.
@@ -329,6 +363,28 @@ class AppSettings {
     final goals = _data['dhGoals'];
     final v = goals is Map ? goals[id] : null;
     return v is int && v > 0 ? v : null;
+  }
+
+  /// Prayers the user has marked as missed and not made up yet, per
+  /// prayer. Every prayer counts as prayed until it is marked.
+  Map<PrayerSlot, int> get qada {
+    final raw = _data['qada'];
+    return {
+      for (final slot in PrayerSlot.values)
+        if (slot != PrayerSlot.sunrise)
+          slot: raw is Map && raw[slot.name] is int && (raw[slot.name] as int) > 0
+              ? raw[slot.name] as int
+              : 0,
+    };
+  }
+
+  int get qadaTotal => qada.values.fold(0, (a, b) => a + b);
+
+  /// Whether the prayer [slot] of the day [day] (`2026-11-16`) is marked
+  /// as missed.
+  bool isMissed(String day, PrayerSlot slot) {
+    final raw = _data['missed'];
+    return raw is List && raw.contains('$day:${slot.name}');
   }
 
   /// Correct answers in a row in the names quiz, best ever.
@@ -369,6 +425,10 @@ class SettingsController extends Notifier<AppSettings> {
         .read(sharedPreferencesProvider)
         .setString(_key, jsonEncode(next.toJson()));
   }
+
+  /// Replaces everything with the settings from a backup.
+  void restore(Map<String, Object?> settings) =>
+      _set(AppSettings.fromJson(settings));
 
   /// Sets one raw value. Keys are the ones the [AppSettings] getters read.
   void setValue(String key, Object? value) => _set(state.withValue(key, value));
@@ -420,6 +480,12 @@ class SettingsController extends Notifier<AppSettings> {
 
   void setLastRead(AyahRef ref) => setValue('qLast', ref.key);
 
+  void toggleHadithFavorite(int number) {
+    final list = [...state.hadithFavorites];
+    list.contains(number) ? list.remove(number) : list.insert(0, number);
+    setValue('hFav', list);
+  }
+
   void toggleBookmark(AyahRef ref) {
     final marks = [...state.bookmarks];
     marks.contains(ref) ? marks.remove(ref) : marks.insert(0, ref);
@@ -435,6 +501,40 @@ class SettingsController extends Notifier<AppSettings> {
           .withValue('salDay', today)
           .withValue('salToday', (sameDay ? state.salawatToday : 0) + 1)
           .withValue('salTotal', state.salawatTotal + 1),
+    );
+  }
+
+  Map<String, Object?> _qada(PrayerSlot slot, int delta) {
+    final next = {for (final e in state.qada.entries) e.key.name: e.value};
+    next[slot.name] = ((next[slot.name] ?? 0) + delta).clamp(0, 99999);
+    return next;
+  }
+
+  /// Adds to or takes from the prayers to make up.
+  void changeQada(PrayerSlot slot, int delta) =>
+      setValue('qada', _qada(slot, delta));
+
+  /// Marks the prayer [slot] of [day] as missed, or takes the mark back.
+  /// Marks older than two weeks are forgotten; the count stays.
+  void toggleMissed(String day, PrayerSlot slot) {
+    final key = '$day:${slot.name}';
+    final raw = state.toJson()['missed'];
+    final marks = <String>[
+      if (raw is List)
+        for (final m in raw)
+          if (m is String) m,
+    ];
+    final wasMissed = marks.remove(key);
+    if (!wasMissed) marks.add(key);
+    final cutoff = DateTime.parse(day).subtract(const Duration(days: 14));
+    marks.removeWhere((m) {
+      final date = DateTime.tryParse(m.split(':').first);
+      return date == null || date.isBefore(cutoff);
+    });
+    _set(
+      state
+          .withValue('missed', marks)
+          .withValue('qada', _qada(slot, wasMissed ? -1 : 1)),
     );
   }
 

@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -132,6 +133,13 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen>
               onSelected: (id) => controller.setValue('muezzin', id),
             ),
           ),
+          SwitchListTile(
+            secondary: const Icon(Icons.volunteer_activism_outlined),
+            title: Text(l.adhanDua),
+            subtitle: Text(l.adhanDuaHint),
+            value: settings.duaAfterAdhan,
+            onChanged: (v) => controller.setValue('adhanDua', v),
+          ),
           ListTile(
             leading: const Icon(Icons.schedule),
             title: Text(l.reminderBefore),
@@ -165,6 +173,25 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen>
               onSelected: (h) => controller.setValue('hadithHour', h),
             ),
           ),
+          SectionHeader(l.adhkarSection),
+          SwitchListTile(
+            title: Text(l.adhkarMorningReminder),
+            subtitle: Text(l.adhkarMorningReminderHint),
+            value: settings.adhkarMorningReminder,
+            onChanged: (v) => controller.setValue('azkarM', v),
+          ),
+          SwitchListTile(
+            title: Text(l.adhkarEveningReminder),
+            subtitle: Text(l.adhkarEveningReminderHint),
+            value: settings.adhkarEveningReminder,
+            onChanged: (v) => controller.setValue('azkarE', v),
+          ),
+          SwitchListTile(
+            title: Text(l.kahfReminder),
+            subtitle: Text(l.kahfReminderHint),
+            value: settings.kahfReminder,
+            onChanged: (v) => controller.setValue('kahf', v),
+          ),
           const Divider(),
           for (final fajr in const [false, true])
             Padding(
@@ -192,10 +219,40 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen>
             builder: (context, status, _) {
               if (status == null) return const SizedBox.shrink();
               final error = status.error;
-              return HintText(
-                error != null
-                    ? l.syncError(error)
-                    : l.syncPending(status.pending ?? 0),
+              // A long press copies the adhan journal, to send to the
+              // developer when a phone played something unexpected.
+              return GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onLongPress: () async {
+                  final messenger = ScaffoldMessenger.of(context);
+                  String journal;
+                  try {
+                    journal = await service.journal();
+                  } on Exception catch (e) {
+                    journal = '$e';
+                  }
+                  final now = DateTime.now();
+                  await Clipboard.setData(
+                    ClipboardData(
+                      text:
+                          'MyFaith adhan journal\n'
+                          'now $now ${now.timeZoneName}\n'
+                          'place ${settings.place?.name} '
+                          '${settings.place?.timeZone}\n'
+                          'muezzin ${muezzinById(settings.muezzinId).id}\n'
+                          'adhans ${[
+                            for (final s in settings.adhanSlots) s.name,
+                          ].join(',')}\n'
+                          '$journal',
+                    ),
+                  );
+                  messenger.showSnackBar(SnackBar(content: Text(l.copied)));
+                },
+                child: HintText(
+                  error != null
+                      ? l.syncError(error)
+                      : l.syncPending(status.pending ?? 0),
+                ),
               );
             },
           ),

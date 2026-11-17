@@ -620,7 +620,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get sourcesAdhan =>
-      'Adhan: recordings from Doha, Qatar, made in 2013–2014 (Internet Archive, public domain), and the adhans of Sheikh Tawfiq Khoj, Sheikh Turki al-Hassani and Sheikh Abdullah ibn Ahmad ibn Abdurrahman Ba-Afif.';
+      'Adhan: recordings from Doha, Qatar, made in 2013–2014 (Internet Archive, public domain), and the adhans of Sheikh Tawfiq Khoj, Sheikh Turki al-Hassani and Sheikh Abdullah ibn Ahmad ibn Abdurrahman Ba-Afif. Dua after the adhan: a recording from hisnmuslim.com (Fortress of the Muslim).';
 
   @override
   String get muezzin => 'Muezzin';
@@ -873,4 +873,304 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get compassPoints =>
       'north,north-east,east,south-east,south,south-west,west,north-west';
+
+  @override
+  String updateAvailable(String version) {
+    return 'Version $version is out';
+  }
+
+  @override
+  String get updateHint =>
+      'Download the file and install it over this one. Your settings stay.';
+
+  @override
+  String get updateDownload => 'Download';
+
+  @override
+  String get updateLater => 'Not this one';
+
+  @override
+  String get checkUpdates => 'Check for updates';
+
+  @override
+  String get checkUpdatesHint =>
+      'On start the app asks GitHub whether a newer version is out.';
+
+  @override
+  String versionLabel(String version) {
+    return 'Installed: $version.';
+  }
+
+  @override
+  String get channelQuran => 'Quran recitation';
+
+  @override
+  String get offlineListening => 'Listen without the internet';
+
+  @override
+  String get offlineListeningHint => 'Download surahs to the phone';
+
+  @override
+  String offlineHint(String reciter) {
+    return 'Downloaded surahs play without the internet. They are saved for the chosen reciter: $reciter.';
+  }
+
+  @override
+  String offlineProgress(int done, int total) {
+    return '$done of $total ayahs';
+  }
+
+  @override
+  String get offlineFailed =>
+      'Download stopped. Check the internet and try again.';
+
+  @override
+  String get offlineSaved => 'On the phone';
+
+  @override
+  String get offlineDelete => 'Delete from the phone';
+
+  @override
+  String get offlineDownload => 'Download';
+
+  @override
+  String get backup => 'Backup';
+
+  @override
+  String get backupSave => 'Save to a file';
+
+  @override
+  String get backupSaveHint => 'Settings, city, bookmarks, counters and goals';
+
+  @override
+  String get backupRestore => 'Restore from a file';
+
+  @override
+  String get backupRestoreHint => 'Choose a file saved earlier';
+
+  @override
+  String get backupSaved => 'The backup is saved';
+
+  @override
+  String get backupNotOurs => 'This is not a MyFaith backup file';
+
+  @override
+  String get backupRestoreConfirm =>
+      'The current settings, bookmarks and counters will be replaced with the ones from the file.';
+
+  @override
+  String get backupRestoreAction => 'Restore';
+
+  @override
+  String get backupRestored => 'Restored from the file';
+
+  @override
+  String get guideAdhan => 'The adhan and the iqamah';
+
+  @override
+  String get undo => 'Undo';
+
+  @override
+  String get missedLabel => 'Missed';
+
+  @override
+  String missedMarked(String prayer) {
+    return '$prayer is marked as missed';
+  }
+
+  @override
+  String missedUnmarked(String prayer) {
+    return 'The mark is removed from $prayer';
+  }
+
+  @override
+  String get qadaTitle => 'Missed prayers';
+
+  @override
+  String get qadaNone => 'None to make up';
+
+  @override
+  String qadaTotal(int count) {
+    return 'To make up: $count';
+  }
+
+  @override
+  String get qadaHint =>
+      'Every prayer counts as prayed. If you missed one, press and hold it on the prayer screen: it is added here. When you make it up, press the minus.';
+
+  @override
+  String get qadaButtonsHint =>
+      'Plus adds a prayer missed earlier, minus takes away one you have made up.';
+
+  @override
+  String get qadaMadeUp => 'Made up';
+
+  @override
+  String get qadaAdd => 'Add a missed prayer';
+
+  @override
+  String get adhanDua => 'Dua after the adhan';
+
+  @override
+  String get adhanDuaHint =>
+      'Three seconds after the adhan the dua “Allahumma Rabba hadhihi-d-da‘wati-t-tammah” is played.';
+
+  @override
+  String get hijriCalendar => 'Hijri calendar';
+
+  @override
+  String get hijriComing => 'Coming dates';
+
+  @override
+  String get hijriWhiteDays =>
+      'White days (13th, 14th, 15th): fasting is recommended';
+
+  @override
+  String get hijriNote =>
+      'The calendar is calculated (Umm al-Qura). The real start of a month depends on the sighting of the moon and may differ by a day; the shift is set in the settings.';
+
+  @override
+  String inDays(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'in $count days',
+      one: 'tomorrow',
+      zero: 'today',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get today => 'Today';
+
+  @override
+  String get eventNewYear => 'Islamic New Year';
+
+  @override
+  String get eventAshura => 'Day of Ashura';
+
+  @override
+  String get eventRamadan => 'Start of Ramadan';
+
+  @override
+  String get eventLastTen => 'The last ten nights of Ramadan';
+
+  @override
+  String get eventEidFitr => 'Eid al-Fitr';
+
+  @override
+  String get eventFirstTen => 'The first ten days of Dhu al-Hijjah';
+
+  @override
+  String get eventArafah => 'Day of Arafah';
+
+  @override
+  String get eventEidAdha => 'Eid al-Adha';
+
+  @override
+  String get eventTashriq => 'Days of Tashriq';
+
+  @override
+  String get ramadan => 'Ramadan';
+
+  @override
+  String get untilIftar => 'Until iftar';
+
+  @override
+  String get untilSuhoorEnd => 'Until the end of suhoor';
+
+  @override
+  String get iftarDua => 'Dua when breaking the fast';
+
+  @override
+  String get ramadanMode => 'Fasting countdown';
+
+  @override
+  String get ramadanModeHint => 'A card on the prayer screen.';
+
+  @override
+  String get ramadanAuto => 'In Ramadan';
+
+  @override
+  String get ramadanAutoHint =>
+      'Appears with the Maghrib before the first fast and goes away on the eve of Eid';
+
+  @override
+  String get ramadanAlways => 'Always';
+
+  @override
+  String get ramadanAlwaysHint => 'For voluntary fasts too';
+
+  @override
+  String get ramadanNever => 'Never';
+
+  @override
+  String get suhoorOffer => 'Wake you for suhoor during Ramadan?';
+
+  @override
+  String get suhoorOfferYes => 'Wake me';
+
+  @override
+  String get suhoorOfferNo => 'No, thanks';
+
+  @override
+  String get suhoorOfferDone =>
+      'The suhoor alarm is on. Its time can be changed under Alarms on the More tab.';
+
+  @override
+  String get morningTab => 'Morning';
+
+  @override
+  String get eveningTab => 'Evening';
+
+  @override
+  String get adhkarSection => 'Adhkar and Friday';
+
+  @override
+  String get adhkarMorningReminder => 'Morning adhkar';
+
+  @override
+  String get adhkarMorningReminderHint => 'A reminder 30 minutes after Fajr';
+
+  @override
+  String get adhkarEveningReminder => 'Evening adhkar';
+
+  @override
+  String get adhkarEveningReminderHint => 'A reminder 15 minutes after Asr';
+
+  @override
+  String get kahfReminder => 'Surah al-Kahf on Friday';
+
+  @override
+  String get kahfReminderHint => 'A reminder on Friday at 9:00';
+
+  @override
+  String get notifAdhkarMorningBody => 'Tap to open the morning adhkar.';
+
+  @override
+  String get notifAdhkarEveningBody => 'Tap to open the evening adhkar.';
+
+  @override
+  String get notifKahfTitle => 'Friday: Surah al-Kahf';
+
+  @override
+  String get notifKahfBody =>
+      'It is recommended to read Surah al-Kahf on Friday. Tap to open it.';
+
+  @override
+  String get share => 'Share';
+
+  @override
+  String get favoriteAdd => 'Add to favourites';
+
+  @override
+  String get favoriteRemove => 'Remove from favourites';
+
+  @override
+  String get favoriteHadiths => 'Favourite hadiths';
+
+  @override
+  String get noFavoriteHadiths =>
+      'No favourites yet. Press the star on a hadith to keep it here.';
 }

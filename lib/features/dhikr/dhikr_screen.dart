@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_ui/material_ui.dart';
 
+import '../../core/content/adhkar.dart';
 import '../../core/content/dhikr.dart';
 import '../../l10n/app_localizations.dart';
 import '../../state/app_settings.dart';
@@ -12,12 +13,45 @@ import '../widgets.dart';
 int _goalOf(Dhikr d, AppSettings settings) =>
     settings.dhikrGoal(d.id) ?? d.goal;
 
+/// Set to a tab index (2 morning, 3 evening) to have the dhikr screen show
+/// it, for a tap on a reminder.
+final dhikrTabRequest = ValueNotifier<int?>(null);
+
 /// Dhikr and dua, each with a counter and a goal for the day.
-class DhikrScreen extends ConsumerWidget {
+class DhikrScreen extends StatefulWidget {
   const DhikrScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  State<DhikrScreen> createState() => _DhikrScreenState();
+}
+
+class _DhikrScreenState extends State<DhikrScreen>
+    with SingleTickerProviderStateMixin {
+  late final _tabs = TabController(length: 4, vsync: this);
+
+  @override
+  void initState() {
+    super.initState();
+    dhikrTabRequest.addListener(_showRequested);
+    _showRequested();
+  }
+
+  @override
+  void dispose() {
+    dhikrTabRequest.removeListener(_showRequested);
+    _tabs.dispose();
+    super.dispose();
+  }
+
+  void _showRequested() {
+    final tab = dhikrTabRequest.value;
+    if (tab == null) return;
+    _tabs.index = tab;
+    dhikrTabRequest.value = null;
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
     final dhikr = [
       for (final d in dhikrList)
@@ -27,24 +61,27 @@ class DhikrScreen extends ConsumerWidget {
       for (final d in dhikrList)
         if (d.dua) d,
     ];
-    return DefaultTabController(
-      length: 2,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(l.navDhikr),
-          bottom: TabBar(
-            tabs: [
-              Tab(text: l.dhikrTab),
-              Tab(text: l.duaTab),
-            ],
-          ),
-        ),
-        body: TabBarView(
-          children: [
-            _DhikrList(items: dhikr),
-            _DhikrList(items: duas),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(l.navDhikr),
+        bottom: TabBar(
+          controller: _tabs,
+          tabs: [
+            Tab(text: l.dhikrTab),
+            Tab(text: l.duaTab),
+            Tab(text: l.morningTab),
+            Tab(text: l.eveningTab),
           ],
         ),
+      ),
+      body: TabBarView(
+        controller: _tabs,
+        children: [
+          _DhikrList(items: dhikr),
+          _DhikrList(items: duas),
+          _DhikrList(items: morningAdhkar),
+          _DhikrList(items: eveningAdhkar),
+        ],
       ),
     );
   }

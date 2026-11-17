@@ -15,6 +15,11 @@ enum PlannedKind {
   suhoor,
   suhoorStop,
   tahajjud,
+  adhkarMorning,
+  adhkarEvening,
+
+  /// Friday morning: Surah al-Kahf.
+  kahf,
 
   /// Shown when the planned window runs out, asking to open the app.
   refresh,
@@ -200,6 +205,35 @@ List<PlannedNotification> planNotifications({
           ),
         );
       }
+    }
+    if (alarms.adhkarMorning) {
+      add(
+        PlannedNotification(
+          id: 7000 + d,
+          kind: PlannedKind.adhkarMorning,
+          time: fajr.add(const Duration(minutes: 30)),
+        ),
+      );
+    }
+    if (alarms.adhkarEvening) {
+      add(
+        PlannedNotification(
+          id: 7100 + d,
+          kind: PlannedKind.adhkarEvening,
+          time: today[PrayerSlot.asr].add(const Duration(minutes: 15)),
+        ),
+      );
+    }
+    if (alarms.kahfFriday &&
+        DateTime.utc(today.year, today.month, today.day).weekday ==
+            DateTime.friday) {
+      add(
+        PlannedNotification(
+          id: 7200 + d,
+          kind: PlannedKind.kahf,
+          time: tz.TZDateTime(location, today.year, today.month, today.day, 9),
+        ),
+      );
     }
     previous = today;
   }

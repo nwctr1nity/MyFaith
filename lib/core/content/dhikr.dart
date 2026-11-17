@@ -63,6 +63,27 @@ class Dhikr {
   }
 
   String note(String languageCode) => languageCode == 'ru' ? noteRu : noteEn;
+
+  /// The same words in another list, with their own counter and number.
+  Dhikr inList({
+    required String id,
+    required int goal,
+    required String noteEn,
+    required String noteRu,
+    String? source,
+  }) => Dhikr(
+    id: id,
+    arabic: arabic,
+    latin: latin,
+    cyrillic: cyrillic,
+    english: english,
+    russian: russian,
+    goal: goal,
+    source: source ?? this.source,
+    noteEn: noteEn,
+    noteRu: noteRu,
+    dua: true,
+  );
 }
 
 /// The first three are the tasbih said after every prayer. The numbers come
@@ -75,6 +96,7 @@ const _collections = {
     'at-Tirmidhi': 'ат-Тирмизи',
     'Abu Dawud': 'Абу Дауд',
     'Ibn Majah': 'Ибн Маджа',
+    'al-Hakim': 'аль-Хаким',
     'Quran': 'Коран',
   },
   'ar': {
@@ -83,6 +105,7 @@ const _collections = {
     'at-Tirmidhi': 'الترمذي',
     'Abu Dawud': 'أبو داود',
     'Ibn Majah': 'ابن ماجه',
+    'al-Hakim': 'الحاكم',
     'Quran': 'القرآن',
   },
 };

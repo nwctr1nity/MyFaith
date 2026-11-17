@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_ui/material_ui.dart';
 
 import '../../l10n/app_localizations.dart';
+import '../../state/app_settings.dart';
 import '../hadith/hadith_screen.dart';
 import '../names/names_screen.dart';
 import '../../core/content/hadith.dart';
@@ -9,6 +10,7 @@ import '../quran/bookmarks_screen.dart';
 import '../settings/settings_screen.dart';
 import 'alarms_screen.dart';
 import 'notifications_screen.dart';
+import 'qada_screen.dart';
 import 'sources_screen.dart';
 import 'support_dialog.dart';
 
@@ -18,6 +20,7 @@ class MoreScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l = AppLocalizations.of(context)!;
+    final qadaTotal = ref.watch(settingsProvider.select((s) => s.qadaTotal));
 
     void open(Widget screen) =>
         Navigator.of(context)
@@ -69,6 +72,14 @@ class MoreScreen extends ConsumerWidget {
                   title: l.names99,
                   subtitle: l.names99Hint,
                   onTap: () => open(const NamesScreen()),
+                ),
+                _Item(
+                  icon: Icons.history_toggle_off,
+                  title: l.qadaTitle,
+                  subtitle: qadaTotal == 0
+                      ? l.qadaNone
+                      : l.qadaTotal(qadaTotal),
+                  onTap: () => open(const QadaScreen()),
                 ),
                 _Item(
                   icon: Icons.bookmarks_outlined,

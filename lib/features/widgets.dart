@@ -3,6 +3,16 @@ import 'dart:math' as math;
 import 'package:flutter/services.dart';
 import 'package:material_ui/material_ui.dart';
 
+/// The curved arrow people know as "share": the reply arrow turned the
+/// other way.
+class ShareIcon extends StatelessWidget {
+  const ShareIcon({super.key});
+
+  @override
+  Widget build(BuildContext context) =>
+      Transform.flip(flipX: true, child: const Icon(Icons.reply));
+}
+
 class SectionHeader extends StatelessWidget {
   const SectionHeader(this.text, {super.key});
 

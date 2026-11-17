@@ -621,7 +621,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get sourcesAdhan =>
-      'Азан: записи из Дохи (Катар), сделанные в 2013–2014 годах (Internet Archive, общественное достояние), а также азаны шейха Тауфика Ходжа, шейха Турки аль-Хасани и шейха Абдуллы ибн Ахмада ибн Абдуррахмана Ба-Афифа.';
+      'Азан: записи из Дохи (Катар), сделанные в 2013–2014 годах (Internet Archive, общественное достояние), а также азаны шейха Тауфика Ходжа, шейха Турки аль-Хасани и шейха Абдуллы ибн Ахмада ибн Абдуррахмана Ба-Афифа. Дуа после азана: запись с сайта hisnmuslim.com («Крепость мусульманина»).';
 
   @override
   String get muezzin => 'Муэдзин';
@@ -873,4 +873,310 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get compassPoints =>
       'севере,северо-востоке,востоке,юго-востоке,юге,юго-западе,западе,северо-западе';
+
+  @override
+  String updateAvailable(String version) {
+    return 'Вышла версия $version';
+  }
+
+  @override
+  String get updateHint =>
+      'Скачайте файл и установите его поверх этой версии. Настройки сохранятся.';
+
+  @override
+  String get updateDownload => 'Скачать';
+
+  @override
+  String get updateLater => 'Пропустить';
+
+  @override
+  String get checkUpdates => 'Проверять обновления';
+
+  @override
+  String get checkUpdatesHint =>
+      'При запуске приложение спрашивает у GitHub, не вышла ли новая версия.';
+
+  @override
+  String versionLabel(String version) {
+    return 'Установлена $version.';
+  }
+
+  @override
+  String get channelQuran => 'Чтение Корана';
+
+  @override
+  String get offlineListening => 'Слушать без интернета';
+
+  @override
+  String get offlineListeningHint => 'Скачать суры на телефон';
+
+  @override
+  String offlineHint(String reciter) {
+    return 'Скачанные суры звучат без интернета. Они сохраняются для выбранного чтеца: $reciter.';
+  }
+
+  @override
+  String offlineProgress(int done, int total) {
+    return '$done из $total аятов';
+  }
+
+  @override
+  String get offlineFailed =>
+      'Загрузка прервалась. Проверьте интернет и попробуйте ещё раз.';
+
+  @override
+  String get offlineSaved => 'На телефоне';
+
+  @override
+  String get offlineDelete => 'Удалить с телефона';
+
+  @override
+  String get offlineDownload => 'Скачать';
+
+  @override
+  String get backup => 'Резервная копия';
+
+  @override
+  String get backupSave => 'Сохранить в файл';
+
+  @override
+  String get backupSaveHint => 'Настройки, город, закладки, счётчики и цели';
+
+  @override
+  String get backupRestore => 'Восстановить из файла';
+
+  @override
+  String get backupRestoreHint => 'Выберите файл, сохранённый раньше';
+
+  @override
+  String get backupSaved => 'Копия сохранена';
+
+  @override
+  String get backupNotOurs => 'Это не файл резервной копии MyFaith';
+
+  @override
+  String get backupRestoreConfirm =>
+      'Текущие настройки, закладки и счётчики будут заменены теми, что в файле.';
+
+  @override
+  String get backupRestoreAction => 'Восстановить';
+
+  @override
+  String get backupRestored => 'Восстановлено из файла';
+
+  @override
+  String get guideAdhan => 'Азан и икама';
+
+  @override
+  String get undo => 'Отменить';
+
+  @override
+  String get missedLabel => 'Пропущена';
+
+  @override
+  String missedMarked(String prayer) {
+    return 'Молитва «$prayer» отмечена как пропущенная';
+  }
+
+  @override
+  String missedUnmarked(String prayer) {
+    return 'Отметка с молитвы «$prayer» снята';
+  }
+
+  @override
+  String get qadaTitle => 'Пропущенные молитвы';
+
+  @override
+  String get qadaNone => 'Восполнять нечего';
+
+  @override
+  String qadaTotal(int count) {
+    return 'К восполнению: $count';
+  }
+
+  @override
+  String get qadaHint =>
+      'Каждая молитва считается совершённой. Если вы её пропустили, нажмите на неё и удерживайте на экране «Молитва»: она добавится сюда. Когда восполните, нажмите минус.';
+
+  @override
+  String get qadaButtonsHint =>
+      'Плюс добавляет молитву, пропущенную раньше, минус убирает восполненную.';
+
+  @override
+  String get qadaMadeUp => 'Восполнена';
+
+  @override
+  String get qadaAdd => 'Добавить пропущенную';
+
+  @override
+  String get adhanDua => 'Дуа после азана';
+
+  @override
+  String get adhanDuaHint =>
+      'Через три секунды после азана звучит дуа «Аллахумма Рабба хазихи-д-да‘вати-т-тамма».';
+
+  @override
+  String get hijriCalendar => 'Календарь хиджры';
+
+  @override
+  String get hijriComing => 'Ближайшие даты';
+
+  @override
+  String get hijriWhiteDays =>
+      'Белые дни (13, 14 и 15-е число): желателен пост';
+
+  @override
+  String get hijriNote =>
+      'Календарь расчётный (Умм аль-Кура). Настоящее начало месяца зависит от наблюдения луны и может отличаться на день, поправка задаётся в настройках.';
+
+  @override
+  String inDays(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'через $count дня',
+      many: 'через $count дней',
+      few: 'через $count дня',
+      one: 'через $count день',
+      zero: 'сегодня',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get today => 'Сегодня';
+
+  @override
+  String get eventNewYear => 'Новый год по хиджре';
+
+  @override
+  String get eventAshura => 'День Ашура';
+
+  @override
+  String get eventRamadan => 'Начало Рамадана';
+
+  @override
+  String get eventLastTen => 'Последние десять ночей Рамадана';
+
+  @override
+  String get eventEidFitr => 'Ид аль-Фитр (Ураза-байрам)';
+
+  @override
+  String get eventFirstTen => 'Первые десять дней зуль-хиджа';
+
+  @override
+  String get eventArafah => 'День Арафа';
+
+  @override
+  String get eventEidAdha => 'Ид аль-Адха (Курбан-байрам)';
+
+  @override
+  String get eventTashriq => 'Дни ташрика';
+
+  @override
+  String get ramadan => 'Рамадан';
+
+  @override
+  String get untilIftar => 'До ифтара';
+
+  @override
+  String get untilSuhoorEnd => 'До конца сухура';
+
+  @override
+  String get iftarDua => 'Дуа при разговении';
+
+  @override
+  String get ramadanMode => 'Отсчёт до ифтара и сухура';
+
+  @override
+  String get ramadanModeHint => 'Карточка на экране «Молитва».';
+
+  @override
+  String get ramadanAuto => 'В Рамадан';
+
+  @override
+  String get ramadanAutoHint =>
+      'Появляется с магриба накануне первого поста и исчезает в канун праздника';
+
+  @override
+  String get ramadanAlways => 'Всегда';
+
+  @override
+  String get ramadanAlwaysHint => 'И для добровольных постов';
+
+  @override
+  String get ramadanNever => 'Никогда';
+
+  @override
+  String get suhoorOffer => 'Будить на сухур в Рамадан?';
+
+  @override
+  String get suhoorOfferYes => 'Будить';
+
+  @override
+  String get suhoorOfferNo => 'Не нужно';
+
+  @override
+  String get suhoorOfferDone =>
+      'Будильник на сухур включён. Время можно изменить в разделе «Будильники» на вкладке «Ещё».';
+
+  @override
+  String get morningTab => 'Утро';
+
+  @override
+  String get eveningTab => 'Вечер';
+
+  @override
+  String get adhkarSection => 'Азкары и пятница';
+
+  @override
+  String get adhkarMorningReminder => 'Утренние азкары';
+
+  @override
+  String get adhkarMorningReminderHint =>
+      'Напоминание через 30 минут после фаджра';
+
+  @override
+  String get adhkarEveningReminder => 'Вечерние азкары';
+
+  @override
+  String get adhkarEveningReminderHint =>
+      'Напоминание через 15 минут после асра';
+
+  @override
+  String get kahfReminder => 'Сура «аль-Кахф» в пятницу';
+
+  @override
+  String get kahfReminderHint => 'Напоминание в пятницу в 9:00';
+
+  @override
+  String get notifAdhkarMorningBody =>
+      'Нажмите, чтобы открыть утренние азкары.';
+
+  @override
+  String get notifAdhkarEveningBody =>
+      'Нажмите, чтобы открыть вечерние азкары.';
+
+  @override
+  String get notifKahfTitle => 'Пятница: сура «аль-Кахф»';
+
+  @override
+  String get notifKahfBody =>
+      'В пятницу желательно прочитать суру «аль-Кахф». Нажмите, чтобы открыть её.';
+
+  @override
+  String get share => 'Поделиться';
+
+  @override
+  String get favoriteAdd => 'В избранное';
+
+  @override
+  String get favoriteRemove => 'Убрать из избранного';
+
+  @override
+  String get favoriteHadiths => 'Избранные хадисы';
+
+  @override
+  String get noFavoriteHadiths =>
+      'Пока пусто. Нажмите на звёздочку у хадиса, чтобы сохранить его здесь.';
 }

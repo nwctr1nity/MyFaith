@@ -132,6 +132,72 @@ const guideBefore = <Tr>[
   ),
 ];
 
+/// What surrounds the adhan: kept short, the guide is long as it is.
+const guideAdhan = <GuideStep>[
+  GuideStep(
+    title: Tr('Дуа после азана', 'The dua after the adhan', 'الدعاء بعد الأذان'),
+    text: Tr(
+      'Слушая азан, повторяйте слова муэдзина, а на «Хаййа ‘аля-с-салях» и '
+          '«Хаййа ‘аля-ль-фалях» говорите «Ля хауля ва ля куввата илля '
+          'биллях». После азана прочитайте салават и это дуа (аль-Бухари, '
+          '614).',
+      'While listening to the adhan repeat the muezzin’s words, and at '
+          '“Hayya ‘ala-s-salah” and “Hayya ‘ala-l-falah” say “La hawla wa la '
+          'quwwata illa billah”. After the adhan read the salawat and this '
+          'dua (al-Bukhari, 614).',
+      'ردِّد ما يقول المؤذن، وقل عند الحيعلتين: «لا حول ولا قوة إلا بالله». '
+          'وبعد الأذان صلِّ على النبي ﷺ ثم ادعُ بهذا الدعاء (البخاري، 614).',
+    ),
+    recital: Recital(
+      arabic:
+          'اللَّهُمَّ رَبَّ هَذِهِ الدَّعْوَةِ التَّامَّةِ، وَالصَّلَاةِ '
+          'الْقَائِمَةِ، آتِ مُحَمَّدًا الْوَسِيلَةَ وَالْفَضِيلَةَ، '
+          'وَابْعَثْهُ مَقَامًا مَحْمُودًا الَّذِي وَعَدْتَهُ',
+      latin:
+          'Allahumma Rabba hadhihi-d-da‘wati-t-tammah, wa-s-salati-l-qa’imah, '
+          'ati Muhammadan al-wasilata wa-l-fadilah, wab‘ath-hu maqaman '
+          'mahmudan alladhi wa‘adtah',
+      cyrillic:
+          'Аллахумма Рабба хазихи-д-да‘вати-т-таммати ва-с-саляти-ль-ка’има, '
+          'ати Мухаммадан аль-василята ва-ль-фадыля, ваб‘асху макаман '
+          'махмудан аллязи ва‘адтах',
+      meaning: Tr(
+        'О Аллах, Господь этого совершенного призыва и начинающейся молитвы, '
+            'даруй Мухаммаду аль-Василю и высокое положение и возведи его '
+            'на достохвальное место, которое Ты ему обещал.',
+        'O Allah, Lord of this perfect call and of the prayer about to be '
+            'established, grant Muhammad al-Wasilah and the high rank, and '
+            'raise him to the praised station that You have promised him.',
+        '',
+      ),
+    ),
+  ),
+  GuideStep(
+    title: Tr('Икама', 'The iqamah', 'الإقامة'),
+    text: Tr(
+      'Икама произносится прямо перед фардом. Её слова те же, что в азане, '
+          'и повторяются столько же раз, а после «Хаййа ‘аля-ль-фалях» '
+          'дважды добавляется эта фраза. Икаму читают быстрее азана. '
+          'Мужчине, который молится один, читать её желательно, женщины '
+          'её не читают.',
+      'The iqamah is said right before the fard prayer. Its words are those '
+          'of the adhan, repeated the same number of times, and after “Hayya '
+          '‘ala-l-falah” this phrase is added twice. It is said faster than '
+          'the adhan. A man praying alone is recommended to say it; women '
+          'do not say it.',
+      'تُقال الإقامة قبل الفرض مباشرة، وألفاظها كألفاظ الأذان مثنى مثنى، '
+          'ويُزاد بعد «حيّ على الفلاح» هذا اللفظ مرتين. وتُحدَر الإقامة '
+          'أسرع من الأذان. وهي مستحبة للرجل المنفرد، ولا تقيم المرأة.',
+    ),
+    recital: Recital(
+      arabic: 'قَدْ قَامَتِ الصَّلَاةُ',
+      latin: 'Qad qamati-s-salah',
+      cyrillic: 'Кад камати-с-салях',
+      meaning: Tr('Молитва началась.', 'The prayer has begun.', ''),
+    ),
+  ),
+];
+
 const guideSteps = <GuideStep>[
   GuideStep(
     title: Tr('Вступительный такбир', 'The opening takbir', 'تكبيرة الإحرام'),

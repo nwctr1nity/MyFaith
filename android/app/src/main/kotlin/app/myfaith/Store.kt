@@ -14,6 +14,8 @@ data class Adhan(
     val fajr: Boolean,
     /** The recording to play, a name in res/raw; empty for the default. */
     val sound: String,
+    /** Whether the dua after the adhan follows the recording. */
+    val dua: Boolean,
 )
 
 /** One prayer time for the widgets, with its texts already localized. */
@@ -56,6 +58,22 @@ object Store {
             .apply()
     }
 
+    /**
+     * A short journal of what the adhan code did, newest last. It is the
+     * only way to learn what happened on a phone at a prayer time nobody
+     * was watching; the app copies it out on request.
+     */
+    fun log(context: Context, line: String) {
+        val stamp = java.text.SimpleDateFormat("MM-dd HH:mm:ss", java.util.Locale.US)
+            .format(java.util.Date())
+        val kept = journal(context).lines().filter { it.isNotEmpty() }.takeLast(59)
+        prefs(context).edit()
+            .putString("journal", (kept + "$stamp $line").joinToString("\n"))
+            .apply()
+    }
+
+    fun journal(context: Context): String = prefs(context).getString("journal", "") ?: ""
+
     fun text(context: Context, key: String, fallback: String): String =
         prefs(context).getString(key, null)?.takeIf { it.isNotEmpty() } ?: fallback
 
@@ -73,6 +91,7 @@ object Store {
                         body = o.optString("body"),
                         fajr = o.optBoolean("fajr"),
                         sound = o.optString("sound"),
+                        dua = o.optBoolean("dua"),
                     ),
                 )
             }

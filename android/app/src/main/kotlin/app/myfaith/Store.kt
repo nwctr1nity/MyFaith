@@ -14,6 +14,8 @@ data class Adhan(
     val fajr: Boolean,
     /** The recording to play, a name in res/raw; empty for the default. */
     val sound: String,
+    /** Whether the dua after the adhan follows the recording. */
+    val dua: Boolean,
 )
 
 /** One prayer time for the widgets, with its texts already localized. */
@@ -89,6 +91,7 @@ object Store {
                         body = o.optString("body"),
                         fajr = o.optBoolean("fajr"),
                         sound = o.optString("sound"),
+                        dua = o.optBoolean("dua"),
                     ),
                 )
             }

@@ -36,6 +36,7 @@ class MainActivity : AudioServiceActivity() {
                                 call.argument<String>("body") ?: "",
                                 call.argument<Boolean>("fajr") ?: false,
                                 call.argument<String>("sound") ?: "",
+                                call.argument<Boolean>("dua") ?: false,
                             )
                             result.success(null)
                         }

@@ -621,7 +621,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get sourcesAdhan =>
-      'Азан: записи из Дохи (Катар), сделанные в 2013–2014 годах (Internet Archive, общественное достояние), а также азаны шейха Тауфика Ходжа, шейха Турки аль-Хасани и шейха Абдуллы ибн Ахмада ибн Абдуррахмана Ба-Афифа.';
+      'Азан: записи из Дохи (Катар), сделанные в 2013–2014 годах (Internet Archive, общественное достояние), а также азаны шейха Тауфика Ходжа, шейха Турки аль-Хасани и шейха Абдуллы ибн Ахмада ибн Абдуррахмана Ба-Афифа. Дуа после азана: запись с сайта hisnmuslim.com («Крепость мусульманина»).';
 
   @override
   String get muezzin => 'Муэдзин';
@@ -1007,4 +1007,11 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get qadaAdd => 'Добавить пропущенную';
+
+  @override
+  String get adhanDua => 'Дуа после азана';
+
+  @override
+  String get adhanDuaHint =>
+      'Через три секунды после азана звучит дуа «Аллахумма Рабба хазихи-д-да‘вати-т-тамма».';
 }

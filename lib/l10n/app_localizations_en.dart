@@ -620,7 +620,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get sourcesAdhan =>
-      'Adhan: recordings from Doha, Qatar, made in 2013–2014 (Internet Archive, public domain), and the adhans of Sheikh Tawfiq Khoj, Sheikh Turki al-Hassani and Sheikh Abdullah ibn Ahmad ibn Abdurrahman Ba-Afif.';
+      'Adhan: recordings from Doha, Qatar, made in 2013–2014 (Internet Archive, public domain), and the adhans of Sheikh Tawfiq Khoj, Sheikh Turki al-Hassani and Sheikh Abdullah ibn Ahmad ibn Abdurrahman Ba-Afif. Dua after the adhan: a recording from hisnmuslim.com (Fortress of the Muslim).';
 
   @override
   String get muezzin => 'Muezzin';
@@ -1007,4 +1007,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get qadaAdd => 'Add a missed prayer';
+
+  @override
+  String get adhanDua => 'Dua after the adhan';
+
+  @override
+  String get adhanDuaHint =>
+      'Three seconds after the adhan the dua “Allahumma Rabba hadhihi-d-da‘wati-t-tammah” is played.';
 }

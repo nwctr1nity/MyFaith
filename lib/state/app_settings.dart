@@ -201,6 +201,9 @@ class AppSettings {
   /// Whose adhan plays, an id from `muezzins`; null is the default one.
   String? get muezzinId => _data['muezzin'] as String?;
 
+  /// Whether the dua after the adhan is played once the adhan ends.
+  bool get duaAfterAdhan => _bool('adhanDua', false);
+
   /// Minutes before each prayer for an extra reminder; 0 turns it off.
   int get reminderMinutes => _int('remind', 0, min: 0, max: 60);
 

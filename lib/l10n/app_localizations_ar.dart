@@ -612,7 +612,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get sourcesAdhan =>
-      'الأذان: تسجيلات من الدوحة (قطر) بين عامي 2013 و2014 (أرشيف الإنترنت، ملكية عامة)، وأذان الشيخ توفيق خوج والشيخ تركي الحسني والشيخ عبد الله بن أحمد بن عبد الرحمن باعفيف.';
+      'الأذان: تسجيلات من الدوحة (قطر) بين عامي 2013 و2014 (أرشيف الإنترنت، ملكية عامة)، وأذان الشيخ توفيق خوج والشيخ تركي الحسني والشيخ عبد الله بن أحمد بن عبد الرحمن باعفيف. الدعاء بعد الأذان: تسجيل من موقع hisnmuslim.com (حصن المسلم).';
 
   @override
   String get muezzin => 'المؤذن';
@@ -996,4 +996,11 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get qadaAdd => 'إضافة صلاة فائتة';
+
+  @override
+  String get adhanDua => 'الدعاء بعد الأذان';
+
+  @override
+  String get adhanDuaHint =>
+      'بعد الأذان بثلاث ثوانٍ يُسمع دعاء «اللهم رب هذه الدعوة التامة».';
 }

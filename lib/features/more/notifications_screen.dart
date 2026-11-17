@@ -133,6 +133,13 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen>
               onSelected: (id) => controller.setValue('muezzin', id),
             ),
           ),
+          SwitchListTile(
+            secondary: const Icon(Icons.volunteer_activism_outlined),
+            title: Text(l.adhanDua),
+            subtitle: Text(l.adhanDuaHint),
+            value: settings.duaAfterAdhan,
+            onChanged: (v) => controller.setValue('adhanDua', v),
+          ),
           ListTile(
             leading: const Icon(Icons.schedule),
             title: Text(l.reminderBefore),

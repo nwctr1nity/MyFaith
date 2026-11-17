@@ -49,6 +49,7 @@ List<NotificationRequest> buildRequests({
   required String cityName,
   required List<Hadith> hadiths,
   Muezzin? muezzin,
+  bool duaAfterAdhan = false,
 }) {
   final voice = muezzin ?? muezzins.first;
   final clock = DateFormat.Hm(l.localeName);
@@ -74,6 +75,7 @@ List<NotificationRequest> buildRequests({
                 : l.notifAdhanTitle(prayerName(l, slot)),
             body: l.notifAdhanBody(at(p.time), cityName),
             sound: voice.sound(slot),
+            dua: duaAfterAdhan && slot != PrayerSlot.sunrise,
           ),
         );
       case PlannedKind.prayerNotice:
@@ -265,6 +267,7 @@ class NotificationSync {
               settings.place?.name ?? l.appTitle,
             ),
             sound: voice.sound(fajr ? PrayerSlot.fajr : PrayerSlot.dhuhr),
+            dua: settings.duaAfterAdhan,
           ),
           _names(l),
         );
@@ -309,6 +312,7 @@ class NotificationSync {
           cityName: place.name,
           hadiths: hadiths,
           muezzin: muezzinById(settings.muezzinId),
+          duaAfterAdhan: settings.duaAfterAdhan,
         ),
         names,
         widget: WidgetData(

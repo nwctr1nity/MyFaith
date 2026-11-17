@@ -39,6 +39,7 @@ class MainActivity : AudioServiceActivity() {
                             )
                             result.success(null)
                         }
+                        "journal" -> result.success(Store.journal(this))
                         "stop" -> {
                             stopService(android.content.Intent(this, AdhanService::class.java))
                             result.success(null)

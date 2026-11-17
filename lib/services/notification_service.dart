@@ -119,6 +119,10 @@ abstract class NotificationService {
   /// Shows one notification right away, without touching the others.
   Future<void> showNow(NotificationRequest request, ChannelNames names);
 
+  /// What the adhan code did lately, for finding out why a phone played
+  /// something unexpected.
+  Future<String> journal();
+
   /// How many notifications are waiting to fire.
   Future<int> pendingCount();
 }
@@ -289,6 +293,10 @@ class LocalNotificationService implements NotificationService {
       ),
     );
   }
+
+  @override
+  Future<String> journal() async =>
+      await _native.invokeMethod<String>('journal') ?? '';
 
   @override
   Future<int> pendingCount() async {

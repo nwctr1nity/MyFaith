@@ -55,6 +55,9 @@ class FakeNotifications implements NotificationService {
   WidgetData widget = const WidgetData();
 
   @override
+  Future<String> journal() async => '';
+
+  @override
   Future<void> showNow(NotificationRequest request, ChannelNames names) async {
     extra.add(request);
   }

@@ -51,8 +51,14 @@ class AdhanService : Service() {
         }
 
         try {
-            play(recording(sound, fajr), notification(this, title, body, playing = false))
+            val file = recording(sound, fajr)
+            Store.log(
+                this,
+                "play $title fajr=$fajr asked=$sound file=${resources.getResourceEntryName(file)}",
+            )
+            play(file, notification(this, title, body, playing = false))
         } catch (e: Exception) {
+            Store.log(this, "failed $e")
             finish(notification(this, title, body, playing = false))
         }
         return START_NOT_STICKY

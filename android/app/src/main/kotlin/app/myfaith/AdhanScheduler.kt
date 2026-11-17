@@ -58,6 +58,11 @@ object AdhanScheduler {
             ids.add(adhan.id.toString())
         }
         prefs.edit().putStringSet("scheduledIds", ids).apply()
+        val next = Store.adhans(context).filter { it.time > now }.minByOrNull { it.time }
+        Store.log(
+            context,
+            "set ${ids.size} exact=$exact next=${next?.id} ${next?.title} fajr=${next?.fajr} ${next?.sound}",
+        )
         return ids.size
     }
 }
@@ -66,6 +71,11 @@ class AdhanReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         val id = AdhanScheduler.idOf(intent)
         val adhan = Store.adhans(context).firstOrNull { it.id == id }
+        Store.log(
+            context,
+            "alarm id=$id ${adhan?.title} fajr=${adhan?.fajr} ${adhan?.sound} " +
+                "late=${adhan?.let { (System.currentTimeMillis() - it.time) / 1000 }}s",
+        )
         if (adhan != null &&
             System.currentTimeMillis() - adhan.time < AdhanScheduler.LATE_LIMIT_MS
         ) {
@@ -75,6 +85,7 @@ class AdhanReceiver : BroadcastReceiver() {
                 // Android refused to start playback from the background
                 // (an inexact alarm does not carry that right). The prayer
                 // time is still announced, without the recording.
+                Store.log(context, "refused $e")
                 AdhanService.notifySilently(context, adhan.title, adhan.body)
             }
         }

@@ -56,6 +56,22 @@ object Store {
             .apply()
     }
 
+    /**
+     * A short journal of what the adhan code did, newest last. It is the
+     * only way to learn what happened on a phone at a prayer time nobody
+     * was watching; the app copies it out on request.
+     */
+    fun log(context: Context, line: String) {
+        val stamp = java.text.SimpleDateFormat("MM-dd HH:mm:ss", java.util.Locale.US)
+            .format(java.util.Date())
+        val kept = journal(context).lines().filter { it.isNotEmpty() }.takeLast(59)
+        prefs(context).edit()
+            .putString("journal", (kept + "$stamp $line").joinToString("\n"))
+            .apply()
+    }
+
+    fun journal(context: Context): String = prefs(context).getString("journal", "") ?: ""
+
     fun text(context: Context, key: String, fallback: String): String =
         prefs(context).getString(key, null)?.takeIf { it.isNotEmpty() } ?: fallback
 

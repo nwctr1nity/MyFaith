@@ -1875,6 +1875,96 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Three seconds after the adhan the dua “Allahumma Rabba hadhihi-d-da‘wati-t-tammah” is played.'**
   String get adhanDuaHint;
+
+  /// No description provided for @hijriCalendar.
+  ///
+  /// In en, this message translates to:
+  /// **'Hijri calendar'**
+  String get hijriCalendar;
+
+  /// No description provided for @hijriComing.
+  ///
+  /// In en, this message translates to:
+  /// **'Coming dates'**
+  String get hijriComing;
+
+  /// No description provided for @hijriWhiteDays.
+  ///
+  /// In en, this message translates to:
+  /// **'White days (13th, 14th, 15th): fasting is recommended'**
+  String get hijriWhiteDays;
+
+  /// No description provided for @hijriNote.
+  ///
+  /// In en, this message translates to:
+  /// **'The calendar is calculated (Umm al-Qura). The real start of a month depends on the sighting of the moon and may differ by a day; the shift is set in the settings.'**
+  String get hijriNote;
+
+  /// No description provided for @inDays.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{today} =1{tomorrow} other{in {count} days}}'**
+  String inDays(int count);
+
+  /// No description provided for @today.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get today;
+
+  /// No description provided for @eventNewYear.
+  ///
+  /// In en, this message translates to:
+  /// **'Islamic New Year'**
+  String get eventNewYear;
+
+  /// No description provided for @eventAshura.
+  ///
+  /// In en, this message translates to:
+  /// **'Day of Ashura'**
+  String get eventAshura;
+
+  /// No description provided for @eventRamadan.
+  ///
+  /// In en, this message translates to:
+  /// **'Start of Ramadan'**
+  String get eventRamadan;
+
+  /// No description provided for @eventLastTen.
+  ///
+  /// In en, this message translates to:
+  /// **'The last ten nights of Ramadan'**
+  String get eventLastTen;
+
+  /// No description provided for @eventEidFitr.
+  ///
+  /// In en, this message translates to:
+  /// **'Eid al-Fitr'**
+  String get eventEidFitr;
+
+  /// No description provided for @eventFirstTen.
+  ///
+  /// In en, this message translates to:
+  /// **'The first ten days of Dhu al-Hijjah'**
+  String get eventFirstTen;
+
+  /// No description provided for @eventArafah.
+  ///
+  /// In en, this message translates to:
+  /// **'Day of Arafah'**
+  String get eventArafah;
+
+  /// No description provided for @eventEidAdha.
+  ///
+  /// In en, this message translates to:
+  /// **'Eid al-Adha'**
+  String get eventEidAdha;
+
+  /// No description provided for @eventTashriq.
+  ///
+  /// In en, this message translates to:
+  /// **'Days of Tashriq'**
+  String get eventTashriq;
 }
 
 class _AppLocalizationsDelegate

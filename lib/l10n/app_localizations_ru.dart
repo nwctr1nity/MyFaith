@@ -1014,4 +1014,62 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get adhanDuaHint =>
       'Через три секунды после азана звучит дуа «Аллахумма Рабба хазихи-д-да‘вати-т-тамма».';
+
+  @override
+  String get hijriCalendar => 'Календарь хиджры';
+
+  @override
+  String get hijriComing => 'Ближайшие даты';
+
+  @override
+  String get hijriWhiteDays =>
+      'Белые дни (13, 14 и 15-е число): желателен пост';
+
+  @override
+  String get hijriNote =>
+      'Календарь расчётный (Умм аль-Кура). Настоящее начало месяца зависит от наблюдения луны и может отличаться на день, поправка задаётся в настройках.';
+
+  @override
+  String inDays(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'через $count дня',
+      many: 'через $count дней',
+      few: 'через $count дня',
+      one: 'через $count день',
+      zero: 'сегодня',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get today => 'Сегодня';
+
+  @override
+  String get eventNewYear => 'Новый год по хиджре';
+
+  @override
+  String get eventAshura => 'День Ашура';
+
+  @override
+  String get eventRamadan => 'Начало Рамадана';
+
+  @override
+  String get eventLastTen => 'Последние десять ночей Рамадана';
+
+  @override
+  String get eventEidFitr => 'Ид аль-Фитр (Ураза-байрам)';
+
+  @override
+  String get eventFirstTen => 'Первые десять дней зуль-хиджа';
+
+  @override
+  String get eventArafah => 'День Арафа';
+
+  @override
+  String get eventEidAdha => 'Ид аль-Адха (Курбан-байрам)';
+
+  @override
+  String get eventTashriq => 'Дни ташрика';
 }

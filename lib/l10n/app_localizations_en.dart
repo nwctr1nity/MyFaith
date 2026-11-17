@@ -1014,4 +1014,60 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get adhanDuaHint =>
       'Three seconds after the adhan the dua “Allahumma Rabba hadhihi-d-da‘wati-t-tammah” is played.';
+
+  @override
+  String get hijriCalendar => 'Hijri calendar';
+
+  @override
+  String get hijriComing => 'Coming dates';
+
+  @override
+  String get hijriWhiteDays =>
+      'White days (13th, 14th, 15th): fasting is recommended';
+
+  @override
+  String get hijriNote =>
+      'The calendar is calculated (Umm al-Qura). The real start of a month depends on the sighting of the moon and may differ by a day; the shift is set in the settings.';
+
+  @override
+  String inDays(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'in $count days',
+      one: 'tomorrow',
+      zero: 'today',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get today => 'Today';
+
+  @override
+  String get eventNewYear => 'Islamic New Year';
+
+  @override
+  String get eventAshura => 'Day of Ashura';
+
+  @override
+  String get eventRamadan => 'Start of Ramadan';
+
+  @override
+  String get eventLastTen => 'The last ten nights of Ramadan';
+
+  @override
+  String get eventEidFitr => 'Eid al-Fitr';
+
+  @override
+  String get eventFirstTen => 'The first ten days of Dhu al-Hijjah';
+
+  @override
+  String get eventArafah => 'Day of Arafah';
+
+  @override
+  String get eventEidAdha => 'Eid al-Adha';
+
+  @override
+  String get eventTashriq => 'Days of Tashriq';
 }

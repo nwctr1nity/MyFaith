@@ -1003,4 +1003,62 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get adhanDuaHint =>
       'بعد الأذان بثلاث ثوانٍ يُسمع دعاء «اللهم رب هذه الدعوة التامة».';
+
+  @override
+  String get hijriCalendar => 'التقويم الهجري';
+
+  @override
+  String get hijriComing => 'المناسبات القادمة';
+
+  @override
+  String get hijriWhiteDays => 'الأيام البيض (13 و14 و15): يُستحب صيامها';
+
+  @override
+  String get hijriNote =>
+      'التقويم حسابي (أم القرى). بداية الشهر الفعلية تتبع رؤية الهلال وقد تختلف يومًا، ويُضبط الفرق من الإعدادات.';
+
+  @override
+  String inDays(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'بعد $count يوم',
+      many: 'بعد $count يومًا',
+      few: 'بعد $count أيام',
+      two: 'بعد يومين',
+      one: 'غدًا',
+      zero: 'اليوم',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get today => 'اليوم';
+
+  @override
+  String get eventNewYear => 'رأس السنة الهجرية';
+
+  @override
+  String get eventAshura => 'يوم عاشوراء';
+
+  @override
+  String get eventRamadan => 'بداية رمضان';
+
+  @override
+  String get eventLastTen => 'العشر الأواخر من رمضان';
+
+  @override
+  String get eventEidFitr => 'عيد الفطر';
+
+  @override
+  String get eventFirstTen => 'عشر ذي الحجة';
+
+  @override
+  String get eventArafah => 'يوم عرفة';
+
+  @override
+  String get eventEidAdha => 'عيد الأضحى';
+
+  @override
+  String get eventTashriq => 'أيام التشريق';
 }

@@ -12,6 +12,7 @@ import '../../core/prayer/prayer_calculator.dart';
 import '../../l10n/app_localizations.dart';
 import '../../state/app_settings.dart';
 import '../../state/content_providers.dart';
+import '../calendar/hijri_calendar_screen.dart';
 import '../hadith/hadith_screen.dart';
 import '../labels.dart';
 import '../location/city_picker_screen.dart';
@@ -209,13 +210,54 @@ class _Timetable extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                hijriText(language, hijri.year, hijri.month, hijri.day),
-                style: theme.textTheme.titleSmall?.copyWith(color: onHero),
-              ),
-              Text(
-                dateFormat.format(DateTime(day.year, day.month, day.day)),
-                style: theme.textTheme.bodySmall?.copyWith(color: onHeroMuted),
+              // The date opens the Hijri calendar.
+              InkWell(
+                borderRadius: BorderRadius.circular(12),
+                onTap: () => Navigator.of(context).push(
+                  MaterialPageRoute<void>(
+                    builder: (_) => HijriCalendarScreen(
+                      today: DateTime(day.year, day.month, day.day),
+                    ),
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            hijriText(
+                              language,
+                              hijri.year,
+                              hijri.month,
+                              hijri.day,
+                            ),
+                            style: theme.textTheme.titleSmall?.copyWith(
+                              color: onHero,
+                            ),
+                          ),
+                          Text(
+                            dateFormat.format(
+                              DateTime(day.year, day.month, day.day),
+                            ),
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color: onHeroMuted,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Tooltip(
+                      message: l.hijriCalendar,
+                      child: const Icon(
+                        Icons.calendar_month_outlined,
+                        color: onHeroMuted,
+                        size: 22,
+                      ),
+                    ),
+                  ],
+                ),
               ),
               const SizedBox(height: 24),
               Text(

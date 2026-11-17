@@ -571,5 +571,21 @@
   "qadaMadeUp": "Made up",
   "qadaAdd": "Add a missed prayer",
   "adhanDua": "Dua after the adhan",
-  "adhanDuaHint": "Three seconds after the adhan the dua “Allahumma Rabba hadhihi-d-da‘wati-t-tammah” is played."
+  "adhanDuaHint": "Three seconds after the adhan the dua “Allahumma Rabba hadhihi-d-da‘wati-t-tammah” is played.",
+  "hijriCalendar": "Hijri calendar",
+  "hijriComing": "Coming dates",
+  "hijriWhiteDays": "White days (13th, 14th, 15th): fasting is recommended",
+  "hijriNote": "The calendar is calculated (Umm al-Qura). The real start of a month depends on the sighting of the moon and may differ by a day; the shift is set in the settings.",
+  "inDays": "{count, plural, =0{today} =1{tomorrow} other{in {count} days}}",
+  "@inDays": {"placeholders": {"count": {"type": "int"}}},
+  "today": "Today",
+  "eventNewYear": "Islamic New Year",
+  "eventAshura": "Day of Ashura",
+  "eventRamadan": "Start of Ramadan",
+  "eventLastTen": "The last ten nights of Ramadan",
+  "eventEidFitr": "Eid al-Fitr",
+  "eventFirstTen": "The first ten days of Dhu al-Hijjah",
+  "eventArafah": "Day of Arafah",
+  "eventEidAdha": "Eid al-Adha",
+  "eventTashriq": "Days of Tashriq"
 }

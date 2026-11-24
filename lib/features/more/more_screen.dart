@@ -2,13 +2,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_ui/material_ui.dart';
 
 import '../../l10n/app_localizations.dart';
+import '../../state/app_settings.dart';
 import '../hadith/hadith_screen.dart';
+import '../names/names_screen.dart';
 import '../../core/content/hadith.dart';
 import '../quran/bookmarks_screen.dart';
 import '../settings/settings_screen.dart';
 import 'alarms_screen.dart';
 import 'notifications_screen.dart';
+import 'qada_screen.dart';
 import 'sources_screen.dart';
+import 'support_dialog.dart';
 
 class MoreScreen extends ConsumerWidget {
   const MoreScreen({super.key});
@@ -16,10 +20,11 @@ class MoreScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l = AppLocalizations.of(context)!;
+    final qadaTotal = ref.watch(settingsProvider.select((s) => s.qadaTotal));
 
-    void open(Widget screen) => Navigator.of(context).push(
-          MaterialPageRoute<void>(builder: (_) => screen),
-        );
+    void open(Widget screen) =>
+        Navigator.of(context)
+            .push(MaterialPageRoute<void>(builder: (_) => screen));
 
     return Scaffold(
       appBar: AppBar(title: Text(l.navMore)),
@@ -55,10 +60,26 @@ class MoreScreen extends ConsumerWidget {
                   title: l.hadithOfDay,
                   onTap: () {
                     final now = DateTime.now();
-                    open(HadithScreen(
-                      initialDay: dayNumber(now.year, now.month, now.day),
-                    ));
+                    open(
+                      HadithScreen(
+                        initialDay: dayNumber(now.year, now.month, now.day),
+                      ),
+                    );
                   },
+                ),
+                _Item(
+                  icon: Icons.auto_awesome_outlined,
+                  title: l.names99,
+                  subtitle: l.names99Hint,
+                  onTap: () => open(const NamesScreen()),
+                ),
+                _Item(
+                  icon: Icons.history_toggle_off,
+                  title: l.qadaTitle,
+                  subtitle: qadaTotal == 0
+                      ? l.qadaNone
+                      : l.qadaTotal(qadaTotal),
+                  onTap: () => open(const QadaScreen()),
                 ),
                 _Item(
                   icon: Icons.bookmarks_outlined,
@@ -78,6 +99,11 @@ class MoreScreen extends ConsumerWidget {
                   title: l.settings,
                   subtitle: l.prayerSettingsHint,
                   onTap: () => open(const SettingsScreen()),
+                ),
+                _Item(
+                  icon: Icons.volunteer_activism_outlined,
+                  title: l.supportProject,
+                  onTap: () => showSupportDialog(context),
                 ),
                 _Item(
                   icon: Icons.info_outline,

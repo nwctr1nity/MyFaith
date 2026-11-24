@@ -9,6 +9,7 @@ import 'package:timezone/timezone.dart' as tz;
 
 import '../core/alarms/notification_planner.dart';
 import '../core/content/hadith.dart';
+import '../core/content/muezzins.dart';
 import '../core/prayer/prayer_calculator.dart';
 import '../features/labels.dart';
 import '../l10n/app_localizations.dart';
@@ -28,6 +29,16 @@ AppLocalizations notificationStrings(String? languageCode) {
   return lookupAppLocalizations(Locale(code));
 }
 
+/// The rakaats of a prayer in the Hanafi school, for its notification.
+String rakaatSummary(AppLocalizations l, PrayerSlot slot) => switch (slot) {
+  PrayerSlot.fajr => l.rakaatsFajr,
+  PrayerSlot.dhuhr => l.rakaatsDhuhr,
+  PrayerSlot.asr => l.rakaatsAsr,
+  PrayerSlot.maghrib => l.rakaatsMaghrib,
+  PrayerSlot.isha => l.rakaatsIsha,
+  PrayerSlot.sunrise => '',
+};
+
 String _clip(String text, int max) =>
     text.length <= max ? text : '${text.substring(0, max - 1).trimRight()}…';
 
@@ -37,7 +48,10 @@ List<NotificationRequest> buildRequests({
   required AppLocalizations l,
   required String cityName,
   required List<Hadith> hadiths,
+  Muezzin? muezzin,
+  bool duaAfterAdhan = false,
 }) {
+  final voice = muezzin ?? muezzins.first;
   final clock = DateFormat.Hm(l.localeName);
   String at(DateTime t) =>
       clock.format(DateTime(t.year, t.month, t.day, t.hour, t.minute));
@@ -47,71 +61,131 @@ List<NotificationRequest> buildRequests({
     switch (p.kind) {
       case PlannedKind.adhan:
         final slot = p.slot!;
-        requests.add(NotificationRequest(
-          id: p.id,
-          time: p.time,
-          channel: switch (slot) {
-            PrayerSlot.sunrise => NotificationChannel.reminder,
-            PrayerSlot.fajr => NotificationChannel.adhanFajr,
-            _ => NotificationChannel.adhan,
-          },
-          title: slot == PrayerSlot.sunrise
-              ? l.notifSunriseTitle
-              : l.notifAdhanTitle(prayerName(l, slot)),
-          body: l.notifAdhanBody(at(p.time), cityName),
-        ));
+        requests.add(
+          NotificationRequest(
+            id: p.id,
+            time: p.time,
+            channel: switch (slot) {
+              PrayerSlot.sunrise => NotificationChannel.reminder,
+              PrayerSlot.fajr => NotificationChannel.adhanFajr,
+              _ => NotificationChannel.adhan,
+            },
+            title: slot == PrayerSlot.sunrise
+                ? l.notifSunriseTitle
+                : l.notifAdhanTitle(prayerName(l, slot)),
+            body: l.notifAdhanBody(at(p.time), cityName),
+            sound: voice.sound(slot),
+            dua: duaAfterAdhan && slot != PrayerSlot.sunrise,
+          ),
+        );
+      case PlannedKind.prayerNotice:
+        final slot = p.slot!;
+        requests.add(
+          NotificationRequest(
+            id: p.id,
+            time: p.time,
+            channel: NotificationChannel.reminder,
+            title: prayerName(l, slot),
+            body: rakaatSummary(l, slot),
+          ),
+        );
       case PlannedKind.reminder:
         final minutes = p.prayerTime!.difference(p.time).inMinutes;
-        requests.add(NotificationRequest(
-          id: p.id,
-          time: p.time,
-          channel: NotificationChannel.reminder,
-          title: l.notifReminderTitle(prayerName(l, p.slot!), minutes),
-          body: l.notifAdhanBody(at(p.prayerTime!), cityName),
-        ));
+        requests.add(
+          NotificationRequest(
+            id: p.id,
+            time: p.time,
+            channel: NotificationChannel.reminder,
+            title: l.notifReminderTitle(prayerName(l, p.slot!), minutes),
+            body: l.notifAdhanBody(at(p.prayerTime!), cityName),
+          ),
+        );
       case PlannedKind.hadith:
         if (hadiths.isEmpty) continue;
         final day = dayNumber(p.time.year, p.time.month, p.time.day);
         final hadith = hadiths[dailyHadithIndex(day, hadiths.length)];
-        requests.add(NotificationRequest(
-          id: p.id,
-          time: p.time,
-          channel: NotificationChannel.hadith,
-          title: l.hadithOfDay,
-          body: _clip(hadith.translation(l.localeName), 400),
-        ));
+        requests.add(
+          NotificationRequest(
+            id: p.id,
+            time: p.time,
+            channel: NotificationChannel.hadith,
+            title: l.hadithOfDay,
+            body: _clip(hadith.translation(l.localeName), 400),
+          ),
+        );
       case PlannedKind.suhoor:
-        requests.add(NotificationRequest(
-          id: p.id,
-          time: p.time,
-          channel: NotificationChannel.alarm,
-          title: l.notifSuhoorTitle,
-          body: l.notifSuhoorBody(at(p.prayerTime!)),
-        ));
+        requests.add(
+          NotificationRequest(
+            id: p.id,
+            time: p.time,
+            channel: NotificationChannel.alarm,
+            title: l.notifSuhoorTitle,
+            body: l.notifSuhoorBody(at(p.prayerTime!)),
+          ),
+        );
       case PlannedKind.suhoorStop:
-        requests.add(NotificationRequest(
-          id: p.id,
-          time: p.time,
-          channel: NotificationChannel.reminder,
-          title: l.notifSuhoorStopTitle,
-          body: l.notifSuhoorBody(at(p.prayerTime!)),
-        ));
+        requests.add(
+          NotificationRequest(
+            id: p.id,
+            time: p.time,
+            channel: NotificationChannel.reminder,
+            title: l.notifSuhoorStopTitle,
+            body: l.notifSuhoorBody(at(p.prayerTime!)),
+          ),
+        );
       case PlannedKind.tahajjud:
-        requests.add(NotificationRequest(
-          id: p.id,
-          time: p.time,
-          channel: NotificationChannel.alarm,
-          title: l.notifTahajjudTitle,
-          body: l.notifSuhoorBody(at(p.prayerTime!)),
-        ));
+        requests.add(
+          NotificationRequest(
+            id: p.id,
+            time: p.time,
+            channel: NotificationChannel.alarm,
+            title: l.notifTahajjudTitle,
+            body: l.notifSuhoorBody(at(p.prayerTime!)),
+          ),
+        );
+      case PlannedKind.adhkarMorning:
+        requests.add(
+          NotificationRequest(
+            id: p.id,
+            time: p.time,
+            channel: NotificationChannel.reminder,
+            title: l.adhkarMorningReminder,
+            body: l.notifAdhkarMorningBody,
+            payload: tapAdhkarMorning,
+          ),
+        );
+      case PlannedKind.adhkarEvening:
+        requests.add(
+          NotificationRequest(
+            id: p.id,
+            time: p.time,
+            channel: NotificationChannel.reminder,
+            title: l.adhkarEveningReminder,
+            body: l.notifAdhkarEveningBody,
+            payload: tapAdhkarEvening,
+          ),
+        );
+      case PlannedKind.kahf:
+        requests.add(
+          NotificationRequest(
+            id: p.id,
+            time: p.time,
+            channel: NotificationChannel.reminder,
+            title: l.notifKahfTitle,
+            body: l.notifKahfBody,
+            payload: tapKahf,
+          ),
+        );
       case PlannedKind.refresh:
-        requests.add(NotificationRequest(
-          id: p.id,
-          time: p.time,
-          channel: NotificationChannel.reminder,
-          title: l.notifRefreshTitle,
-          body: l.notifRefreshBody,
-        ));
+        requests.add(
+          NotificationRequest(
+            id: p.id,
+            time: p.time,
+            channel: NotificationChannel.reminder,
+            title: l.notifRefreshTitle,
+            body: l.notifRefreshBody,
+          ),
+        );
     }
   }
   return requests;
@@ -141,13 +215,17 @@ List<WidgetPrayer> widgetPrayers({
     );
     for (final slot in PrayerSlot.values) {
       final t = day[slot];
-      result.add(WidgetPrayer(
-        time: t,
-        day: '${date.year}-${date.month}-${date.day}',
-        slot: slot.index,
-        name: prayerName(l, slot),
-        clock: clock.format(DateTime(t.year, t.month, t.day, t.hour, t.minute)),
-      ));
+      result.add(
+        WidgetPrayer(
+          time: t,
+          day: '${date.year}-${date.month}-${date.day}',
+          slot: slot.index,
+          name: prayerName(l, slot),
+          clock: clock.format(
+            DateTime(t.year, t.month, t.day, t.hour, t.minute),
+          ),
+        ),
+      );
     }
   }
   return result;
@@ -193,12 +271,12 @@ class NotificationSync {
   }
 
   ChannelNames _names(AppLocalizations l) => ChannelNames(
-        adhan: l.channelAdhan,
-        adhanFajr: l.channelAdhanFajr,
-        reminder: l.channelReminder,
-        alarm: l.channelAlarm,
-        hadith: l.channelHadith,
-      );
+    adhan: l.channelAdhan,
+    adhanFajr: l.channelAdhanFajr,
+    reminder: l.channelReminder,
+    alarm: l.channelAlarm,
+    hadith: l.channelHadith,
+  );
 
   /// Plays a sample adhan notification right away, so the sound and the
   /// permissions can be checked without waiting for a prayer.
@@ -206,7 +284,10 @@ class NotificationSync {
     final settings = _ref.read(settingsProvider);
     final l = notificationStrings(settings.languageCode);
     final now = DateTime.now();
-    await _ref.read(notificationServiceProvider).showNow(
+    final voice = muezzinById(settings.muezzinId);
+    await _ref
+        .read(notificationServiceProvider)
+        .showNow(
           NotificationRequest(
             id: testNotificationId,
             time: tz.TZDateTime.from(now, tz.UTC),
@@ -218,6 +299,8 @@ class NotificationSync {
               DateFormat.Hm(l.localeName).format(now),
               settings.place?.name ?? l.appTitle,
             ),
+            sound: voice.sound(fajr ? PrayerSlot.fajr : PrayerSlot.dhuhr),
+            dua: settings.duaAfterAdhan,
           ),
           _names(l),
         );
@@ -261,6 +344,8 @@ class NotificationSync {
           l: l,
           cityName: place.name,
           hadiths: hadiths,
+          muezzin: muezzinById(settings.muezzinId),
+          duaAfterAdhan: settings.duaAfterAdhan,
         ),
         names,
         widget: WidgetData(

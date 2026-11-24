@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../core/alarms/alarm_settings.dart';
 import '../core/prayer/prayer_calculator.dart';
+import '../core/ramadan.dart';
 
 /// The place prayer times are shown for.
 class SavedPlace {
@@ -27,20 +28,17 @@ class SavedPlace {
   /// True when the place came from the device location, not a chosen city.
   final bool fromGps;
 
-  PrayerPlace get prayerPlace => PrayerPlace(
-        latitude: latitude,
-        longitude: longitude,
-        timeZone: timeZone,
-      );
+  PrayerPlace get prayerPlace =>
+      PrayerPlace(latitude: latitude, longitude: longitude, timeZone: timeZone);
 
   Map<String, Object?> toJson() => {
-        'name': name,
-        'cc': countryCode,
-        'lat': latitude,
-        'lng': longitude,
-        'tz': timeZone,
-        'gps': fromGps,
-      };
+    'name': name,
+    'cc': countryCode,
+    'lat': latitude,
+    'lng': longitude,
+    'tz': timeZone,
+    'gps': fromGps,
+  };
 
   static SavedPlace? fromJson(Object? json) {
     if (json is! Map) return null;
@@ -156,7 +154,8 @@ class AppSettings {
   // Calculation.
 
   CalcMethod get method =>
-      _byName(CalcMethod.values, _data['method']) ?? CalcMethod.muslimWorldLeague;
+      _byName(CalcMethod.values, _data['method']) ??
+      CalcMethod.muslimWorldLeague;
 
   AsrMadhab get madhab =>
       _byName(AsrMadhab.values, _data['madhab']) ?? AsrMadhab.hanafi;
@@ -174,11 +173,8 @@ class AppSettings {
     return result;
   }
 
-  PrayerSettings get prayerSettings => PrayerSettings(
-        method: method,
-        madhab: madhab,
-        adjustments: adjustments,
-      );
+  PrayerSettings get prayerSettings =>
+      PrayerSettings(method: method, madhab: madhab, adjustments: adjustments);
 
   /// Shift of the Hijri date in days, to follow the local moon sighting.
   int get hijriAdjustment => _int('hijriAdj', 0, min: -2, max: 2);
@@ -194,11 +190,20 @@ class AppSettings {
           if (s != PrayerSlot.sunrise) s,
       };
     }
-    return {
-      for (final name in raw)
-        ?_byName(PrayerSlot.values, name),
-    };
+    return {for (final name in raw) ?_byName(PrayerSlot.values, name)};
   }
+
+  /// Whether the app asks GitHub for a newer release when it starts.
+  bool get checkUpdates => _bool('updCheck', true);
+
+  /// A version the user chose not to be offered again.
+  String? get skippedUpdate => _data['updSkip'] as String?;
+
+  /// Whose adhan plays, an id from `muezzins`; null is the default one.
+  String? get muezzinId => _data['muezzin'] as String?;
+
+  /// Whether the dua after the adhan is played once the adhan ends.
+  bool get duaAfterAdhan => _bool('adhanDua', false);
 
   /// Minutes before each prayer for an extra reminder; 0 turns it off.
   int get reminderMinutes => _int('remind', 0, min: 0, max: 60);
@@ -208,6 +213,13 @@ class AppSettings {
   /// Local hour of the daily hadith notification.
   int get hadithHour => _int('hadithHour', 9, min: 0, max: 23);
 
+  /// When the fasting countdown is on the prayer screen.
+  RamadanMode get ramadanMode =>
+      _byName(RamadanMode.values, _data['ramadan']) ?? RamadanMode.auto;
+
+  /// Whether the offer to switch on the suhoor alarm was answered.
+  bool get suhoorOffered => _bool('suhoorAsked', false);
+
   bool get suhoorEnabled => _bool('suhoor', false);
   int get suhoorMinutesBeforeFajr => _int('suhoorMin', 60, min: 10, max: 180);
   bool get suhoorInRamadan => _bool('suhoorRamadan', true);
@@ -216,14 +228,19 @@ class AppSettings {
   bool get suhoorEveryDay => _bool('suhoorDaily', false);
 
   /// Minutes before Fajr for the "stop eating" warning; 0 turns it off.
-  int get suhoorStopWarningMinutes => _int('suhoorStop', 10, min: 0, max: 30);
+  int get suhoorStopWarningMinutes => _int('suhoorStop', 30, min: 0, max: 60);
+
+  bool get adhkarMorningReminder => _bool('azkarM', false);
+  bool get adhkarEveningReminder => _bool('azkarE', false);
+  bool get kahfReminder => _bool('kahf', false);
 
   bool get tahajjudEnabled => _bool('tahajjud', false);
 
   /// True wakes at the start of the last third of the night; false wakes a
   /// fixed number of minutes before Fajr.
   bool get tahajjudAtLastThird => _bool('tahajjudThird', true);
-  int get tahajjudMinutesBeforeFajr => _int('tahajjudMin', 45, min: 10, max: 180);
+  int get tahajjudMinutesBeforeFajr =>
+      _int('tahajjudMin', 45, min: 10, max: 180);
 
   /// ISO weekdays (1 = Monday) of the night's morning the alarm rings on.
   Set<int> get tahajjudWeekdays {
@@ -236,23 +253,26 @@ class AppSettings {
   }
 
   AlarmSettings get alarmSettings => AlarmSettings(
-        adhanSlots: adhanSlots,
-        reminderMinutes: reminderMinutes,
-        hadithNotification: hadithNotification,
-        hadithHour: hadithHour,
-        suhoorEnabled: suhoorEnabled,
-        suhoorMinutesBeforeFajr: suhoorMinutesBeforeFajr,
-        suhoorInRamadan: suhoorInRamadan,
-        suhoorMonThu: suhoorMonThu,
-        suhoorWhiteDays: suhoorWhiteDays,
-        suhoorEveryDay: suhoorEveryDay,
-        suhoorStopWarningMinutes: suhoorStopWarningMinutes,
-        tahajjudEnabled: tahajjudEnabled,
-        tahajjudAtLastThird: tahajjudAtLastThird,
-        tahajjudMinutesBeforeFajr: tahajjudMinutesBeforeFajr,
-        tahajjudWeekdays: tahajjudWeekdays,
-        hijriAdjustment: hijriAdjustment,
-      );
+    adhanSlots: adhanSlots,
+    reminderMinutes: reminderMinutes,
+    hadithNotification: hadithNotification,
+    hadithHour: hadithHour,
+    suhoorEnabled: suhoorEnabled,
+    suhoorMinutesBeforeFajr: suhoorMinutesBeforeFajr,
+    suhoorInRamadan: suhoorInRamadan,
+    suhoorMonThu: suhoorMonThu,
+    suhoorWhiteDays: suhoorWhiteDays,
+    suhoorEveryDay: suhoorEveryDay,
+    suhoorStopWarningMinutes: suhoorStopWarningMinutes,
+    tahajjudEnabled: tahajjudEnabled,
+    tahajjudAtLastThird: tahajjudAtLastThird,
+    tahajjudMinutesBeforeFajr: tahajjudMinutesBeforeFajr,
+    tahajjudWeekdays: tahajjudWeekdays,
+    adhkarMorning: adhkarMorningReminder,
+    adhkarEvening: adhkarEveningReminder,
+    kahfFriday: kahfReminder,
+    hijriAdjustment: hijriAdjustment,
+  );
 
   // Quran reader.
 
@@ -261,14 +281,49 @@ class AppSettings {
   /// Arabic text size step, 0 to 4.
   int get quranFontStep => _int('qFont', 1, min: 0, max: 4);
 
+  /// Transliteration under the Arabic, off until asked for.
+  bool get quranShowTransliteration => _bool('qTranslit', false);
+
+  /// Tajweed colouring of the Arabic text.
+  bool get quranShowTajweed => _bool('qTajweed', true);
+
+  /// Whether the recitation moves on to the next ayah by itself.
+  bool get quranAutoNext => _bool('qAutoNext', true);
+
+  /// Repeats the ayah being recited, for memorising. While it is on, the
+  /// recitation does not move on, whatever [quranAutoNext] says.
+  bool get quranRepeat => _bool('qRepeat', false);
+
+  /// Recitation speed in tenths: 10 is the speed of the recording.
+  int get quranSpeedTenths => _int('qSpeed', 10, min: 2, max: 20);
+
+  /// Transliteration on the salawat cards and on the dhikr and dua cards.
+  bool get salawatShowTransliteration => _bool('salTranslit', true);
+  bool get dhikrShowTransliteration => _bool('dhTranslit', true);
+
+  String get quranReciter {
+    final v = _data['qReciter'];
+    return v is String ? v : 'alafasy';
+  }
+
+  /// The mushaf page that was open last, from 1.
+  int get mushafPage => _int('qPage', 1, min: 1, max: 604);
+
   AyahRef? get lastRead => AyahRef.parse(_data['qLast']);
 
   List<AyahRef> get bookmarks {
     final raw = _data['qMarks'];
     if (raw is! List) return const [];
+    return [for (final v in raw) ?AyahRef.parse(v)];
+  }
+
+  /// Numbers of the hadiths marked with the star, the latest first.
+  List<int> get hadithFavorites {
+    final raw = _data['hFav'];
+    if (raw is! List) return const [];
     return [
       for (final v in raw)
-        ?AyahRef.parse(v),
+        if (v is int) v,
     ];
   }
 
@@ -287,6 +342,53 @@ class AppSettings {
 
   /// Daily goal for the counter.
   int get salawatGoal => _int('salGoal', 100, min: 1, max: 100000);
+
+  // Dhikr and dua counters.
+
+  String get dhikrDay {
+    final v = _data['dhDay'];
+    return v is String ? v : '';
+  }
+
+  /// Today's count of the dhikr [id]; zero when [today] is a new day.
+  int dhikrCount(String id, String today) {
+    if (dhikrDay != today) return 0;
+    final counts = _data['dhCounts'];
+    final v = counts is Map ? counts[id] : null;
+    return v is int && v > 0 ? v : 0;
+  }
+
+  /// The goal the user chose for [id], or null to use the default.
+  int? dhikrGoal(String id) {
+    final goals = _data['dhGoals'];
+    final v = goals is Map ? goals[id] : null;
+    return v is int && v > 0 ? v : null;
+  }
+
+  /// Prayers the user has marked as missed and not made up yet, per
+  /// prayer. Every prayer counts as prayed until it is marked.
+  Map<PrayerSlot, int> get qada {
+    final raw = _data['qada'];
+    return {
+      for (final slot in PrayerSlot.values)
+        if (slot != PrayerSlot.sunrise)
+          slot: raw is Map && raw[slot.name] is int && (raw[slot.name] as int) > 0
+              ? raw[slot.name] as int
+              : 0,
+    };
+  }
+
+  int get qadaTotal => qada.values.fold(0, (a, b) => a + b);
+
+  /// Whether the prayer [slot] of the day [day] (`2026-11-16`) is marked
+  /// as missed.
+  bool isMissed(String day, PrayerSlot slot) {
+    final raw = _data['missed'];
+    return raw is List && raw.contains('$day:${slot.name}');
+  }
+
+  /// Correct answers in a row in the names quiz, best ever.
+  int get namesBest => _int('namesBest', 0, min: 0);
 }
 
 /// Overridden in `main` with the instance loaded before the first frame.
@@ -294,8 +396,9 @@ final sharedPreferencesProvider = Provider<SharedPreferences>(
   (ref) => throw UnimplementedError('sharedPreferencesProvider not overridden'),
 );
 
-final settingsProvider =
-    NotifierProvider<SettingsController, AppSettings>(SettingsController.new);
+final settingsProvider = NotifierProvider<SettingsController, AppSettings>(
+  SettingsController.new,
+);
 
 class SettingsController extends Notifier<AppSettings> {
   static const _key = 'settings.v1';
@@ -318,8 +421,14 @@ class SettingsController extends Notifier<AppSettings> {
 
   void _set(AppSettings next) {
     state = next;
-    ref.read(sharedPreferencesProvider).setString(_key, jsonEncode(next.toJson()));
+    ref
+        .read(sharedPreferencesProvider)
+        .setString(_key, jsonEncode(next.toJson()));
   }
+
+  /// Replaces everything with the settings from a backup.
+  void restore(Map<String, Object?> settings) =>
+      _set(AppSettings.fromJson(settings));
 
   /// Sets one raw value. Keys are the ones the [AppSettings] getters read.
   void setValue(String key, Object? value) => _set(state.withValue(key, value));
@@ -371,6 +480,12 @@ class SettingsController extends Notifier<AppSettings> {
 
   void setLastRead(AyahRef ref) => setValue('qLast', ref.key);
 
+  void toggleHadithFavorite(int number) {
+    final list = [...state.hadithFavorites];
+    list.contains(number) ? list.remove(number) : list.insert(0, number);
+    setValue('hFav', list);
+  }
+
   void toggleBookmark(AyahRef ref) {
     final marks = [...state.bookmarks];
     marks.contains(ref) ? marks.remove(ref) : marks.insert(0, ref);
@@ -381,10 +496,74 @@ class SettingsController extends Notifier<AppSettings> {
   /// local date as yyyy-mm-dd; a new day starts today's count from zero.
   void addSalawat(String today) {
     final sameDay = state.salawatDay == today;
-    _set(state
-        .withValue('salDay', today)
-        .withValue('salToday', (sameDay ? state.salawatToday : 0) + 1)
-        .withValue('salTotal', state.salawatTotal + 1));
+    _set(
+      state
+          .withValue('salDay', today)
+          .withValue('salToday', (sameDay ? state.salawatToday : 0) + 1)
+          .withValue('salTotal', state.salawatTotal + 1),
+    );
+  }
+
+  Map<String, Object?> _qada(PrayerSlot slot, int delta) {
+    final next = {for (final e in state.qada.entries) e.key.name: e.value};
+    next[slot.name] = ((next[slot.name] ?? 0) + delta).clamp(0, 99999);
+    return next;
+  }
+
+  /// Adds to or takes from the prayers to make up.
+  void changeQada(PrayerSlot slot, int delta) =>
+      setValue('qada', _qada(slot, delta));
+
+  /// Marks the prayer [slot] of [day] as missed, or takes the mark back.
+  /// Marks older than two weeks are forgotten; the count stays.
+  void toggleMissed(String day, PrayerSlot slot) {
+    final key = '$day:${slot.name}';
+    final raw = state.toJson()['missed'];
+    final marks = <String>[
+      if (raw is List)
+        for (final m in raw)
+          if (m is String) m,
+    ];
+    final wasMissed = marks.remove(key);
+    if (!wasMissed) marks.add(key);
+    final cutoff = DateTime.parse(day).subtract(const Duration(days: 14));
+    marks.removeWhere((m) {
+      final date = DateTime.tryParse(m.split(':').first);
+      return date == null || date.isBefore(cutoff);
+    });
+    _set(
+      state
+          .withValue('missed', marks)
+          .withValue('qada', _qada(slot, wasMissed ? -1 : 1)),
+    );
+  }
+
+  Map<String, Object?> _dhikrCounts(String today) {
+    final counts = state.toJson()['dhCounts'];
+    return state.dhikrDay == today && counts is Map
+        ? {for (final e in counts.entries) '${e.key}': e.value}
+        : {};
+  }
+
+  void addDhikr(String id, String today) {
+    final counts = _dhikrCounts(today);
+    counts[id] = state.dhikrCount(id, today) + 1;
+    _set(state.withValue('dhDay', today).withValue('dhCounts', counts));
+  }
+
+  void resetDhikr(String id, String today) {
+    final counts = _dhikrCounts(today)..remove(id);
+    _set(state.withValue('dhDay', today).withValue('dhCounts', counts));
+  }
+
+  void setDhikrGoal(String id, int? goal) {
+    final goals = state.toJson()['dhGoals'];
+    final next = <String, Object?>{
+      if (goals is Map)
+        for (final e in goals.entries) '${e.key}': e.value,
+    };
+    goal == null ? next.remove(id) : next[id] = goal;
+    setValue('dhGoals', next);
   }
 
   void resetSalawatToday(String today) {

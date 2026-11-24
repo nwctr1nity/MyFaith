@@ -39,10 +39,85 @@ class AppLocalizationsAr extends AppLocalizations {
   String get nowLabel => 'الآن';
 
   @override
+  String get rakaatsFajr => 'ركعتان سنة، ركعتان فرض';
+
+  @override
+  String get rakaatsDhuhr => '4 ركعات سنة، 4 فرض، ركعتان سنة';
+
+  @override
+  String get rakaatsAsr => '4 ركعات فرض';
+
+  @override
+  String get rakaatsMaghrib => '3 ركعات فرض، ركعتان سنة';
+
+  @override
+  String get rakaatsIsha => '4 ركعات فرض، ركعتان سنة، 3 وتر';
+
+  @override
+  String get howToPray => 'كيف أصلي؟';
+
+  @override
+  String get howToPrayHint => 'خطوة بخطوة على المذهب الحنفي';
+
+  @override
+  String get guideRakaats => 'عدد الركعات';
+
+  @override
+  String get guideSunnahBefore => 'سنة قبلية';
+
+  @override
+  String get guideFard => 'فرض';
+
+  @override
+  String get guideSunnahAfter => 'سنة بعدية';
+
+  @override
+  String get guideWitr => 'وتر';
+
+  @override
+  String get guideBefore => 'قبل الصلاة';
+
+  @override
+  String get guideSteps => 'صلاة من ركعتين';
+
+  @override
+  String get guideMore => 'أمور أخرى مهمة';
+
+  @override
+  String soonLabel(int minutes) {
+    return 'بعد $minutes د!';
+  }
+
+  @override
+  String get showTransliterationItem => 'إظهار النطق';
+
+  @override
+  String get repeatAyah => 'التكرار للحفظ';
+
+  @override
+  String get repeatAyahHint => 'تتكرر الآية حتى توقف التكرار';
+
+  @override
+  String get recitationSpeed => 'سرعة التلاوة';
+
+  @override
+  String get resetSpeed => 'إعادة إلى 1×';
+
+  @override
   String get lastThirdOfNight => 'الثلث الأخير من الليل';
 
   @override
   String get settings => 'الإعدادات';
+
+  @override
+  String get supportProject => 'ادعم المشروع';
+
+  @override
+  String get supportText =>
+      'جميع التبرعات طوعية. سيبقى مشروعي مجانيًا بالكامل دائمًا.';
+
+  @override
+  String get tbank => 'T-Bank';
 
   @override
   String get language => 'اللغة';
@@ -533,7 +608,14 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get sourcesOther =>
-      'مواقيت الصلاة: adhan_dart. المدن: GeoNames، CC BY 4.0. الخط العربي: Amiri Quran برخصة SIL Open Font. جُمعت البيانات من المشاريع المفتوحة quran-api و hadith-api و tafsir_api. الترجمات ملك لأصحابها وتُستخدم هنا للقراءة الشخصية غير التجارية.';
+      'مواقيت الصلاة: adhan_dart. المدن: GeoNames، CC BY 4.0. الخط العربي: Amiri Quran برخصة SIL Open Font. جُمعت البيانات من المشاريع المفتوحة quran-api و hadith-api و tafsir_api. الترجمات ملك لأصحابها وتُستخدم هنا للقراءة الشخصية غير التجارية. النطق بالحروف اللاتينية من quran-api. ألوان التجويد يستخرجها التطبيق من علامات الرسم العثماني ولا تغني عن التلقي من معلم. التلاوات تُبث من everyayah.com وتحتاج إلى الإنترنت.';
+
+  @override
+  String get sourcesAdhan =>
+      'الأذان: تسجيلات من الدوحة (قطر) بين عامي 2013 و2014 (أرشيف الإنترنت، ملكية عامة)، وأذان الشيخ توفيق خوج والشيخ تركي الحسني والشيخ عبد الله بن أحمد بن عبد الرحمن باعفيف. الدعاء بعد الأذان: تسجيل من موقع hisnmuslim.com (حصن المسلم).';
+
+  @override
+  String get muezzin => 'المؤذن';
 
   @override
   String get channelAdhanFajr => 'أذان الفجر';
@@ -556,4 +638,529 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get widgetOpenHint => 'افتح MyFaith للتحديث';
+
+  @override
+  String get navDhikr => 'الأذكار';
+
+  @override
+  String get dhikrTab => 'الأذكار';
+
+  @override
+  String get duaTab => 'الأدعية';
+
+  @override
+  String get dhikrToday => 'اليوم';
+
+  @override
+  String dhikrDone(int done, int total) {
+    return 'أُنجز $done من $total';
+  }
+
+  @override
+  String get dhikrGoal => 'الهدف اليومي';
+
+  @override
+  String dhikrGoalDefault(int count) {
+    return '$count (موصى به)';
+  }
+
+  @override
+  String get dhikrGoalReached => 'تم بلوغ هدف اليوم';
+
+  @override
+  String get names99 => 'أسماء الله الحسنى';
+
+  @override
+  String get names99Hint => 'اختبار وقائمة كاملة';
+
+  @override
+  String get namesQuiz => 'اختبار';
+
+  @override
+  String get namesList => 'القائمة';
+
+  @override
+  String get namesQuestion => 'ما معنى هذا الاسم؟';
+
+  @override
+  String get namesNext => 'التالي';
+
+  @override
+  String namesStreak(int current, int best) {
+    return 'على التوالي: $current · الأفضل: $best';
+  }
+
+  @override
+  String get surahs => 'السور';
+
+  @override
+  String get mushaf => 'المصحف';
+
+  @override
+  String get byJuz => 'الأجزاء';
+
+  @override
+  String get byPage => 'الصفحات';
+
+  @override
+  String pageNumber(int page) {
+    return 'الصفحة $page';
+  }
+
+  @override
+  String juzNumber(int juz) {
+    return 'الجزء $juz';
+  }
+
+  @override
+  String pageOf(int page, int total) {
+    return 'الصفحة $page من $total';
+  }
+
+  @override
+  String juzOf(int juz, int total) {
+    return 'الجزء $juz من $total';
+  }
+
+  @override
+  String ayahNumber(int ayah) {
+    return 'الآية $ayah';
+  }
+
+  @override
+  String surahNumberName(int number, String name) {
+    return 'سورة $number. $name';
+  }
+
+  @override
+  String get listen => 'استماع';
+
+  @override
+  String get pause => 'إيقاف مؤقت';
+
+  @override
+  String get previousAyah => 'الآية السابقة';
+
+  @override
+  String get nextAyah => 'الآية التالية';
+
+  @override
+  String get closePlayer => 'إغلاق المشغل';
+
+  @override
+  String get audioFailed => 'تعذّر تحميل التسجيل. تحقق من الاتصال بالإنترنت.';
+
+  @override
+  String get reciter => 'القارئ';
+
+  @override
+  String get hideTafsir => 'إخفاء التفسير';
+
+  @override
+  String get readerOptions => 'إعدادات القراءة';
+
+  @override
+  String get showTransliteration => 'النطق بالحروف';
+
+  @override
+  String get showTajweed => 'ألوان التجويد';
+
+  @override
+  String get tajweedGhunnah => 'غنة، إخفاء، إدغام';
+
+  @override
+  String get tajweedGhunnahHint =>
+      'إدغام بغنة، إخفاء، إقلاب، النون والميم المشددتان، إخفاء شفوي';
+
+  @override
+  String get tajweedQalqalah => 'قلقلة';
+
+  @override
+  String get tajweedQalqalahHint => 'حروف ق ط ب ج د الساكنة';
+
+  @override
+  String get tajweedMaddNatural => 'مد، حركتان';
+
+  @override
+  String get tajweedMaddNaturalHint => 'صلة صغرى، ألف خنجرية';
+
+  @override
+  String get tajweedMaddArid => 'مد، 2 أو 4 أو 6 حركات';
+
+  @override
+  String get tajweedMaddAridHint => 'مد عارض للسكون، مد لين';
+
+  @override
+  String get tajweedMaddWajib => 'مد، 4 أو 5 حركات';
+
+  @override
+  String get tajweedMaddWajibHint => 'مد واجب متصل، مد جائز منفصل، صلة كبرى';
+
+  @override
+  String get tajweedMaddLazim => 'مد، 6 حركات';
+
+  @override
+  String get tajweedMaddLazimHint => 'مد لازم';
+
+  @override
+  String get tajweedTafkhim => 'تفخيم';
+
+  @override
+  String get tajweedTafkhimHint =>
+      'حروف خ ص ض غ ط ق ظ، الراء المفخمة، لام لفظ الجلالة';
+
+  @override
+  String get tajweedSilent => 'لا يُقرأ';
+
+  @override
+  String get tajweedSilentHint =>
+      'همزة الوصل، اللام الشمسية، إدغام كامل بلا غنة، حروف لا تُنطق';
+
+  @override
+  String get autoNextAyah => 'تشغيل الآية التالية تلقائيًا';
+
+  @override
+  String get enterPage => 'أدخل رقم الصفحة';
+
+  @override
+  String get openPage => 'فتح';
+
+  @override
+  String get searchQuran => 'البحث في القرآن';
+
+  @override
+  String get searchQuranHint => 'كلمة في القرآن';
+
+  @override
+  String get searchQuranPrompt => 'اكتب كلمة من حرفين على الأقل';
+
+  @override
+  String get nothingFound => 'لا توجد نتائج';
+
+  @override
+  String searchFound(int count) {
+    return 'عدد الآيات: $count';
+  }
+
+  @override
+  String searchManyFound(int count) {
+    return 'تُعرض أول $count آية. أضف كلمة لتضييق البحث.';
+  }
+
+  @override
+  String get oneHourBefore => 'قبل ساعة';
+
+  @override
+  String get qiblaPoorAccuracy =>
+      'يفيد الهاتف بأن البوصلة غير دقيقة. حرّك الهاتف على شكل الرقم 8 وانزع الغطاء المغناطيسي.';
+
+  @override
+  String qiblaCheck(String direction) {
+    return 'للتحقق: القبلة من هنا باتجاه $direction. إذا أشار السهم إلى الجهة المعاكسة فبوصلة الهاتف غير مضبوطة.';
+  }
+
+  @override
+  String get compassPoints =>
+      'الشمال,الشمال الشرقي,الشرق,الجنوب الشرقي,الجنوب,الجنوب الغربي,الغرب,الشمال الغربي';
+
+  @override
+  String updateAvailable(String version) {
+    return 'صدر الإصدار $version';
+  }
+
+  @override
+  String get updateHint =>
+      'نزّل الملف وثبّته فوق هذا الإصدار. تبقى إعداداتك كما هي.';
+
+  @override
+  String get updateDownload => 'تنزيل';
+
+  @override
+  String get updateLater => 'تخطَّ هذا الإصدار';
+
+  @override
+  String get checkUpdates => 'التحقق من التحديثات';
+
+  @override
+  String get checkUpdatesHint =>
+      'عند التشغيل يسأل التطبيق GitHub عن صدور إصدار أحدث.';
+
+  @override
+  String versionLabel(String version) {
+    return 'المثبَّت: $version.';
+  }
+
+  @override
+  String get channelQuran => 'تلاوة القرآن';
+
+  @override
+  String get offlineListening => 'الاستماع دون إنترنت';
+
+  @override
+  String get offlineListeningHint => 'تنزيل السور إلى الهاتف';
+
+  @override
+  String offlineHint(String reciter) {
+    return 'السور المنزَّلة تُسمع دون إنترنت. تُحفظ للقارئ المختار: $reciter.';
+  }
+
+  @override
+  String offlineProgress(int done, int total) {
+    return '$done من $total آية';
+  }
+
+  @override
+  String get offlineFailed => 'توقف التنزيل. تحقق من الإنترنت وحاول مرة أخرى.';
+
+  @override
+  String get offlineSaved => 'على الهاتف';
+
+  @override
+  String get offlineDelete => 'حذف من الهاتف';
+
+  @override
+  String get offlineDownload => 'تنزيل';
+
+  @override
+  String get backup => 'النسخة الاحتياطية';
+
+  @override
+  String get backupSave => 'حفظ في ملف';
+
+  @override
+  String get backupSaveHint =>
+      'الإعدادات والمدينة والعلامات والعدّادات والأهداف';
+
+  @override
+  String get backupRestore => 'استعادة من ملف';
+
+  @override
+  String get backupRestoreHint => 'اختر ملفًا حُفظ سابقًا';
+
+  @override
+  String get backupSaved => 'حُفظت النسخة';
+
+  @override
+  String get backupNotOurs => 'هذا ليس ملف نسخة احتياطية من MyFaith';
+
+  @override
+  String get backupRestoreConfirm =>
+      'ستُستبدل الإعدادات والعلامات والعدّادات الحالية بما في الملف.';
+
+  @override
+  String get backupRestoreAction => 'استعادة';
+
+  @override
+  String get backupRestored => 'تمت الاستعادة من الملف';
+
+  @override
+  String get guideAdhan => 'الأذان والإقامة';
+
+  @override
+  String get undo => 'تراجع';
+
+  @override
+  String get missedLabel => 'فائتة';
+
+  @override
+  String missedMarked(String prayer) {
+    return 'عُلِّمت صلاة $prayer فائتةً';
+  }
+
+  @override
+  String missedUnmarked(String prayer) {
+    return 'أُزيلت العلامة عن صلاة $prayer';
+  }
+
+  @override
+  String get qadaTitle => 'الصلوات الفائتة';
+
+  @override
+  String get qadaNone => 'لا شيء للقضاء';
+
+  @override
+  String qadaTotal(int count) {
+    return 'للقضاء: $count';
+  }
+
+  @override
+  String get qadaHint =>
+      'كل صلاة تُعدّ مؤدّاة. إذا فاتتك صلاة فاضغط عليها مطوّلًا في شاشة الصلاة فتُضاف هنا. وإذا قضيتها فاضغط على علامة الناقص.';
+
+  @override
+  String get qadaButtonsHint =>
+      'علامة الزائد تضيف صلاة فاتت من قبل، وعلامة الناقص تحذف صلاة قضيتها.';
+
+  @override
+  String get qadaMadeUp => 'قُضيت';
+
+  @override
+  String get qadaAdd => 'إضافة صلاة فائتة';
+
+  @override
+  String get adhanDua => 'الدعاء بعد الأذان';
+
+  @override
+  String get adhanDuaHint =>
+      'بعد الأذان بثلاث ثوانٍ يُسمع دعاء «اللهم رب هذه الدعوة التامة».';
+
+  @override
+  String get hijriCalendar => 'التقويم الهجري';
+
+  @override
+  String get hijriComing => 'المناسبات القادمة';
+
+  @override
+  String get hijriWhiteDays => 'الأيام البيض (13 و14 و15): يُستحب صيامها';
+
+  @override
+  String get hijriNote =>
+      'التقويم حسابي (أم القرى). بداية الشهر الفعلية تتبع رؤية الهلال وقد تختلف يومًا، ويُضبط الفرق من الإعدادات.';
+
+  @override
+  String inDays(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'بعد $count يوم',
+      many: 'بعد $count يومًا',
+      few: 'بعد $count أيام',
+      two: 'بعد يومين',
+      one: 'غدًا',
+      zero: 'اليوم',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get today => 'اليوم';
+
+  @override
+  String get eventNewYear => 'رأس السنة الهجرية';
+
+  @override
+  String get eventAshura => 'يوم عاشوراء';
+
+  @override
+  String get eventRamadan => 'بداية رمضان';
+
+  @override
+  String get eventLastTen => 'العشر الأواخر من رمضان';
+
+  @override
+  String get eventEidFitr => 'عيد الفطر';
+
+  @override
+  String get eventFirstTen => 'عشر ذي الحجة';
+
+  @override
+  String get eventArafah => 'يوم عرفة';
+
+  @override
+  String get eventEidAdha => 'عيد الأضحى';
+
+  @override
+  String get eventTashriq => 'أيام التشريق';
+
+  @override
+  String get ramadan => 'رمضان';
+
+  @override
+  String get untilIftar => 'حتى الإفطار';
+
+  @override
+  String get untilSuhoorEnd => 'حتى نهاية السحور';
+
+  @override
+  String get iftarDua => 'دعاء الإفطار';
+
+  @override
+  String get ramadanMode => 'العد التنازلي للإفطار والسحور';
+
+  @override
+  String get ramadanModeHint => 'بطاقة في شاشة الصلاة.';
+
+  @override
+  String get ramadanAuto => 'في رمضان';
+
+  @override
+  String get ramadanAutoHint => 'تظهر مع مغرب ليلة أول صيام وتختفي ليلة العيد';
+
+  @override
+  String get ramadanAlways => 'دائمًا';
+
+  @override
+  String get ramadanAlwaysHint => 'لصيام التطوع أيضًا';
+
+  @override
+  String get ramadanNever => 'أبدًا';
+
+  @override
+  String get suhoorOffer => 'هل نوقظك للسحور في رمضان؟';
+
+  @override
+  String get suhoorOfferYes => 'نعم';
+
+  @override
+  String get suhoorOfferNo => 'لا، شكرًا';
+
+  @override
+  String get suhoorOfferDone =>
+      'تم تفعيل منبه السحور. يمكن تغيير وقته من «المنبهات» في تبويب «المزيد».';
+
+  @override
+  String get morningTab => 'الصباح';
+
+  @override
+  String get eveningTab => 'المساء';
+
+  @override
+  String get adhkarSection => 'الأذكار والجمعة';
+
+  @override
+  String get adhkarMorningReminder => 'أذكار الصباح';
+
+  @override
+  String get adhkarMorningReminderHint => 'تذكير بعد الفجر بثلاثين دقيقة';
+
+  @override
+  String get adhkarEveningReminder => 'أذكار المساء';
+
+  @override
+  String get adhkarEveningReminderHint => 'تذكير بعد العصر بخمس عشرة دقيقة';
+
+  @override
+  String get kahfReminder => 'سورة الكهف يوم الجمعة';
+
+  @override
+  String get kahfReminderHint => 'تذكير يوم الجمعة الساعة 9:00';
+
+  @override
+  String get notifAdhkarMorningBody => 'اضغط لفتح أذكار الصباح.';
+
+  @override
+  String get notifAdhkarEveningBody => 'اضغط لفتح أذكار المساء.';
+
+  @override
+  String get notifKahfTitle => 'الجمعة: سورة الكهف';
+
+  @override
+  String get notifKahfBody =>
+      'يُستحب قراءة سورة الكهف يوم الجمعة. اضغط لفتحها.';
+
+  @override
+  String get share => 'مشاركة';
+
+  @override
+  String get favoriteAdd => 'إضافة إلى المفضلة';
+
+  @override
+  String get favoriteRemove => 'إزالة من المفضلة';
+
+  @override
+  String get favoriteHadiths => 'الأحاديث المفضلة';
+
+  @override
+  String get noFavoriteHadiths =>
+      'لا توجد أحاديث مفضلة بعد. اضغط على النجمة عند الحديث لحفظه هنا.';
 }

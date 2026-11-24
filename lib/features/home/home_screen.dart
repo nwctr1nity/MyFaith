@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:math' as math;
 
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:material_ui/material_ui.dart';
@@ -10,10 +12,15 @@ import '../../core/prayer/prayer_calculator.dart';
 import '../../l10n/app_localizations.dart';
 import '../../state/app_settings.dart';
 import '../../state/content_providers.dart';
+import '../calendar/hijri_calendar_screen.dart';
 import '../hadith/hadith_screen.dart';
 import '../labels.dart';
 import '../location/city_picker_screen.dart';
+import '../prayer_guide/prayer_guide_screen.dart';
+import '../qibla/qibla_screen.dart';
 import '../theme.dart';
+import 'ramadan_card.dart';
+import 'update_card.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -43,9 +50,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   void _openCityPicker() {
-    Navigator.of(context).push(
-      MaterialPageRoute<void>(builder: (_) => const CityPickerScreen()),
-    );
+    Navigator.of(
+      context,
+    ).push(MaterialPageRoute<void>(builder: (_) => const CityPickerScreen()));
   }
 
   @override
@@ -74,14 +81,28 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       ),
                       const SizedBox(width: 8),
                       Flexible(
-                        child:
-                            Text(place.name, overflow: TextOverflow.ellipsis),
+                        child: Text(
+                          place.name,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
                       const Icon(Icons.arrow_drop_down),
                     ],
                   ),
                 ),
               ),
+        actions: [
+          Padding(
+            padding: const EdgeInsetsDirectional.only(end: 16),
+            child: FilledButton.tonalIcon(
+              onPressed: () => Navigator.of(context).push(
+                MaterialPageRoute<void>(builder: (_) => const QiblaScreen()),
+              ),
+              icon: const Icon(Icons.explore_outlined, size: 20),
+              label: Text(l.navQibla),
+            ),
+          ),
+        ],
       ),
       body: place == null
           ? _EmptyState(onChoose: _openCityPicker)
@@ -172,9 +193,16 @@ class _Timetable extends ConsumerWidget {
     String clock(DateTime t) =>
         timeFormat.format(DateTime(t.year, t.month, t.day, t.hour, t.minute));
 
+    final noon = day[PrayerSlot.dhuhr];
+    final dayKey =
+        '${noon.year}-${noon.month.toString().padLeft(2, '0')}-'
+        '${noon.day.toString().padLeft(2, '0')}';
+
     return ListView(
       padding: const EdgeInsets.fromLTRB(16, 4, 16, 24),
       children: [
+        const UpdateCard(),
+        RamadanCard(day: day, now: now),
         Container(
           decoration: BoxDecoration(
             gradient: heroGradient(scheme),
@@ -184,13 +212,54 @@ class _Timetable extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                hijriText(language, hijri.year, hijri.month, hijri.day),
-                style: theme.textTheme.titleSmall?.copyWith(color: onHero),
-              ),
-              Text(
-                dateFormat.format(DateTime(day.year, day.month, day.day)),
-                style: theme.textTheme.bodySmall?.copyWith(color: onHeroMuted),
+              // The date opens the Hijri calendar.
+              InkWell(
+                borderRadius: BorderRadius.circular(12),
+                onTap: () => Navigator.of(context).push(
+                  MaterialPageRoute<void>(
+                    builder: (_) => HijriCalendarScreen(
+                      today: DateTime(day.year, day.month, day.day),
+                    ),
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            hijriText(
+                              language,
+                              hijri.year,
+                              hijri.month,
+                              hijri.day,
+                            ),
+                            style: theme.textTheme.titleSmall?.copyWith(
+                              color: onHero,
+                            ),
+                          ),
+                          Text(
+                            dateFormat.format(
+                              DateTime(day.year, day.month, day.day),
+                            ),
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color: onHeroMuted,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Tooltip(
+                      message: l.hijriCalendar,
+                      child: const Icon(
+                        Icons.calendar_month_outlined,
+                        color: onHeroMuted,
+                        size: 22,
+                      ),
+                    ),
+                  ],
+                ),
               ),
               const SizedBox(height: 24),
               Text(
@@ -202,10 +271,9 @@ class _Timetable extends ConsumerWidget {
                 textDirection: TextDirection.ltr,
                 child: Text(
                   _countdown(moment.nextTime.difference(now)),
-                  style: theme.textTheme.displayMedium?.merge(_numbers).copyWith(
-                        color: onHero,
-                        fontWeight: FontWeight.w300,
-                      ),
+                  style: theme.textTheme.displayMedium
+                      ?.merge(_numbers)
+                      .copyWith(color: onHero, fontWeight: FontWeight.w300),
                 ),
               ),
               Text(
@@ -223,12 +291,61 @@ class _Timetable extends ConsumerWidget {
               children: [
                 for (final slot in PrayerSlot.values)
                   _PrayerRow(
+                    // A prayer whose time has come can be marked as missed
+                    // with a long press; nothing else is asked of the user.
+                    missedLabel: settings.isMissed(dayKey, slot)
+                        ? l.missedLabel
+                        : null,
+                    onLongPress:
+                        slot == PrayerSlot.sunrise || day[slot].isAfter(now)
+                        ? null
+                        : () {
+                            final controller =
+                                ref.read(settingsProvider.notifier);
+                            final wasMissed = settings.isMissed(dayKey, slot);
+                            controller.toggleMissed(dayKey, slot);
+                            HapticFeedback.mediumImpact();
+                            ScaffoldMessenger.of(context)
+                              ..hideCurrentSnackBar()
+                              ..showSnackBar(
+                                SnackBar(
+                                  // With an action a snack bar would stay
+                                  // until dismissed; this one is a passing
+                                  // note.
+                                  persist: false,
+                                  duration: const Duration(seconds: 4),
+                                  content: Text(
+                                    wasMissed
+                                        ? l.missedUnmarked(prayerName(l, slot))
+                                        : l.missedMarked(prayerName(l, slot)),
+                                  ),
+                                  action: SnackBarAction(
+                                    label: l.undo,
+                                    onPressed: () =>
+                                        controller.toggleMissed(dayKey, slot),
+                                  ),
+                                ),
+                              );
+                          },
                     name: prayerName(l, slot),
                     time: clock(day[slot]),
                     isCurrent: moment.current == slot,
                     // After Isha the next prayer is tomorrow's Fajr, not
                     // this row.
                     isNext: moment.next == slot && moment.nextTime == day[slot],
+                    soonLabel:
+                        moment.next == slot &&
+                            moment.nextTime == day[slot] &&
+                            moment.nextTime.difference(now) <
+                                const Duration(hours: 1)
+                        ? l.soonLabel(
+                            math.max(
+                              1,
+                              (moment.nextTime.difference(now).inSeconds / 60)
+                                  .ceil(),
+                            ),
+                          )
+                        : null,
                     muted: slot == PrayerSlot.sunrise,
                     nowLabel: l.nowLabel,
                     adhanOn: settings.adhanSlots.contains(slot),
@@ -253,6 +370,26 @@ class _Timetable extends ConsumerWidget {
           ),
         ),
         const SizedBox(height: 16),
+        Card(
+          clipBehavior: Clip.antiAlias,
+          child: ListTile(
+            leading: Icon(Icons.school_outlined, color: scheme.primary),
+            title: Text(l.howToPray),
+            subtitle: Text(l.howToPrayHint),
+            trailing: Icon(
+              Directionality.of(context) == TextDirection.rtl
+                  ? Icons.chevron_left
+                  : Icons.chevron_right,
+              color: scheme.outline,
+            ),
+            onTap: () => Navigator.of(context).push(
+              MaterialPageRoute<void>(
+                builder: (_) => const PrayerGuideScreen(),
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 16),
         _HadithCard(year: day.year, month: day.month, day: day.day),
       ],
     );
@@ -267,6 +404,9 @@ class _PrayerRow extends StatelessWidget {
     required this.isNext,
     required this.muted,
     required this.nowLabel,
+    this.soonLabel,
+    this.missedLabel,
+    this.onLongPress,
     this.adhanOn,
     this.adhanTooltip,
     this.onToggleAdhan,
@@ -278,6 +418,13 @@ class _PrayerRow extends StatelessWidget {
   final bool isNext;
   final bool muted;
   final String nowLabel;
+
+  /// "In 12 min!" on the next prayer when it is less than an hour away.
+  final String? soonLabel;
+
+  /// "Missed" on a prayer the user marked so.
+  final String? missedLabel;
+  final VoidCallback? onLongPress;
   final bool? adhanOn;
   final String? adhanTooltip;
   final VoidCallback? onToggleAdhan;
@@ -288,6 +435,19 @@ class _PrayerRow extends StatelessWidget {
     final scheme = theme.colorScheme;
     final color = muted ? scheme.onSurfaceVariant : scheme.onSurface;
     final weight = isNext ? FontWeight.w700 : FontWeight.w400;
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onLongPress: onLongPress,
+      child: _row(theme, scheme, color, weight),
+    );
+  }
+
+  Widget _row(
+    ThemeData theme,
+    ColorScheme scheme,
+    Color color,
+    FontWeight weight,
+  ) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 1),
       padding: const EdgeInsetsDirectional.only(start: 12),
@@ -303,23 +463,66 @@ class _PrayerRow extends StatelessWidget {
                 Flexible(
                   child: Text(
                     name,
-                    style: theme.textTheme.titleMedium
-                        ?.copyWith(color: color, fontWeight: weight),
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      color: color,
+                      fontWeight: weight,
+                    ),
                   ),
                 ),
                 if (isCurrent) ...[
                   const SizedBox(width: 10),
                   Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 2,
+                    ),
                     decoration: BoxDecoration(
                       color: scheme.primary,
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Text(
                       nowLabel,
-                      style: theme.textTheme.labelSmall
-                          ?.copyWith(color: scheme.onPrimary),
+                      style: theme.textTheme.labelSmall?.copyWith(
+                        color: scheme.onPrimary,
+                      ),
+                    ),
+                  ),
+                ],
+                if (missedLabel != null) ...[
+                  const SizedBox(width: 10),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 2,
+                    ),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: scheme.error),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text(
+                      missedLabel!,
+                      style: theme.textTheme.labelSmall?.copyWith(
+                        color: scheme.error,
+                      ),
+                    ),
+                  ),
+                ],
+                if (soonLabel != null) ...[
+                  const SizedBox(width: 10),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 2,
+                    ),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFE8730C),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text(
+                      soonLabel!,
+                      style: theme.textTheme.labelSmall?.copyWith(
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ],
@@ -355,7 +558,11 @@ class _PrayerRow extends StatelessWidget {
 }
 
 class _HadithCard extends ConsumerWidget {
-  const _HadithCard({required this.year, required this.month, required this.day});
+  const _HadithCard({
+    required this.year,
+    required this.month,
+    required this.day,
+  });
 
   final int year;
   final int month;
@@ -391,8 +598,9 @@ class _HadithCard extends ConsumerWidget {
                   const SizedBox(width: 8),
                   Text(
                     l.hadithOfDay,
-                    style: theme.textTheme.titleSmall
-                        ?.copyWith(color: scheme.primary),
+                    style: theme.textTheme.titleSmall?.copyWith(
+                      color: scheme.primary,
+                    ),
                   ),
                 ],
               ),
@@ -406,8 +614,9 @@ class _HadithCard extends ConsumerWidget {
               const SizedBox(height: 12),
               Text(
                 l.bukhariRef(hadith.number),
-                style: theme.textTheme.bodySmall
-                    ?.copyWith(color: scheme.onSurfaceVariant),
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: scheme.onSurfaceVariant,
+                ),
               ),
             ],
           ),

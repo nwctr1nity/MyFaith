@@ -1,10 +1,12 @@
 package app.myfaith
 
-import io.flutter.embedding.android.FlutterActivity
+import com.ryanheise.audioservice.AudioServiceActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 
-class MainActivity : FlutterActivity() {
+// The audio service shares this activity's Flutter engine, which is how
+// the Quran keeps playing when the activity is gone.
+class MainActivity : AudioServiceActivity() {
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "app.myfaith/native")
@@ -33,9 +35,12 @@ class MainActivity : FlutterActivity() {
                                 call.argument<String>("title") ?: "",
                                 call.argument<String>("body") ?: "",
                                 call.argument<Boolean>("fajr") ?: false,
+                                call.argument<String>("sound") ?: "",
+                                call.argument<Boolean>("dua") ?: false,
                             )
                             result.success(null)
                         }
+                        "journal" -> result.success(Store.journal(this))
                         "stop" -> {
                             stopService(android.content.Intent(this, AdhanService::class.java))
                             result.success(null)

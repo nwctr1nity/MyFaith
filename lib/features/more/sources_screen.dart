@@ -19,6 +19,8 @@ class SourcesScreen extends StatelessWidget {
           const SizedBox(height: 16),
           Text(l.sourcesHadith, style: style),
           const SizedBox(height: 16),
+          Text(l.sourcesAdhan, style: style),
+          const SizedBox(height: 16),
           Text(l.sourcesOther, style: style),
         ],
       ),

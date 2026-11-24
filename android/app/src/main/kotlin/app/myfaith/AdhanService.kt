@@ -17,7 +17,9 @@ import android.media.VolumeProvider
 import android.media.session.MediaSession
 import android.media.session.PlaybackState
 import android.os.Build
+import android.os.Handler
 import android.os.IBinder
+import android.os.Looper
 import android.os.PowerManager
 
 /**
@@ -30,6 +32,8 @@ class AdhanService : Service() {
     private var player: MediaPlayer? = null
     private var session: MediaSession? = null
     private var focusRequest: AudioFocusRequest? = null
+    private val handler = Handler(Looper.getMainLooper())
+    private var pauseLock: PowerManager.WakeLock? = null
 
     override fun onBind(intent: Intent?): IBinder? = null
 
@@ -42,6 +46,7 @@ class AdhanService : Service() {
         val body = intent.getStringExtra(EXTRA_BODY).orEmpty()
         val fajr = intent.getBooleanExtra(EXTRA_FAJR, false)
         val sound = intent.getStringExtra(EXTRA_SOUND).orEmpty()
+        val dua = intent.getBooleanExtra(EXTRA_DUA, false)
 
         val playing = notification(this, title, body, playing = true)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
@@ -51,8 +56,15 @@ class AdhanService : Service() {
         }
 
         try {
-            play(recording(sound, fajr), notification(this, title, body, playing = false))
+            val file = recording(sound, fajr)
+            Store.log(
+                this,
+                "play $title fajr=$fajr asked=$sound file=${resources.getResourceEntryName(file)} dua=$dua",
+            )
+            val whenDone = notification(this, title, body, playing = false)
+            play(file) { if (dua) playDua(whenDone) else finish(whenDone) }
         } catch (e: Exception) {
+            Store.log(this, "failed $e")
             finish(notification(this, title, body, playing = false))
         }
         return START_NOT_STICKY
@@ -69,26 +81,54 @@ class AdhanService : Service() {
         return if (id != 0) id else find(if (fajr) "azan_doha_fajr" else "azan_doha_dhuhr")
     }
 
-    private fun play(recording: Int, whenDone: Notification) {
+    /**
+     * The dua the Prophet taught to say after the adhan, a few seconds
+     * after the muezzin falls silent.
+     */
+    private fun playDua(whenDone: Notification) {
+        stopPlayer()
+        // Nothing plays during the pause, so nothing else keeps the
+        // processor awake.
+        val power = getSystemService(Context.POWER_SERVICE) as PowerManager
+        pauseLock = power.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "myfaith:dua").apply {
+            acquire(60_000L)
+        }
+        handler.postDelayed({
+            try {
+                open(R.raw.dua_after_adhan) { finish(whenDone) }
+            } catch (e: Exception) {
+                Store.log(this, "dua failed $e")
+                finish(whenDone)
+            }
+        }, DUA_PAUSE_MS)
+    }
+
+    private fun play(recording: Int, whenDone: () -> Unit) {
         releasePlayer()
-        val attributes = AudioAttributes.Builder()
-            .setUsage(AudioAttributes.USAGE_ALARM)
-            .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-            .build()
         val audio = getSystemService(Context.AUDIO_SERVICE) as AudioManager
 
         // Other sound pauses for the adhan and resumes after it.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val request = AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN_TRANSIENT)
-                .setAudioAttributes(attributes)
+                .setAudioAttributes(attributes())
                 .build()
             audio.requestAudioFocus(request)
             focusRequest = request
         }
 
+        open(recording, whenDone)
+        startSession(audio)
+    }
+
+    private fun attributes() = AudioAttributes.Builder()
+        .setUsage(AudioAttributes.USAGE_ALARM)
+        .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+        .build()
+
+    private fun open(recording: Int, whenDone: () -> Unit) {
         val media = MediaPlayer()
         player = media
-        media.setAudioAttributes(attributes)
+        media.setAudioAttributes(attributes())
         val file = resources.openRawResourceFd(recording)
         try {
             media.setDataSource(file.fileDescriptor, file.startOffset, file.length)
@@ -97,15 +137,13 @@ class AdhanService : Service() {
         }
         // Keeps the processor awake until the recording ends.
         media.setWakeMode(applicationContext, PowerManager.PARTIAL_WAKE_LOCK)
-        media.setOnCompletionListener { finish(whenDone) }
+        media.setOnCompletionListener { whenDone() }
         media.setOnErrorListener { _, _, _ ->
-            finish(whenDone)
+            whenDone()
             true
         }
         media.prepare()
         media.start()
-
-        startSession(audio)
     }
 
     /**
@@ -147,7 +185,10 @@ class AdhanService : Service() {
         }
     }
 
-    private fun releasePlayer() {
+    private fun stopPlayer() {
+        handler.removeCallbacksAndMessages(null)
+        pauseLock?.let { if (it.isHeld) it.release() }
+        pauseLock = null
         player?.let {
             it.setOnCompletionListener(null)
             try {
@@ -158,6 +199,10 @@ class AdhanService : Service() {
             it.release()
         }
         player = null
+    }
+
+    private fun releasePlayer() {
+        stopPlayer()
         session?.let {
             it.isActive = false
             it.release()
@@ -192,16 +237,26 @@ class AdhanService : Service() {
         private const val EXTRA_BODY = "body"
         private const val EXTRA_FAJR = "fajr"
         private const val EXTRA_SOUND = "sound"
+        private const val EXTRA_DUA = "dua"
+        private const val DUA_PAUSE_MS = 3000L
         private const val CHANNEL = "adhan_playing_v1"
         private const val PLAYING_ID = 7001
         private const val DONE_ID = 7002
 
-        fun start(context: Context, title: String, body: String, fajr: Boolean, sound: String) {
+        fun start(
+            context: Context,
+            title: String,
+            body: String,
+            fajr: Boolean,
+            sound: String,
+            dua: Boolean,
+        ) {
             val intent = Intent(context, AdhanService::class.java)
                 .putExtra(EXTRA_TITLE, title)
                 .putExtra(EXTRA_BODY, body)
                 .putExtra(EXTRA_FAJR, fajr)
                 .putExtra(EXTRA_SOUND, sound)
+                .putExtra(EXTRA_DUA, dua)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 context.startForegroundService(intent)
             } else {

@@ -1201,7 +1201,7 @@ abstract class AppLocalizations {
   /// No description provided for @sourcesAdhan.
   ///
   /// In en, this message translates to:
-  /// **'Adhan: recordings from Doha, Qatar, made in 2013–2014 (Internet Archive, public domain), and the adhans of Sheikh Tawfiq Khoj, Sheikh Turki al-Hassani and Sheikh Abdullah ibn Ahmad ibn Abdurrahman Ba-Afif.'**
+  /// **'Adhan: recordings from Doha, Qatar, made in 2013–2014 (Internet Archive, public domain), and the adhans of Sheikh Tawfiq Khoj, Sheikh Turki al-Hassani and Sheikh Abdullah ibn Ahmad ibn Abdurrahman Ba-Afif. Dua after the adhan: a recording from hisnmuslim.com (Fortress of the Muslim).'**
   String get sourcesAdhan;
 
   /// No description provided for @muezzin.
@@ -1635,6 +1635,534 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'north,north-east,east,south-east,south,south-west,west,north-west'**
   String get compassPoints;
+
+  /// No description provided for @updateAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Version {version} is out'**
+  String updateAvailable(String version);
+
+  /// No description provided for @updateHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Download the file and install it over this one. Your settings stay.'**
+  String get updateHint;
+
+  /// No description provided for @updateDownload.
+  ///
+  /// In en, this message translates to:
+  /// **'Download'**
+  String get updateDownload;
+
+  /// No description provided for @updateLater.
+  ///
+  /// In en, this message translates to:
+  /// **'Not this one'**
+  String get updateLater;
+
+  /// No description provided for @checkUpdates.
+  ///
+  /// In en, this message translates to:
+  /// **'Check for updates'**
+  String get checkUpdates;
+
+  /// No description provided for @checkUpdatesHint.
+  ///
+  /// In en, this message translates to:
+  /// **'On start the app asks GitHub whether a newer version is out.'**
+  String get checkUpdatesHint;
+
+  /// No description provided for @versionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Installed: {version}.'**
+  String versionLabel(String version);
+
+  /// No description provided for @channelQuran.
+  ///
+  /// In en, this message translates to:
+  /// **'Quran recitation'**
+  String get channelQuran;
+
+  /// No description provided for @offlineListening.
+  ///
+  /// In en, this message translates to:
+  /// **'Listen without the internet'**
+  String get offlineListening;
+
+  /// No description provided for @offlineListeningHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Download surahs to the phone'**
+  String get offlineListeningHint;
+
+  /// No description provided for @offlineHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Downloaded surahs play without the internet. They are saved for the chosen reciter: {reciter}.'**
+  String offlineHint(String reciter);
+
+  /// No description provided for @offlineProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'{done} of {total} ayahs'**
+  String offlineProgress(int done, int total);
+
+  /// No description provided for @offlineFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Download stopped. Check the internet and try again.'**
+  String get offlineFailed;
+
+  /// No description provided for @offlineSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'On the phone'**
+  String get offlineSaved;
+
+  /// No description provided for @offlineDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete from the phone'**
+  String get offlineDelete;
+
+  /// No description provided for @offlineDownload.
+  ///
+  /// In en, this message translates to:
+  /// **'Download'**
+  String get offlineDownload;
+
+  /// No description provided for @backup.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup'**
+  String get backup;
+
+  /// No description provided for @backupSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save to a file'**
+  String get backupSave;
+
+  /// No description provided for @backupSaveHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings, city, bookmarks, counters and goals'**
+  String get backupSaveHint;
+
+  /// No description provided for @backupRestore.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore from a file'**
+  String get backupRestore;
+
+  /// No description provided for @backupRestoreHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a file saved earlier'**
+  String get backupRestoreHint;
+
+  /// No description provided for @backupSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'The backup is saved'**
+  String get backupSaved;
+
+  /// No description provided for @backupNotOurs.
+  ///
+  /// In en, this message translates to:
+  /// **'This is not a MyFaith backup file'**
+  String get backupNotOurs;
+
+  /// No description provided for @backupRestoreConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'The current settings, bookmarks and counters will be replaced with the ones from the file.'**
+  String get backupRestoreConfirm;
+
+  /// No description provided for @backupRestoreAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore'**
+  String get backupRestoreAction;
+
+  /// No description provided for @backupRestored.
+  ///
+  /// In en, this message translates to:
+  /// **'Restored from the file'**
+  String get backupRestored;
+
+  /// No description provided for @guideAdhan.
+  ///
+  /// In en, this message translates to:
+  /// **'The adhan and the iqamah'**
+  String get guideAdhan;
+
+  /// No description provided for @undo.
+  ///
+  /// In en, this message translates to:
+  /// **'Undo'**
+  String get undo;
+
+  /// No description provided for @missedLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Missed'**
+  String get missedLabel;
+
+  /// No description provided for @missedMarked.
+  ///
+  /// In en, this message translates to:
+  /// **'{prayer} is marked as missed'**
+  String missedMarked(String prayer);
+
+  /// No description provided for @missedUnmarked.
+  ///
+  /// In en, this message translates to:
+  /// **'The mark is removed from {prayer}'**
+  String missedUnmarked(String prayer);
+
+  /// No description provided for @qadaTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Missed prayers'**
+  String get qadaTitle;
+
+  /// No description provided for @qadaNone.
+  ///
+  /// In en, this message translates to:
+  /// **'None to make up'**
+  String get qadaNone;
+
+  /// No description provided for @qadaTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'To make up: {count}'**
+  String qadaTotal(int count);
+
+  /// No description provided for @qadaHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Every prayer counts as prayed. If you missed one, press and hold it on the prayer screen: it is added here. When you make it up, press the minus.'**
+  String get qadaHint;
+
+  /// No description provided for @qadaButtonsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Plus adds a prayer missed earlier, minus takes away one you have made up.'**
+  String get qadaButtonsHint;
+
+  /// No description provided for @qadaMadeUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Made up'**
+  String get qadaMadeUp;
+
+  /// No description provided for @qadaAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a missed prayer'**
+  String get qadaAdd;
+
+  /// No description provided for @adhanDua.
+  ///
+  /// In en, this message translates to:
+  /// **'Dua after the adhan'**
+  String get adhanDua;
+
+  /// No description provided for @adhanDuaHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Three seconds after the adhan the dua “Allahumma Rabba hadhihi-d-da‘wati-t-tammah” is played.'**
+  String get adhanDuaHint;
+
+  /// No description provided for @hijriCalendar.
+  ///
+  /// In en, this message translates to:
+  /// **'Hijri calendar'**
+  String get hijriCalendar;
+
+  /// No description provided for @hijriComing.
+  ///
+  /// In en, this message translates to:
+  /// **'Coming dates'**
+  String get hijriComing;
+
+  /// No description provided for @hijriWhiteDays.
+  ///
+  /// In en, this message translates to:
+  /// **'White days (13th, 14th, 15th): fasting is recommended'**
+  String get hijriWhiteDays;
+
+  /// No description provided for @hijriNote.
+  ///
+  /// In en, this message translates to:
+  /// **'The calendar is calculated (Umm al-Qura). The real start of a month depends on the sighting of the moon and may differ by a day; the shift is set in the settings.'**
+  String get hijriNote;
+
+  /// No description provided for @inDays.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{today} =1{tomorrow} other{in {count} days}}'**
+  String inDays(int count);
+
+  /// No description provided for @today.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get today;
+
+  /// No description provided for @eventNewYear.
+  ///
+  /// In en, this message translates to:
+  /// **'Islamic New Year'**
+  String get eventNewYear;
+
+  /// No description provided for @eventAshura.
+  ///
+  /// In en, this message translates to:
+  /// **'Day of Ashura'**
+  String get eventAshura;
+
+  /// No description provided for @eventRamadan.
+  ///
+  /// In en, this message translates to:
+  /// **'Start of Ramadan'**
+  String get eventRamadan;
+
+  /// No description provided for @eventLastTen.
+  ///
+  /// In en, this message translates to:
+  /// **'The last ten nights of Ramadan'**
+  String get eventLastTen;
+
+  /// No description provided for @eventEidFitr.
+  ///
+  /// In en, this message translates to:
+  /// **'Eid al-Fitr'**
+  String get eventEidFitr;
+
+  /// No description provided for @eventFirstTen.
+  ///
+  /// In en, this message translates to:
+  /// **'The first ten days of Dhu al-Hijjah'**
+  String get eventFirstTen;
+
+  /// No description provided for @eventArafah.
+  ///
+  /// In en, this message translates to:
+  /// **'Day of Arafah'**
+  String get eventArafah;
+
+  /// No description provided for @eventEidAdha.
+  ///
+  /// In en, this message translates to:
+  /// **'Eid al-Adha'**
+  String get eventEidAdha;
+
+  /// No description provided for @eventTashriq.
+  ///
+  /// In en, this message translates to:
+  /// **'Days of Tashriq'**
+  String get eventTashriq;
+
+  /// No description provided for @ramadan.
+  ///
+  /// In en, this message translates to:
+  /// **'Ramadan'**
+  String get ramadan;
+
+  /// No description provided for @untilIftar.
+  ///
+  /// In en, this message translates to:
+  /// **'Until iftar'**
+  String get untilIftar;
+
+  /// No description provided for @untilSuhoorEnd.
+  ///
+  /// In en, this message translates to:
+  /// **'Until the end of suhoor'**
+  String get untilSuhoorEnd;
+
+  /// No description provided for @iftarDua.
+  ///
+  /// In en, this message translates to:
+  /// **'Dua when breaking the fast'**
+  String get iftarDua;
+
+  /// No description provided for @ramadanMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Fasting countdown'**
+  String get ramadanMode;
+
+  /// No description provided for @ramadanModeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'A card on the prayer screen.'**
+  String get ramadanModeHint;
+
+  /// No description provided for @ramadanAuto.
+  ///
+  /// In en, this message translates to:
+  /// **'In Ramadan'**
+  String get ramadanAuto;
+
+  /// No description provided for @ramadanAutoHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Appears with the Maghrib before the first fast and goes away on the eve of Eid'**
+  String get ramadanAutoHint;
+
+  /// No description provided for @ramadanAlways.
+  ///
+  /// In en, this message translates to:
+  /// **'Always'**
+  String get ramadanAlways;
+
+  /// No description provided for @ramadanAlwaysHint.
+  ///
+  /// In en, this message translates to:
+  /// **'For voluntary fasts too'**
+  String get ramadanAlwaysHint;
+
+  /// No description provided for @ramadanNever.
+  ///
+  /// In en, this message translates to:
+  /// **'Never'**
+  String get ramadanNever;
+
+  /// No description provided for @suhoorOffer.
+  ///
+  /// In en, this message translates to:
+  /// **'Wake you for suhoor during Ramadan?'**
+  String get suhoorOffer;
+
+  /// No description provided for @suhoorOfferYes.
+  ///
+  /// In en, this message translates to:
+  /// **'Wake me'**
+  String get suhoorOfferYes;
+
+  /// No description provided for @suhoorOfferNo.
+  ///
+  /// In en, this message translates to:
+  /// **'No, thanks'**
+  String get suhoorOfferNo;
+
+  /// No description provided for @suhoorOfferDone.
+  ///
+  /// In en, this message translates to:
+  /// **'The suhoor alarm is on. Its time can be changed under Alarms on the More tab.'**
+  String get suhoorOfferDone;
+
+  /// No description provided for @morningTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Morning'**
+  String get morningTab;
+
+  /// No description provided for @eveningTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Evening'**
+  String get eveningTab;
+
+  /// No description provided for @adhkarSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Adhkar and Friday'**
+  String get adhkarSection;
+
+  /// No description provided for @adhkarMorningReminder.
+  ///
+  /// In en, this message translates to:
+  /// **'Morning adhkar'**
+  String get adhkarMorningReminder;
+
+  /// No description provided for @adhkarMorningReminderHint.
+  ///
+  /// In en, this message translates to:
+  /// **'A reminder 30 minutes after Fajr'**
+  String get adhkarMorningReminderHint;
+
+  /// No description provided for @adhkarEveningReminder.
+  ///
+  /// In en, this message translates to:
+  /// **'Evening adhkar'**
+  String get adhkarEveningReminder;
+
+  /// No description provided for @adhkarEveningReminderHint.
+  ///
+  /// In en, this message translates to:
+  /// **'A reminder 15 minutes after Asr'**
+  String get adhkarEveningReminderHint;
+
+  /// No description provided for @kahfReminder.
+  ///
+  /// In en, this message translates to:
+  /// **'Surah al-Kahf on Friday'**
+  String get kahfReminder;
+
+  /// No description provided for @kahfReminderHint.
+  ///
+  /// In en, this message translates to:
+  /// **'A reminder on Friday at 9:00'**
+  String get kahfReminderHint;
+
+  /// No description provided for @notifAdhkarMorningBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to open the morning adhkar.'**
+  String get notifAdhkarMorningBody;
+
+  /// No description provided for @notifAdhkarEveningBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to open the evening adhkar.'**
+  String get notifAdhkarEveningBody;
+
+  /// No description provided for @notifKahfTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Friday: Surah al-Kahf'**
+  String get notifKahfTitle;
+
+  /// No description provided for @notifKahfBody.
+  ///
+  /// In en, this message translates to:
+  /// **'It is recommended to read Surah al-Kahf on Friday. Tap to open it.'**
+  String get notifKahfBody;
+
+  /// No description provided for @share.
+  ///
+  /// In en, this message translates to:
+  /// **'Share'**
+  String get share;
+
+  /// No description provided for @favoriteAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to favourites'**
+  String get favoriteAdd;
+
+  /// No description provided for @favoriteRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove from favourites'**
+  String get favoriteRemove;
+
+  /// No description provided for @favoriteHadiths.
+  ///
+  /// In en, this message translates to:
+  /// **'Favourite hadiths'**
+  String get favoriteHadiths;
+
+  /// No description provided for @noFavoriteHadiths.
+  ///
+  /// In en, this message translates to:
+  /// **'No favourites yet. Press the star on a hadith to keep it here.'**
+  String get noFavoriteHadiths;
 }
 
 class _AppLocalizationsDelegate

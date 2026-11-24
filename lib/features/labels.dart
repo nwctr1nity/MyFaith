@@ -1,3 +1,4 @@
+import '../core/hijri.dart';
 import '../core/prayer/prayer_calculator.dart';
 import '../l10n/app_localizations.dart';
 
@@ -108,3 +109,40 @@ String hijriText(String languageCode, int year, int month, int day) {
     (m) => String.fromCharCode(0x0660 + int.parse(m[0]!)),
   );
 }
+
+const _hijriMonthTitles = <String, List<String>>{
+  'ru': [
+    'Мухаррам', 'Сафар', 'Раби аль-авваль', 'Раби ас-сани',
+    'Джумада аль-уля', 'Джумада аль-ахира', 'Раджаб', 'Шабан', 'Рамадан',
+    'Шавваль', 'Зуль-када', 'Зуль-хиджа',
+  ],
+};
+
+/// A Hijri month as a heading, for example `Рамадан 1448`.
+String hijriMonthTitle(String languageCode, int year, int month) {
+  final months = _hijriMonthTitles[languageCode] ??
+      _hijriMonths[languageCode] ??
+      _hijriMonths['en']!;
+  return arabicDigits(languageCode, '${months[(month - 1).clamp(0, 11)]} $year');
+}
+
+/// Arabic-Indic digits in Arabic, the text unchanged otherwise.
+String arabicDigits(String languageCode, String text) {
+  if (languageCode != 'ar') return text;
+  return text.replaceAllMapped(
+    RegExp(r'\d'),
+    (m) => String.fromCharCode(0x0660 + int.parse(m[0]!)),
+  );
+}
+
+String hijriEventName(AppLocalizations l, HijriEvent event) => switch (event) {
+  HijriEvent.newYear => l.eventNewYear,
+  HijriEvent.ashura => l.eventAshura,
+  HijriEvent.ramadan => l.eventRamadan,
+  HijriEvent.lastTenNights => l.eventLastTen,
+  HijriEvent.eidFitr => l.eventEidFitr,
+  HijriEvent.firstTenDays => l.eventFirstTen,
+  HijriEvent.arafah => l.eventArafah,
+  HijriEvent.eidAdha => l.eventEidAdha,
+  HijriEvent.tashriq => l.eventTashriq,
+};

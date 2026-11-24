@@ -1,12 +1,17 @@
+import 'dart:async';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_ui/material_ui.dart';
 
 import '../l10n/app_localizations.dart';
+import '../services/notification_service.dart';
+import '../state/content_providers.dart';
 import '../state/notification_sync.dart';
 import 'dhikr/dhikr_screen.dart';
 import 'home/home_screen.dart';
 import 'more/more_screen.dart';
 import 'quran/quran_screen.dart';
+import 'quran/reader_screen.dart';
 import 'salawat/salawat_screen.dart';
 
 class AppShell extends ConsumerStatefulWidget {
@@ -25,6 +30,7 @@ class _AppShellState extends ConsumerState<AppShell>
   final _dhikrNavigator = GlobalKey<NavigatorState>();
 
   int _index = _home;
+  StreamSubscription<String>? _taps;
   final _visited = <int>{_home};
 
   @override
@@ -47,11 +53,40 @@ class _AppShellState extends ConsumerState<AppShell>
     } on Exception {
       // The notifications screen reports what is missing.
     }
-    if (mounted) ref.read(notificationSyncProvider).schedule();
+    if (!mounted) return;
+    ref.read(notificationSyncProvider).schedule();
+    _taps = service.taps.listen(_openTapped);
+    try {
+      final payload = await service.launchPayload();
+      if (payload != null && mounted) _openTapped(payload);
+    } on Exception {
+      // The app simply opens on its main tab.
+    }
+  }
+
+  /// Opens what a tapped reminder is about.
+  Future<void> _openTapped(String payload) async {
+    switch (payload) {
+      case tapAdhkarMorning || tapAdhkarEvening:
+        _dhikrNavigator.currentState?.popUntil((r) => r.isFirst);
+        dhikrTabRequest.value = payload == tapAdhkarMorning ? 2 : 3;
+        setState(() {
+          _index = 1;
+          _visited.add(1);
+        });
+      case tapKahf:
+        final surahs = await ref.read(surahIndexProvider.future);
+        if (!mounted) return;
+        final kahf = surahs.firstWhere((s) => s.number == 18);
+        Navigator.of(context).push(
+          MaterialPageRoute<void>(builder: (_) => ReaderScreen(surah: kahf)),
+        );
+    }
   }
 
   @override
   void dispose() {
+    _taps?.cancel();
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }

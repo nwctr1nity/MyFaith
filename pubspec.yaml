@@ -49,6 +49,12 @@ dependencies:
   hijri: ^3.0.1
   scrollable_positioned_list: ^0.3.8
   just_audio: ^0.10.6
+  package_info_plus: ^10.2.2
+  url_launcher: ^6.3.3
+  just_audio_background: ^0.0.1-beta.17
+  path_provider: ^2.1.6
+  file_picker: ^13.3.3
+  share_plus: ^13.3.1
 
 dev_dependencies:
   flutter_test:

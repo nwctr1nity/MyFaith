@@ -2,8 +2,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_ui/material_ui.dart';
 
+import 'downloads_screen.dart';
 import '../../core/content/quran.dart';
 import '../../l10n/app_localizations.dart';
+import '../../services/share.dart';
 import '../../state/app_settings.dart';
 import '../../state/content_providers.dart';
 import '../../state/quran_audio.dart';
@@ -472,6 +474,21 @@ class _AyahMenu extends ConsumerWidget {
                 messenger.showSnackBar(SnackBar(content: Text(l.copied)));
               },
             ),
+            ListTile(
+              leading: const ShareIcon(),
+              title: Text(l.share),
+              onTap: () {
+                close();
+                shareOut(
+                  shareText([
+                    content.arabic[ayah - 1],
+                    translated,
+                    '${l.surahAyah(surah.localizedName(language), ayah)} '
+                        '(${surah.number}:$ayah)',
+                  ]),
+                );
+              },
+            ),
             const SizedBox(height: 8),
           ],
         ),
@@ -752,6 +769,20 @@ class _ReaderOptions extends ConsumerWidget {
                       selected: reciter.id,
                       options: {for (final r in reciters) r.id: reciterName(r)},
                       onSelected: (id) => controller.setValue('qReciter', id),
+                    ),
+                  ),
+                  ListTile(
+                    title: Text(l.offlineListening),
+                    subtitle: Text(l.offlineListeningHint),
+                    trailing: Icon(
+                      Directionality.of(context) == TextDirection.rtl
+                          ? Icons.chevron_left
+                          : Icons.chevron_right,
+                    ),
+                    onTap: () => Navigator.of(context).push(
+                      MaterialPageRoute<void>(
+                        builder: (_) => const DownloadsScreen(),
+                      ),
                     ),
                   ),
                   const SizedBox(height: 8),

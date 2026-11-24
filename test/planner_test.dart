@@ -50,6 +50,47 @@ void main() {
     expect(plan.length, lessThan(400));
   });
 
+  test('adhkar reminders follow Fajr and Asr, al-Kahf comes on Fridays', () {
+    final plan = _plan(
+      const AlarmSettings(
+        adhkarMorning: true,
+        adhkarEvening: true,
+        kahfFriday: true,
+      ),
+      night,
+    );
+    final ids = plan.map((p) => p.id).toSet();
+    expect(ids.length, plan.length);
+
+    final fajr = plan.firstWhere(
+      (p) => p.kind == PlannedKind.adhan && p.slot == PrayerSlot.fajr,
+    );
+    final morning = plan.firstWhere((p) => p.kind == PlannedKind.adhkarMorning);
+    expect(morning.time.difference(fajr.time), const Duration(minutes: 30));
+
+    final asr = plan.firstWhere(
+      (p) => p.kind == PlannedKind.adhan && p.slot == PrayerSlot.asr,
+    );
+    final evening = plan.firstWhere((p) => p.kind == PlannedKind.adhkarEvening);
+    expect(evening.time.difference(asr.time), const Duration(minutes: 15));
+
+    final kahf = plan.where((p) => p.kind == PlannedKind.kahf).toList();
+    // Ten days from a Saturday hold one Friday.
+    expect(kahf, hasLength(1));
+    expect(kahf.single.time.weekday, DateTime.friday);
+    expect(kahf.single.time.hour, 9);
+
+    expect(
+      _plan(const AlarmSettings(), night).where(
+        (p) =>
+            p.kind == PlannedKind.adhkarMorning ||
+            p.kind == PlannedKind.adhkarEvening ||
+            p.kind == PlannedKind.kahf,
+      ),
+      isEmpty,
+    );
+  });
+
   test('adhan only for the chosen prayers', () {
     final plan = _plan(
       const AlarmSettings(adhanSlots: {PrayerSlot.fajr, PrayerSlot.maghrib}),

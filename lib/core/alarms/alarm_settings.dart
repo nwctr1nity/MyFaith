@@ -25,6 +25,9 @@ class AlarmSettings {
     this.tahajjudMinutesBeforeFajr = 45,
     this.tahajjudWeekdays = const {1, 2, 3, 4, 5, 6, 7},
     this.hijriAdjustment = 0,
+    this.adhkarMorning = false,
+    this.adhkarEvening = false,
+    this.kahfFriday = false,
   });
 
   final Set<PrayerSlot> adhanSlots;
@@ -43,4 +46,9 @@ class AlarmSettings {
   final int tahajjudMinutesBeforeFajr;
   final Set<int> tahajjudWeekdays;
   final int hijriAdjustment;
+
+  /// Reminders of the morning and evening adhkar and of Surah al-Kahf.
+  final bool adhkarMorning;
+  final bool adhkarEvening;
+  final bool kahfFriday;
 }
